@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; 6. RAG System Evaluation – RAG Book</title>
+<title>6&nbsp; RAG System Evaluation – RAG Book</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-rag-system-evaluation.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">6. RAG System Evaluation</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-rag-system-evaluation.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RAG System Evaluation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -154,43 +154,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-introduction-to-rag.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">1. Introduction to RAG</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to RAG</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-data-preparation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">2. Data Preparation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Preparation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-index-construction-and-optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">3. Index Construction and Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Index Construction and Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-retrieval-optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">4. Retrieval Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Retrieval Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-generation-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">5. Generation Integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generation Integration</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-rag-system-evaluation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">6. RAG System Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RAG System Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-advanced-rag-architectures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">7. Advanced RAG Architectures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced RAG Architectures</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -215,18 +215,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-evaluating-rag-is-difficult" id="toc-why-evaluating-rag-is-difficult" class="nav-link active" data-scroll-target="#why-evaluating-rag-is-difficult"><span class="header-section-number">6.1</span> 6.1 Why Evaluating RAG Is Difficult</a></li>
-  <li><a href="#the-rag-evaluation-triad" id="toc-the-rag-evaluation-triad" class="nav-link" data-scroll-target="#the-rag-evaluation-triad"><span class="header-section-number">6.2</span> 6.2 The RAG Evaluation Triad</a></li>
-  <li><a href="#context-relevance" id="toc-context-relevance" class="nav-link" data-scroll-target="#context-relevance"><span class="header-section-number">6.3</span> 6.3 Context Relevance</a></li>
-  <li><a href="#faithfulness-and-groundedness" id="toc-faithfulness-and-groundedness" class="nav-link" data-scroll-target="#faithfulness-and-groundedness"><span class="header-section-number">6.4</span> 6.4 Faithfulness and Groundedness</a></li>
-  <li><a href="#answer-relevance" id="toc-answer-relevance" class="nav-link" data-scroll-target="#answer-relevance"><span class="header-section-number">6.5</span> 6.5 Answer Relevance</a></li>
-  <li><a href="#evaluation-workflows" id="toc-evaluation-workflows" class="nav-link" data-scroll-target="#evaluation-workflows"><span class="header-section-number">6.6</span> 6.6 Evaluation Workflows</a>
+  <li><a href="#why-evaluating-rag-is-difficult" id="toc-why-evaluating-rag-is-difficult" class="nav-link active" data-scroll-target="#why-evaluating-rag-is-difficult"><span class="header-section-number">6.1</span> Why Evaluating RAG Is Difficult</a></li>
+  <li><a href="#the-rag-evaluation-triad" id="toc-the-rag-evaluation-triad" class="nav-link" data-scroll-target="#the-rag-evaluation-triad"><span class="header-section-number">6.2</span> The RAG Evaluation Triad</a></li>
+  <li><a href="#context-relevance" id="toc-context-relevance" class="nav-link" data-scroll-target="#context-relevance"><span class="header-section-number">6.3</span> Context Relevance</a></li>
+  <li><a href="#faithfulness-and-groundedness" id="toc-faithfulness-and-groundedness" class="nav-link" data-scroll-target="#faithfulness-and-groundedness"><span class="header-section-number">6.4</span> Faithfulness and Groundedness</a></li>
+  <li><a href="#answer-relevance" id="toc-answer-relevance" class="nav-link" data-scroll-target="#answer-relevance"><span class="header-section-number">6.5</span> Answer Relevance</a></li>
+  <li><a href="#evaluation-workflows" id="toc-evaluation-workflows" class="nav-link" data-scroll-target="#evaluation-workflows"><span class="header-section-number">6.6</span> Evaluation Workflows</a>
   <ul class="collapse">
   <li><a href="#a-tiny-local-evaluation-loop" id="toc-a-tiny-local-evaluation-loop" class="nav-link" data-scroll-target="#a-tiny-local-evaluation-loop"><span class="header-section-number">6.6.1</span> A Tiny Local Evaluation Loop</a></li>
   </ul></li>
-  <li><a href="#llamaindex-evaluation" id="toc-llamaindex-evaluation" class="nav-link" data-scroll-target="#llamaindex-evaluation"><span class="header-section-number">6.7</span> 6.7 LlamaIndex Evaluation</a></li>
-  <li><a href="#ragas" id="toc-ragas" class="nav-link" data-scroll-target="#ragas"><span class="header-section-number">6.8</span> 6.8 RAGAS</a></li>
-  <li><a href="#phoenix-arize-phoenix" id="toc-phoenix-arize-phoenix" class="nav-link" data-scroll-target="#phoenix-arize-phoenix"><span class="header-section-number">6.9</span> 6.9 Phoenix (Arize Phoenix)</a></li>
+  <li><a href="#llamaindex-evaluation" id="toc-llamaindex-evaluation" class="nav-link" data-scroll-target="#llamaindex-evaluation"><span class="header-section-number">6.7</span> LlamaIndex Evaluation</a></li>
+  <li><a href="#ragas" id="toc-ragas" class="nav-link" data-scroll-target="#ragas"><span class="header-section-number">6.8</span> RAGAS</a></li>
+  <li><a href="#phoenix-arize-phoenix" id="toc-phoenix-arize-phoenix" class="nav-link" data-scroll-target="#phoenix-arize-phoenix"><span class="header-section-number">6.9</span> Phoenix (Arize Phoenix)</a></li>
   </ul>
 </nav>
     </div>
@@ -235,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">6. RAG System Evaluation</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RAG System Evaluation</span></h1>
 </div>
 
 
@@ -253,12 +253,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <section id="why-evaluating-rag-is-difficult" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="why-evaluating-rag-is-difficult"><span class="header-section-number">6.1</span> 6.1 Why Evaluating RAG Is Difficult</h2>
+<h2 data-number="6.1" class="anchored" data-anchor-id="why-evaluating-rag-is-difficult"><span class="header-section-number">6.1</span> Why Evaluating RAG Is Difficult</h2>
 <p>RAG evaluation is difficult because the system contains interacting components with different failure modes. Retrieval may surface weak evidence. Generation may misread strong evidence. The final answer alone does not always reveal where the failure began.</p>
 <p>This is why mature teams evaluate intermediate artifacts as well as final responses.</p>
 </section>
 <section id="the-rag-evaluation-triad" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="the-rag-evaluation-triad"><span class="header-section-number">6.2</span> 6.2 The RAG Evaluation Triad</h2>
+<h2 data-number="6.2" class="anchored" data-anchor-id="the-rag-evaluation-triad"><span class="header-section-number">6.2</span> The RAG Evaluation Triad</h2>
 <p>A useful mental model is the evaluation triad:</p>
 <ul>
 <li>context relevance: did the system retrieve the right evidence?</li>
@@ -268,22 +268,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>These dimensions are related but distinct. A system can retrieve relevant context and still generate an off-target answer. It can also answer fluently while being weakly grounded.</p>
 </section>
 <section id="context-relevance" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="context-relevance"><span class="header-section-number">6.3</span> 6.3 Context Relevance</h2>
+<h2 data-number="6.3" class="anchored" data-anchor-id="context-relevance"><span class="header-section-number">6.3</span> Context Relevance</h2>
 <p>Context relevance measures whether the retrieved material is useful for answering the question. This can be assessed with human labels, model-based judgments, or task-specific heuristics.</p>
 <p>Inspecting retrieved chunks directly is one of the fastest ways to improve a system early in development.</p>
 </section>
 <section id="faithfulness-and-groundedness" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="faithfulness-and-groundedness"><span class="header-section-number">6.4</span> 6.4 Faithfulness and Groundedness</h2>
+<h2 data-number="6.4" class="anchored" data-anchor-id="faithfulness-and-groundedness"><span class="header-section-number">6.4</span> Faithfulness and Groundedness</h2>
 <p>Faithfulness asks whether the answer is supported by the retrieved evidence. Grounded systems should be able to point to where a claim came from, not merely sound convincing.</p>
 <p>This is one of the most important properties in high-stakes applications. When faithfulness is weak, polished language becomes a liability rather than a strength.</p>
 </section>
 <section id="answer-relevance" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="answer-relevance"><span class="header-section-number">6.5</span> 6.5 Answer Relevance</h2>
+<h2 data-number="6.5" class="anchored" data-anchor-id="answer-relevance"><span class="header-section-number">6.5</span> Answer Relevance</h2>
 <p>An answer can be grounded yet still unhelpful. It may omit the requested comparison, fail to summarize, or answer a nearby question instead of the exact one asked.</p>
 <p>Answer relevance therefore focuses on task fulfillment from the user’s perspective.</p>
 </section>
 <section id="evaluation-workflows" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="evaluation-workflows"><span class="header-section-number">6.6</span> 6.6 Evaluation Workflows</h2>
+<h2 data-number="6.6" class="anchored" data-anchor-id="evaluation-workflows"><span class="header-section-number">6.6</span> Evaluation Workflows</h2>
 <p>A practical evaluation workflow usually includes:</p>
 <ol type="1">
 <li>a representative query set;</li>
@@ -295,34 +295,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Evaluation should be iterative and continuous, not a one-time gate before launch.</p>
 <section id="a-tiny-local-evaluation-loop" class="level3" data-number="6.6.1">
 <h3 data-number="6.6.1" class="anchored" data-anchor-id="a-tiny-local-evaluation-loop"><span class="header-section-number">6.6.1</span> A Tiny Local Evaluation Loop</h3>
-<p>This book includes a deliberately small evaluation script at <code>code/evaluate_book.py</code>. It runs a handful of example questions from <code>code/data/book_eval_questions.json</code>, calls the book-question-answering pipeline, and checks two basic conditions:</p>
+<p>This book includes a deliberately small evaluation script at <code>code/cli/evaluate_book.py</code>. It runs a handful of example questions from <code>code/data/book_eval_questions.json</code>, calls the book-question-answering pipeline, and checks two basic conditions:</p>
 <ul>
 <li>whether the expected chapter is retrieved;</li>
 <li>whether the final answer contains the expected key ideas.</li>
 </ul>
 <p>You can run it with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/evaluate_book.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/evaluate_book.py <span class="at">--chat-model</span> qwen3.5:2b <span class="at">--embed-model</span> bge-m3:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The script is intentionally lightweight:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> run_question(item[<span class="st">"question"</span>])</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> run_question(item[<span class="st">"question"</span>], chat_model<span class="op">=</span>args.chat_model, embed_model<span class="op">=</span>args.embed_model)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    retrieved_ok <span class="op">=</span> item[<span class="st">"expected_source_path"</span>] <span class="kw">in</span> output</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    answer_ok <span class="op">=</span> contains_all_keywords(output, item[<span class="st">"expected_keywords"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    answer_ok <span class="op">=</span> <span class="bu">all</span>(keyword.lower() <span class="kw">in</span> output.lower() <span class="cf">for</span> keyword <span class="kw">in</span> item[<span class="st">"expected_keywords"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This is not a complete evaluation framework, but it teaches the right habit: measure retrieval and generation separately whenever possible.</p>
+<p>In the current project, the evaluation script can be pointed at a selected CLI question-answering configuration. For example, a cloud-model run can be tested with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/evaluate_book.py <span class="at">--chat-model</span> deepseek-v3.1:671b-cloud <span class="at">--embed-model</span> bge-m3:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The interactive Streamlit app can also use different local or cloud chat models, but those UI runs should still be treated as exploratory comparisons unless the model choices are fixed inside an evaluation workflow.</p>
 </section>
 </section>
 <section id="llamaindex-evaluation" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="llamaindex-evaluation"><span class="header-section-number">6.7</span> 6.7 LlamaIndex Evaluation</h2>
+<h2 data-number="6.7" class="anchored" data-anchor-id="llamaindex-evaluation"><span class="header-section-number">6.7</span> LlamaIndex Evaluation</h2>
 <p>Framework-provided evaluation modules can accelerate experimentation by offering ready-made abstractions for query sets, judgments, and comparison runs. They are useful for building a habit of measurement early.</p>
 <p>Still, teams should validate that the framework metrics align with product reality rather than treating built-in scores as final truth.</p>
 </section>
 <section id="ragas" class="level2" data-number="6.8">
-<h2 data-number="6.8" class="anchored" data-anchor-id="ragas"><span class="header-section-number">6.8</span> 6.8 RAGAS</h2>
+<h2 data-number="6.8" class="anchored" data-anchor-id="ragas"><span class="header-section-number">6.8</span> RAGAS</h2>
 <p>RAGAS popularized a practical approach to assessing RAG behavior across multiple dimensions using model-assisted judgments. It is especially useful when human labeling capacity is limited and relative comparisons matter more than absolute scores.</p>
 <p>Like all synthetic or model-based evaluation, it should be triangulated with human inspection.</p>
 <p>The tiny evaluator in this book can be seen as the lowest rung on the same ladder. It is not sophisticated, but it forces the system to answer repeatable questions over the real book corpus and gives the reader a place to add stronger metrics later.</p>
 </section>
 <section id="phoenix-arize-phoenix" class="level2" data-number="6.9">
-<h2 data-number="6.9" class="anchored" data-anchor-id="phoenix-arize-phoenix"><span class="header-section-number">6.9</span> 6.9 Phoenix (Arize Phoenix)</h2>
+<h2 data-number="6.9" class="anchored" data-anchor-id="phoenix-arize-phoenix"><span class="header-section-number">6.9</span> Phoenix (Arize Phoenix)</h2>
 <p>Observability platforms such as Phoenix help teams inspect traces, prompts, retrieved documents, and output quality over time. This is essential once a RAG system serves real users and accumulates operational complexity.</p>
 <p>Evaluation is not complete when a metric is computed. It becomes complete when the team can connect measurements back to concrete system changes.</p>
 <p>For a learner, the most important step is to start logging and comparing outputs early. Once a local pipeline exists over the real chapter files, even a small JSON evaluation set can reveal regressions after changing chunking, prompts, retrieval weights, or model choices.</p>
@@ -733,13 +736,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./05-generation-integration.html" class="pagination-link" aria-label="5. Generation Integration">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">5. Generation Integration</span></span>
+      <a href="./05-generation-integration.html" class="pagination-link" aria-label="Generation Integration">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generation Integration</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./07-advanced-rag-architectures.html" class="pagination-link" aria-label="7. Advanced RAG Architectures">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">7. Advanced RAG Architectures</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./07-advanced-rag-architectures.html" class="pagination-link" aria-label="Advanced RAG Architectures">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced RAG Architectures</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

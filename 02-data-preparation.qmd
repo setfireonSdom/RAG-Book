@@ -1,18 +1,18 @@
-# 2. Data Preparation
+# Data Preparation
 
-## 2.1 The Role of Data in RAG Systems
+## The Role of Data in RAG Systems
 
 Data preparation is the foundation of the entire pipeline. Retrieval systems cannot surface information that was never ingested, cannot recover semantics lost during parsing, and cannot rank chunks well if the text boundaries are broken.
 
 In many failing RAG systems, retrieval is blamed first. Yet the underlying issue is often incomplete coverage, duplicated content, malformed parsing, or weak metadata. Strong data preparation reduces all of those risks.
 
-## 2.2 Document Ingestion and Parsing
+## Document Ingestion and Parsing
 
 Ingestion is the process of collecting raw material from source systems such as PDFs, HTML pages, markdown files, databases, wikis, tickets, and cloud storage. Parsing then converts those materials into a structured internal representation.
 
 The central requirement is fidelity. Titles, sections, tables, lists, code blocks, dates, and authorship metadata often carry critical meaning. If the parser collapses structure too aggressively, downstream retrieval quality declines.
 
-## 2.3 Document Loaders and Processing Tools
+## Document Loaders and Processing Tools
 
 Document loaders are useful because each source format fails in different ways. PDFs may have broken reading order. HTML may include navigation chrome. Spreadsheets may hide semantics in headers. OCR pipelines may introduce noise.
 
@@ -27,13 +27,13 @@ A robust processing stack usually includes:
 
 The goal is not to preserve raw bytes, but to preserve meaning.
 
-## 2.4 Structured and Unstructured Data Pipelines
+## Structured and Unstructured Data Pipelines
 
 RAG often begins with unstructured text, but many valuable systems depend on structured data too. Product specs, transaction records, support metrics, and knowledge graphs may all contribute useful evidence.
 
 Unstructured pipelines usually optimize for semantic retrieval. Structured pipelines optimize for precise filtering, joins, and field-level semantics. Mature systems often combine both and route queries differently depending on the user intent.
 
-## 2.5 Text Cleaning and Normalization
+## Text Cleaning and Normalization
 
 Cleaning should be conservative. Remove obvious noise such as duplicated headers, invisible characters, broken whitespace, or irrelevant boilerplate. Keep information that affects meaning, such as section labels, table headings, bullet relationships, and legal disclaimers.
 
@@ -47,31 +47,31 @@ Normalization practices commonly include:
 
 The right question is always: what context will the retriever and model need later?
 
-## 2.6 Why Text Chunking Matters
+## Why Text Chunking Matters
 
 Chunking is the process of breaking documents into retrieval units. Chunks that are too small lose context. Chunks that are too large dilute relevance and waste tokens. Chunking is therefore one of the highest-leverage decisions in RAG.
 
 The ideal chunk is not a fixed number of characters. It is a unit of meaning that is also small enough to rank, store, and inject efficiently.
 
-## 2.7 Fixed-Size Chunking
+## Fixed-Size Chunking
 
 Fixed-size chunking is the simplest baseline: split text into windows of `n` tokens or characters, optionally with overlap. It is easy to implement and often surprisingly effective for homogeneous documents.
 
 Its weakness is semantic blindness. Paragraph boundaries, headings, and tables are ignored unless preserved separately. Fixed-size chunking is best treated as a baseline, not a universal answer.
 
-## 2.8 Recursive Chunking Strategies
+## Recursive Chunking Strategies
 
 Recursive chunking improves on fixed-size chunking by attempting larger structural boundaries first, then falling back to smaller ones. For example, a pipeline may split by heading, then paragraph, then sentence if necessary.
 
 This strategy tends to preserve coherence better while still keeping chunk lengths within target ranges. It is a strong general-purpose default for many text corpora.
 
-## 2.9 Semantic Chunking
+## Semantic Chunking
 
 Semantic chunking tries to split text where the topic changes rather than where the character count ends. This can improve retrieval quality when documents contain long sections that drift across subtopics.
 
 The tradeoff is complexity. Semantic chunking can be slower, harder to debug, and sensitive to the segmentation model. It works best when the corpus is dense and concept-heavy enough to justify the extra effort.
 
-## 2.10 Structure-Aware Chunking
+## Structure-Aware Chunking
 
 Structure-aware chunking uses document features such as headings, captions, table boundaries, slide sections, or code blocks. This is often the best choice for technical documentation, legal texts, and academic materials where structure conveys meaning.
 
@@ -82,7 +82,7 @@ Examples include:
 - keeping code examples together with their explanations;
 - splitting policies by numbered clause.
 
-## 2.11 Chunking Strategies Across Frameworks
+## Chunking Strategies Across Frameworks
 
 Most frameworks provide utilities for chunking, but the decision logic still belongs to the system designer. The same corpus can yield very different results under different chunk sizes, overlaps, and structure rules.
 

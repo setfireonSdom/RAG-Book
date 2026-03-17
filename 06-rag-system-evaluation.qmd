@@ -1,12 +1,12 @@
-# 6. RAG System Evaluation
+# RAG System Evaluation
 
-## 6.1 Why Evaluating RAG Is Difficult
+## Why Evaluating RAG Is Difficult
 
 RAG evaluation is difficult because the system contains interacting components with different failure modes. Retrieval may surface weak evidence. Generation may misread strong evidence. The final answer alone does not always reveal where the failure began.
 
 This is why mature teams evaluate intermediate artifacts as well as final responses.
 
-## 6.2 The RAG Evaluation Triad
+## The RAG Evaluation Triad
 
 A useful mental model is the evaluation triad:
 
@@ -16,25 +16,25 @@ A useful mental model is the evaluation triad:
 
 These dimensions are related but distinct. A system can retrieve relevant context and still generate an off-target answer. It can also answer fluently while being weakly grounded.
 
-## 6.3 Context Relevance
+## Context Relevance
 
 Context relevance measures whether the retrieved material is useful for answering the question. This can be assessed with human labels, model-based judgments, or task-specific heuristics.
 
 Inspecting retrieved chunks directly is one of the fastest ways to improve a system early in development.
 
-## 6.4 Faithfulness and Groundedness
+## Faithfulness and Groundedness
 
 Faithfulness asks whether the answer is supported by the retrieved evidence. Grounded systems should be able to point to where a claim came from, not merely sound convincing.
 
 This is one of the most important properties in high-stakes applications. When faithfulness is weak, polished language becomes a liability rather than a strength.
 
-## 6.5 Answer Relevance
+## Answer Relevance
 
 An answer can be grounded yet still unhelpful. It may omit the requested comparison, fail to summarize, or answer a nearby question instead of the exact one asked.
 
 Answer relevance therefore focuses on task fulfillment from the user's perspective.
 
-## 6.6 Evaluation Workflows
+## Evaluation Workflows
 
 A practical evaluation workflow usually includes:
 
@@ -56,29 +56,35 @@ This book includes a deliberately small evaluation script at `code/cli/evaluate_
 You can run it with:
 
 ```bash
-python3 code/cli/evaluate_book.py
+python3 code/cli/evaluate_book.py --chat-model qwen3.5:2b --embed-model bge-m3:latest
 ```
 
 The script is intentionally lightweight:
 
 ```python
 for item in items:
-    output = run_question(item["question"])
+    output = run_question(item["question"], chat_model=args.chat_model, embed_model=args.embed_model)
     retrieved_ok = item["expected_source_path"] in output
-    answer_ok = contains_all_keywords(output, item["expected_keywords"])
+    answer_ok = all(keyword.lower() in output.lower() for keyword in item["expected_keywords"])
 ```
 
 This is not a complete evaluation framework, but it teaches the right habit: measure retrieval and generation separately whenever possible.
 
-In the current project, the evaluation script exercises the default CLI question-answering path. The interactive Streamlit app can use different local or cloud chat models, so readers should treat those UI runs as exploratory comparisons unless they also fix the model choices inside their evaluation workflow.
+In the current project, the evaluation script can be pointed at a selected CLI question-answering configuration. For example, a cloud-model run can be tested with:
 
-## 6.7 LlamaIndex Evaluation
+```bash
+python3 code/cli/evaluate_book.py --chat-model deepseek-v3.1:671b-cloud --embed-model bge-m3:latest
+```
+
+The interactive Streamlit app can also use different local or cloud chat models, but those UI runs should still be treated as exploratory comparisons unless the model choices are fixed inside an evaluation workflow.
+
+## LlamaIndex Evaluation
 
 Framework-provided evaluation modules can accelerate experimentation by offering ready-made abstractions for query sets, judgments, and comparison runs. They are useful for building a habit of measurement early.
 
 Still, teams should validate that the framework metrics align with product reality rather than treating built-in scores as final truth.
 
-## 6.8 RAGAS
+## RAGAS
 
 RAGAS popularized a practical approach to assessing RAG behavior across multiple dimensions using model-assisted judgments. It is especially useful when human labeling capacity is limited and relative comparisons matter more than absolute scores.
 
@@ -86,7 +92,7 @@ Like all synthetic or model-based evaluation, it should be triangulated with hum
 
 The tiny evaluator in this book can be seen as the lowest rung on the same ladder. It is not sophisticated, but it forces the system to answer repeatable questions over the real book corpus and gives the reader a place to add stronger metrics later.
 
-## 6.9 Phoenix (Arize Phoenix)
+## Phoenix (Arize Phoenix)
 
 Observability platforms such as Phoenix help teams inspect traces, prompts, retrieved documents, and output quality over time. This is essential once a RAG system serves real users and accumulates operational complexity.
 

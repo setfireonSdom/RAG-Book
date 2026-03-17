@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; 2. Data Preparation – RAG Book</title>
+<title>2&nbsp; Data Preparation – RAG Book</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-data-preparation.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">2. Data Preparation</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-data-preparation.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Preparation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -119,43 +119,43 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-introduction-to-rag.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">1. Introduction to RAG</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to RAG</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-data-preparation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">2. Data Preparation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Preparation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-index-construction-and-optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">3. Index Construction and Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Index Construction and Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-retrieval-optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">4. Retrieval Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Retrieval Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-generation-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">5. Generation Integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generation Integration</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-rag-system-evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">6. RAG System Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RAG System Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-advanced-rag-architectures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">7. Advanced RAG Architectures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced RAG Architectures</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -180,17 +180,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-role-of-data-in-rag-systems" id="toc-the-role-of-data-in-rag-systems" class="nav-link active" data-scroll-target="#the-role-of-data-in-rag-systems"><span class="header-section-number">2.1</span> 2.1 The Role of Data in RAG Systems</a></li>
-  <li><a href="#document-ingestion-and-parsing" id="toc-document-ingestion-and-parsing" class="nav-link" data-scroll-target="#document-ingestion-and-parsing"><span class="header-section-number">2.2</span> 2.2 Document Ingestion and Parsing</a></li>
-  <li><a href="#document-loaders-and-processing-tools" id="toc-document-loaders-and-processing-tools" class="nav-link" data-scroll-target="#document-loaders-and-processing-tools"><span class="header-section-number">2.3</span> 2.3 Document Loaders and Processing Tools</a></li>
-  <li><a href="#structured-and-unstructured-data-pipelines" id="toc-structured-and-unstructured-data-pipelines" class="nav-link" data-scroll-target="#structured-and-unstructured-data-pipelines"><span class="header-section-number">2.4</span> 2.4 Structured and Unstructured Data Pipelines</a></li>
-  <li><a href="#text-cleaning-and-normalization" id="toc-text-cleaning-and-normalization" class="nav-link" data-scroll-target="#text-cleaning-and-normalization"><span class="header-section-number">2.5</span> 2.5 Text Cleaning and Normalization</a></li>
-  <li><a href="#why-text-chunking-matters" id="toc-why-text-chunking-matters" class="nav-link" data-scroll-target="#why-text-chunking-matters"><span class="header-section-number">2.6</span> 2.6 Why Text Chunking Matters</a></li>
-  <li><a href="#fixed-size-chunking" id="toc-fixed-size-chunking" class="nav-link" data-scroll-target="#fixed-size-chunking"><span class="header-section-number">2.7</span> 2.7 Fixed-Size Chunking</a></li>
-  <li><a href="#recursive-chunking-strategies" id="toc-recursive-chunking-strategies" class="nav-link" data-scroll-target="#recursive-chunking-strategies"><span class="header-section-number">2.8</span> 2.8 Recursive Chunking Strategies</a></li>
-  <li><a href="#semantic-chunking" id="toc-semantic-chunking" class="nav-link" data-scroll-target="#semantic-chunking"><span class="header-section-number">2.9</span> 2.9 Semantic Chunking</a></li>
-  <li><a href="#structure-aware-chunking" id="toc-structure-aware-chunking" class="nav-link" data-scroll-target="#structure-aware-chunking"><span class="header-section-number">2.10</span> 2.10 Structure-Aware Chunking</a></li>
-  <li><a href="#chunking-strategies-across-frameworks" id="toc-chunking-strategies-across-frameworks" class="nav-link" data-scroll-target="#chunking-strategies-across-frameworks"><span class="header-section-number">2.11</span> 2.11 Chunking Strategies Across Frameworks</a></li>
+  <li><a href="#the-role-of-data-in-rag-systems" id="toc-the-role-of-data-in-rag-systems" class="nav-link active" data-scroll-target="#the-role-of-data-in-rag-systems"><span class="header-section-number">2.1</span> The Role of Data in RAG Systems</a></li>
+  <li><a href="#document-ingestion-and-parsing" id="toc-document-ingestion-and-parsing" class="nav-link" data-scroll-target="#document-ingestion-and-parsing"><span class="header-section-number">2.2</span> Document Ingestion and Parsing</a></li>
+  <li><a href="#document-loaders-and-processing-tools" id="toc-document-loaders-and-processing-tools" class="nav-link" data-scroll-target="#document-loaders-and-processing-tools"><span class="header-section-number">2.3</span> Document Loaders and Processing Tools</a></li>
+  <li><a href="#structured-and-unstructured-data-pipelines" id="toc-structured-and-unstructured-data-pipelines" class="nav-link" data-scroll-target="#structured-and-unstructured-data-pipelines"><span class="header-section-number">2.4</span> Structured and Unstructured Data Pipelines</a></li>
+  <li><a href="#text-cleaning-and-normalization" id="toc-text-cleaning-and-normalization" class="nav-link" data-scroll-target="#text-cleaning-and-normalization"><span class="header-section-number">2.5</span> Text Cleaning and Normalization</a></li>
+  <li><a href="#why-text-chunking-matters" id="toc-why-text-chunking-matters" class="nav-link" data-scroll-target="#why-text-chunking-matters"><span class="header-section-number">2.6</span> Why Text Chunking Matters</a></li>
+  <li><a href="#fixed-size-chunking" id="toc-fixed-size-chunking" class="nav-link" data-scroll-target="#fixed-size-chunking"><span class="header-section-number">2.7</span> Fixed-Size Chunking</a></li>
+  <li><a href="#recursive-chunking-strategies" id="toc-recursive-chunking-strategies" class="nav-link" data-scroll-target="#recursive-chunking-strategies"><span class="header-section-number">2.8</span> Recursive Chunking Strategies</a></li>
+  <li><a href="#semantic-chunking" id="toc-semantic-chunking" class="nav-link" data-scroll-target="#semantic-chunking"><span class="header-section-number">2.9</span> Semantic Chunking</a></li>
+  <li><a href="#structure-aware-chunking" id="toc-structure-aware-chunking" class="nav-link" data-scroll-target="#structure-aware-chunking"><span class="header-section-number">2.10</span> Structure-Aware Chunking</a></li>
+  <li><a href="#chunking-strategies-across-frameworks" id="toc-chunking-strategies-across-frameworks" class="nav-link" data-scroll-target="#chunking-strategies-across-frameworks"><span class="header-section-number">2.11</span> Chunking Strategies Across Frameworks</a></li>
   </ul>
 </nav>
     </div>
@@ -199,7 +199,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">2. Data Preparation</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Preparation</span></h1>
 </div>
 
 
@@ -217,17 +217,17 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="the-role-of-data-in-rag-systems" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="the-role-of-data-in-rag-systems"><span class="header-section-number">2.1</span> 2.1 The Role of Data in RAG Systems</h2>
+<h2 data-number="2.1" class="anchored" data-anchor-id="the-role-of-data-in-rag-systems"><span class="header-section-number">2.1</span> The Role of Data in RAG Systems</h2>
 <p>Data preparation is the foundation of the entire pipeline. Retrieval systems cannot surface information that was never ingested, cannot recover semantics lost during parsing, and cannot rank chunks well if the text boundaries are broken.</p>
 <p>In many failing RAG systems, retrieval is blamed first. Yet the underlying issue is often incomplete coverage, duplicated content, malformed parsing, or weak metadata. Strong data preparation reduces all of those risks.</p>
 </section>
 <section id="document-ingestion-and-parsing" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="document-ingestion-and-parsing"><span class="header-section-number">2.2</span> 2.2 Document Ingestion and Parsing</h2>
+<h2 data-number="2.2" class="anchored" data-anchor-id="document-ingestion-and-parsing"><span class="header-section-number">2.2</span> Document Ingestion and Parsing</h2>
 <p>Ingestion is the process of collecting raw material from source systems such as PDFs, HTML pages, markdown files, databases, wikis, tickets, and cloud storage. Parsing then converts those materials into a structured internal representation.</p>
 <p>The central requirement is fidelity. Titles, sections, tables, lists, code blocks, dates, and authorship metadata often carry critical meaning. If the parser collapses structure too aggressively, downstream retrieval quality declines.</p>
 </section>
 <section id="document-loaders-and-processing-tools" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="document-loaders-and-processing-tools"><span class="header-section-number">2.3</span> 2.3 Document Loaders and Processing Tools</h2>
+<h2 data-number="2.3" class="anchored" data-anchor-id="document-loaders-and-processing-tools"><span class="header-section-number">2.3</span> Document Loaders and Processing Tools</h2>
 <p>Document loaders are useful because each source format fails in different ways. PDFs may have broken reading order. HTML may include navigation chrome. Spreadsheets may hide semantics in headers. OCR pipelines may introduce noise.</p>
 <p>A robust processing stack usually includes:</p>
 <ul>
@@ -241,12 +241,12 @@ ul.task-list li input[type="checkbox"] {
 <p>The goal is not to preserve raw bytes, but to preserve meaning.</p>
 </section>
 <section id="structured-and-unstructured-data-pipelines" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="structured-and-unstructured-data-pipelines"><span class="header-section-number">2.4</span> 2.4 Structured and Unstructured Data Pipelines</h2>
+<h2 data-number="2.4" class="anchored" data-anchor-id="structured-and-unstructured-data-pipelines"><span class="header-section-number">2.4</span> Structured and Unstructured Data Pipelines</h2>
 <p>RAG often begins with unstructured text, but many valuable systems depend on structured data too. Product specs, transaction records, support metrics, and knowledge graphs may all contribute useful evidence.</p>
 <p>Unstructured pipelines usually optimize for semantic retrieval. Structured pipelines optimize for precise filtering, joins, and field-level semantics. Mature systems often combine both and route queries differently depending on the user intent.</p>
 </section>
 <section id="text-cleaning-and-normalization" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="text-cleaning-and-normalization"><span class="header-section-number">2.5</span> 2.5 Text Cleaning and Normalization</h2>
+<h2 data-number="2.5" class="anchored" data-anchor-id="text-cleaning-and-normalization"><span class="header-section-number">2.5</span> Text Cleaning and Normalization</h2>
 <p>Cleaning should be conservative. Remove obvious noise such as duplicated headers, invisible characters, broken whitespace, or irrelevant boilerplate. Keep information that affects meaning, such as section labels, table headings, bullet relationships, and legal disclaimers.</p>
 <p>Normalization practices commonly include:</p>
 <ul>
@@ -259,27 +259,27 @@ ul.task-list li input[type="checkbox"] {
 <p>The right question is always: what context will the retriever and model need later?</p>
 </section>
 <section id="why-text-chunking-matters" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="why-text-chunking-matters"><span class="header-section-number">2.6</span> 2.6 Why Text Chunking Matters</h2>
+<h2 data-number="2.6" class="anchored" data-anchor-id="why-text-chunking-matters"><span class="header-section-number">2.6</span> Why Text Chunking Matters</h2>
 <p>Chunking is the process of breaking documents into retrieval units. Chunks that are too small lose context. Chunks that are too large dilute relevance and waste tokens. Chunking is therefore one of the highest-leverage decisions in RAG.</p>
 <p>The ideal chunk is not a fixed number of characters. It is a unit of meaning that is also small enough to rank, store, and inject efficiently.</p>
 </section>
 <section id="fixed-size-chunking" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="fixed-size-chunking"><span class="header-section-number">2.7</span> 2.7 Fixed-Size Chunking</h2>
+<h2 data-number="2.7" class="anchored" data-anchor-id="fixed-size-chunking"><span class="header-section-number">2.7</span> Fixed-Size Chunking</h2>
 <p>Fixed-size chunking is the simplest baseline: split text into windows of <code>n</code> tokens or characters, optionally with overlap. It is easy to implement and often surprisingly effective for homogeneous documents.</p>
 <p>Its weakness is semantic blindness. Paragraph boundaries, headings, and tables are ignored unless preserved separately. Fixed-size chunking is best treated as a baseline, not a universal answer.</p>
 </section>
 <section id="recursive-chunking-strategies" class="level2" data-number="2.8">
-<h2 data-number="2.8" class="anchored" data-anchor-id="recursive-chunking-strategies"><span class="header-section-number">2.8</span> 2.8 Recursive Chunking Strategies</h2>
+<h2 data-number="2.8" class="anchored" data-anchor-id="recursive-chunking-strategies"><span class="header-section-number">2.8</span> Recursive Chunking Strategies</h2>
 <p>Recursive chunking improves on fixed-size chunking by attempting larger structural boundaries first, then falling back to smaller ones. For example, a pipeline may split by heading, then paragraph, then sentence if necessary.</p>
 <p>This strategy tends to preserve coherence better while still keeping chunk lengths within target ranges. It is a strong general-purpose default for many text corpora.</p>
 </section>
 <section id="semantic-chunking" class="level2" data-number="2.9">
-<h2 data-number="2.9" class="anchored" data-anchor-id="semantic-chunking"><span class="header-section-number">2.9</span> 2.9 Semantic Chunking</h2>
+<h2 data-number="2.9" class="anchored" data-anchor-id="semantic-chunking"><span class="header-section-number">2.9</span> Semantic Chunking</h2>
 <p>Semantic chunking tries to split text where the topic changes rather than where the character count ends. This can improve retrieval quality when documents contain long sections that drift across subtopics.</p>
 <p>The tradeoff is complexity. Semantic chunking can be slower, harder to debug, and sensitive to the segmentation model. It works best when the corpus is dense and concept-heavy enough to justify the extra effort.</p>
 </section>
 <section id="structure-aware-chunking" class="level2" data-number="2.10">
-<h2 data-number="2.10" class="anchored" data-anchor-id="structure-aware-chunking"><span class="header-section-number">2.10</span> 2.10 Structure-Aware Chunking</h2>
+<h2 data-number="2.10" class="anchored" data-anchor-id="structure-aware-chunking"><span class="header-section-number">2.10</span> Structure-Aware Chunking</h2>
 <p>Structure-aware chunking uses document features such as headings, captions, table boundaries, slide sections, or code blocks. This is often the best choice for technical documentation, legal texts, and academic materials where structure conveys meaning.</p>
 <p>Examples include:</p>
 <ul>
@@ -290,7 +290,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 <section id="chunking-strategies-across-frameworks" class="level2" data-number="2.11">
-<h2 data-number="2.11" class="anchored" data-anchor-id="chunking-strategies-across-frameworks"><span class="header-section-number">2.11</span> 2.11 Chunking Strategies Across Frameworks</h2>
+<h2 data-number="2.11" class="anchored" data-anchor-id="chunking-strategies-across-frameworks"><span class="header-section-number">2.11</span> Chunking Strategies Across Frameworks</h2>
 <p>Most frameworks provide utilities for chunking, but the decision logic still belongs to the system designer. The same corpus can yield very different results under different chunk sizes, overlaps, and structure rules.</p>
 <p>A practical process is to test chunking on a representative query set, inspect retrieved passages manually, and iterate. Chunking is not a preprocessing footnote. It is a retrieval design choice that strongly shapes everything that follows.</p>
 
@@ -700,13 +700,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./01-introduction-to-rag.html" class="pagination-link" aria-label="1. Introduction to RAG">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">1. Introduction to RAG</span></span>
+      <a href="./01-introduction-to-rag.html" class="pagination-link" aria-label="Introduction to RAG">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to RAG</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./03-index-construction-and-optimization.html" class="pagination-link" aria-label="3. Index Construction and Optimization">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">3. Index Construction and Optimization</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./03-index-construction-and-optimization.html" class="pagination-link" aria-label="Index Construction and Optimization">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Index Construction and Optimization</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

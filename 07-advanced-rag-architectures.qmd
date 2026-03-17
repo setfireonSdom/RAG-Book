@@ -1,18 +1,18 @@
-# 7. Advanced RAG Architectures
+# Advanced RAG Architectures
 
-## 7.1 Limitations of Traditional RAG
+## Limitations of Traditional RAG
 
 Traditional RAG is often built around a straightforward assumption: retrieve the top few chunks from a vector index, then generate an answer. This works well for many tasks, but it struggles with multi-hop reasoning, structured relationships, long workflows, and questions that require precise backend execution.
 
 As systems mature, these limitations become more visible than benchmark demos suggest.
 
-## 7.2 Knowledge-Graph-Augmented RAG
+## Knowledge-Graph-Augmented RAG
 
 Knowledge graphs add explicit entities and relationships to the retrieval landscape. Instead of only searching over text similarity, the system can retrieve along graph edges such as ownership, dependency, causality, membership, or chronology.
 
 This is powerful when the meaning of a question lies in how facts connect rather than in whether a paragraph happens to mention them together.
 
-## 7.3 Graph-Based Retrieval Pipelines
+## Graph-Based Retrieval Pipelines
 
 Graph-based retrieval pipelines typically combine:
 
@@ -23,13 +23,13 @@ Graph-based retrieval pipelines typically combine:
 
 The benefit is deeper reasoning over connected knowledge. The cost is higher modeling and maintenance complexity.
 
-## 7.4 Integrating Graph Retrieval with LLMs
+## Integrating Graph Retrieval with LLMs
 
 When an LLM consumes graph-derived evidence, the prompt or tool layer needs to preserve relationship semantics clearly. A raw dump of nodes and edges is rarely enough. The evidence should be translated into an interpretable form, with provenance and path information when possible.
 
 This makes graph retrieval more understandable to both the model and the human reviewer.
 
-## 7.5 Toward Next-Generation RAG Systems
+## Toward Next-Generation RAG Systems
 
 Next-generation RAG systems are likely to be adaptive rather than monolithic. They will:
 

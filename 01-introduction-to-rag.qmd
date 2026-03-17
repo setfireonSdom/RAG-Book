@@ -1,12 +1,12 @@
-# 1. Introduction to RAG
+# Introduction to RAG
 
-## 1.1 What Is Retrieval-Augmented Generation
+## What Is Retrieval-Augmented Generation
 
 Retrieval-Augmented Generation (RAG) is an application pattern in which a language model receives external information at inference time and uses that information to produce an answer. Rather than relying only on parameters learned during pretraining, the model is given a dynamically retrieved context window that is relevant to the current query.
 
 At a high level, a RAG system has three stages: retrieve, augment, generate. A user question is transformed into one or more retrieval queries; relevant passages or records are fetched from a knowledge source; then the model is prompted to answer using those materials. The key benefit is that the knowledge source can be updated independently of the model itself.
 
-## 1.2 Core Principles and System Architecture
+## Core Principles and System Architecture
 
 A practical RAG system usually contains the following components:
 
@@ -20,13 +20,13 @@ A practical RAG system usually contains the following components:
 
 The architecture matters because errors compound across layers. If chunking is poor, retrieval quality suffers. If retrieval is weak, prompting cannot rescue answer faithfulness. If evaluation is absent, teams often optimize for style instead of correctness.
 
-## 1.3 Evolution of RAG Techniques
+## Evolution of RAG Techniques
 
 Early RAG implementations were mostly "semantic search plus prompt stuffing." They embedded chunks, retrieved the top `k`, and placed them into a template. That pattern still works for many small systems, but the field has evolved rapidly.
 
 Modern systems often include hybrid retrieval, metadata filtering, multi-stage ranking, context compression, tool use, query routing, and domain-specific structured retrieval. The trend is clear: the retrieval stack is becoming more adaptive, and the generation stack is becoming more constrained and instrumented.
 
-## 1.4 RAG vs. Fine-Tuning
+## RAG vs. Fine-Tuning
 
 RAG and fine-tuning solve different problems.
 
@@ -34,7 +34,7 @@ RAG is strongest when the challenge is access to external knowledge: product cat
 
 In practice, many mature systems combine the two. A model may be tuned to follow a task reliably while RAG provides fresh or private facts. The common mistake is assuming one replaces the other in all cases.
 
-## 1.5 When to Use RAG: Use Cases and Risk Levels
+## When to Use RAG: Use Cases and Risk Levels
 
 RAG is especially useful in:
 
@@ -47,7 +47,7 @@ RAG is especially useful in:
 
 Risk level matters. In low-risk settings, approximate retrieval may be acceptable. In high-risk settings such as healthcare, legal review, or compliance, the system needs stricter grounding, stronger auditability, and explicit fallbacks when evidence is weak.
 
-## 1.6 Getting Started with RAG Systems
+## Getting Started with RAG Systems
 
 The best way to begin is not with the fanciest architecture. Start with a narrow use case, a clear corpus, and a measurable task. Build a baseline pipeline:
 
@@ -60,7 +60,7 @@ The best way to begin is not with the fanciest architecture. Start with a narrow
 
 This baseline reveals where the real bottleneck lives. For many teams, the first bottleneck is not model choice but document quality and query coverage.
 
-## 1.7 Evaluation Challenges and Optimization Directions
+## Evaluation Challenges and Optimization Directions
 
 RAG systems are difficult to evaluate because the output quality depends on both retrieval quality and generation quality. A weak answer may come from poor evidence, poor prompt design, or both. That means metrics need to separate stages whenever possible.
 
@@ -73,13 +73,13 @@ Optimization typically moves along these axes:
 - improve prompt structure and answer constraints;
 - reduce latency and token cost.
 
-## 1.8 Is RAG Dead? Debates and Emerging Alternatives
+## Is RAG Dead? Debates and Emerging Alternatives
 
 Claims that "RAG is dead" usually reflect a narrower point: long-context models, tool use, and stronger base models reduce the need for naive retrieval pipelines. They do not eliminate the need for retrieval itself.
 
 In reality, the question is shifting from "Should we use RAG?" to "What retrieval strategy matches this task?" Sometimes the answer is classic vector search. Sometimes it is SQL generation, graph traversal, API calls, or an orchestrated combination of them.
 
-## 1.9 A Minimal RAG Implementation
+## A Minimal RAG Implementation
 
 The smallest useful RAG system can be expressed in pseudocode:
 

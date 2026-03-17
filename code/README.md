@@ -71,7 +71,7 @@ python3 code/cli/ingest_book.py
 python3 code/cli/build_book_index.py --embed-model bge-m3:latest
 python3 code/cli/ask_book.py --question "When should RAG be preferred over fine-tuning?" --chat-model qwen3.5:2b --embed-model bge-m3:latest
 python3 code/cli/retrieval_compare.py --question "How does the book compare RAG with fine-tuning?" --embed-model bge-m3:latest
-python3 code/cli/evaluate_book.py
+python3 code/cli/evaluate_book.py --chat-model qwen3.5:2b --embed-model bge-m3:latest
 streamlit run code/app/chat_app.py
 ```
 

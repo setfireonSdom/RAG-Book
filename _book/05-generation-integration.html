@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; 5. Generation Integration – RAG Book</title>
+<title>5&nbsp; Generation Integration – RAG Book</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-generation-integration.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">5. Generation Integration</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-generation-integration.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generation Integration</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -119,43 +119,43 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-introduction-to-rag.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">1. Introduction to RAG</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to RAG</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-data-preparation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">2. Data Preparation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Preparation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-index-construction-and-optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">3. Index Construction and Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Index Construction and Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-retrieval-optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">4. Retrieval Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Retrieval Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-generation-integration.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">5. Generation Integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generation Integration</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-rag-system-evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">6. RAG System Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RAG System Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-advanced-rag-architectures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">7. Advanced RAG Architectures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced RAG Architectures</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -180,13 +180,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#from-retrieval-to-generation" id="toc-from-retrieval-to-generation" class="nav-link active" data-scroll-target="#from-retrieval-to-generation"><span class="header-section-number">5.1</span> 5.1 From Retrieval to Generation</a></li>
-  <li><a href="#prompt-design-with-retrieved-context" id="toc-prompt-design-with-retrieved-context" class="nav-link" data-scroll-target="#prompt-design-with-retrieved-context"><span class="header-section-number">5.2</span> 5.2 Prompt Design with Retrieved Context</a></li>
-  <li><a href="#structured-output-generation" id="toc-structured-output-generation" class="nav-link" data-scroll-target="#structured-output-generation"><span class="header-section-number">5.3</span> 5.3 Structured Output Generation</a></li>
-  <li><a href="#json-and-schema-based-generation" id="toc-json-and-schema-based-generation" class="nav-link" data-scroll-target="#json-and-schema-based-generation"><span class="header-section-number">5.4</span> 5.4 JSON and Schema-Based Generation</a></li>
-  <li><a href="#framework-based-implementations" id="toc-framework-based-implementations" class="nav-link" data-scroll-target="#framework-based-implementations"><span class="header-section-number">5.5</span> 5.5 Framework-Based Implementations</a></li>
-  <li><a href="#framework-agnostic-structured-generation" id="toc-framework-agnostic-structured-generation" class="nav-link" data-scroll-target="#framework-agnostic-structured-generation"><span class="header-section-number">5.6</span> 5.6 Framework-Agnostic Structured Generation</a></li>
-  <li><a href="#function-calling-for-tool-integration" id="toc-function-calling-for-tool-integration" class="nav-link" data-scroll-target="#function-calling-for-tool-integration"><span class="header-section-number">5.7</span> 5.7 Function Calling for Tool Integration</a></li>
+  <li><a href="#from-retrieval-to-generation" id="toc-from-retrieval-to-generation" class="nav-link active" data-scroll-target="#from-retrieval-to-generation"><span class="header-section-number">5.1</span> From Retrieval to Generation</a></li>
+  <li><a href="#prompt-design-with-retrieved-context" id="toc-prompt-design-with-retrieved-context" class="nav-link" data-scroll-target="#prompt-design-with-retrieved-context"><span class="header-section-number">5.2</span> Prompt Design with Retrieved Context</a></li>
+  <li><a href="#structured-output-generation" id="toc-structured-output-generation" class="nav-link" data-scroll-target="#structured-output-generation"><span class="header-section-number">5.3</span> Structured Output Generation</a></li>
+  <li><a href="#json-and-schema-based-generation" id="toc-json-and-schema-based-generation" class="nav-link" data-scroll-target="#json-and-schema-based-generation"><span class="header-section-number">5.4</span> JSON and Schema-Based Generation</a></li>
+  <li><a href="#framework-based-implementations" id="toc-framework-based-implementations" class="nav-link" data-scroll-target="#framework-based-implementations"><span class="header-section-number">5.5</span> Framework-Based Implementations</a></li>
+  <li><a href="#framework-agnostic-structured-generation" id="toc-framework-agnostic-structured-generation" class="nav-link" data-scroll-target="#framework-agnostic-structured-generation"><span class="header-section-number">5.6</span> Framework-Agnostic Structured Generation</a></li>
+  <li><a href="#function-calling-for-tool-integration" id="toc-function-calling-for-tool-integration" class="nav-link" data-scroll-target="#function-calling-for-tool-integration"><span class="header-section-number">5.7</span> Function Calling for Tool Integration</a></li>
   </ul>
 </nav>
     </div>
@@ -195,7 +195,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">5. Generation Integration</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generation Integration</span></h1>
 </div>
 
 
@@ -213,12 +213,12 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="from-retrieval-to-generation" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="from-retrieval-to-generation"><span class="header-section-number">5.1</span> 5.1 From Retrieval to Generation</h2>
+<h2 data-number="5.1" class="anchored" data-anchor-id="from-retrieval-to-generation"><span class="header-section-number">5.1</span> From Retrieval to Generation</h2>
 <p>Retrieval only creates the possibility of a good answer. The generation layer decides whether that evidence is used clearly, faithfully, and in a form the user can trust.</p>
 <p>This transition is where many systems become fragile. If the prompt is underspecified, the model may ignore evidence. If too much context is injected, the model may become distracted. If the task is vague, the answer may sound plausible while failing the actual need.</p>
 </section>
 <section id="prompt-design-with-retrieved-context" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="prompt-design-with-retrieved-context"><span class="header-section-number">5.2</span> 5.2 Prompt Design with Retrieved Context</h2>
+<h2 data-number="5.2" class="anchored" data-anchor-id="prompt-design-with-retrieved-context"><span class="header-section-number">5.2</span> Prompt Design with Retrieved Context</h2>
 <p>Good prompt design tells the model what the retrieved context represents and how it should be used. Typical instructions include:</p>
 <ul>
 <li>answer using the provided sources;</li>
@@ -230,22 +230,22 @@ ul.task-list li input[type="checkbox"] {
 <p>Prompt design is not only about wording elegance. It is interface design between retrieval output and model behavior.</p>
 </section>
 <section id="structured-output-generation" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="structured-output-generation"><span class="header-section-number">5.3</span> 5.3 Structured Output Generation</h2>
+<h2 data-number="5.3" class="anchored" data-anchor-id="structured-output-generation"><span class="header-section-number">5.3</span> Structured Output Generation</h2>
 <p>Many RAG systems should not return free-form prose alone. They may need JSON, tables, lists of citations, extracted fields, or machine-actionable results.</p>
 <p>Structured output reduces ambiguity, makes downstream integration easier, and can improve evaluation because outputs become easier to compare.</p>
 </section>
 <section id="json-and-schema-based-generation" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="json-and-schema-based-generation"><span class="header-section-number">5.4</span> 5.4 JSON and Schema-Based Generation</h2>
+<h2 data-number="5.4" class="anchored" data-anchor-id="json-and-schema-based-generation"><span class="header-section-number">5.4</span> JSON and Schema-Based Generation</h2>
 <p>Schema-based generation defines the fields the model must produce and the constraints each field must follow. This is especially useful for extraction, classification, workflow triggering, or UI-backed applications.</p>
 <p>When schema validation fails, the system can retry, repair, or fall back. This turns generation into a more dependable software component.</p>
 </section>
 <section id="framework-based-implementations" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="framework-based-implementations"><span class="header-section-number">5.5</span> 5.5 Framework-Based Implementations</h2>
+<h2 data-number="5.5" class="anchored" data-anchor-id="framework-based-implementations"><span class="header-section-number">5.5</span> Framework-Based Implementations</h2>
 <p>Frameworks can help with prompt templates, chains, document objects, and response parsing. They speed up prototyping and reduce boilerplate, especially in early development.</p>
 <p>The risk is abstraction leakage. Teams should still understand what documents are passed, how prompts are assembled, and where errors originate.</p>
 </section>
 <section id="framework-agnostic-structured-generation" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="framework-agnostic-structured-generation"><span class="header-section-number">5.6</span> 5.6 Framework-Agnostic Structured Generation</h2>
+<h2 data-number="5.6" class="anchored" data-anchor-id="framework-agnostic-structured-generation"><span class="header-section-number">5.6</span> Framework-Agnostic Structured Generation</h2>
 <p>The core principles work even without a framework:</p>
 <ol type="1">
 <li>assemble relevant context;</li>
@@ -257,7 +257,7 @@ ul.task-list li input[type="checkbox"] {
 <p>This makes the system easier to reason about and port across runtimes or vendors.</p>
 </section>
 <section id="function-calling-for-tool-integration" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="function-calling-for-tool-integration"><span class="header-section-number">5.7</span> 5.7 Function Calling for Tool Integration</h2>
+<h2 data-number="5.7" class="anchored" data-anchor-id="function-calling-for-tool-integration"><span class="header-section-number">5.7</span> Function Calling for Tool Integration</h2>
 <p>Function calling extends RAG beyond passive answering. After retrieval, the model may decide to invoke a tool: fetch a record, create a ticket, run a query, or verify a citation.</p>
 <p>This turns the system into an agentic workflow, which can be powerful but also more failure-prone. Tool selection, argument validation, and permission boundaries therefore become part of the RAG design space.</p>
 
@@ -667,13 +667,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./04-retrieval-optimization.html" class="pagination-link" aria-label="4. Retrieval Optimization">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">4. Retrieval Optimization</span></span>
+      <a href="./04-retrieval-optimization.html" class="pagination-link" aria-label="Retrieval Optimization">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Retrieval Optimization</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./06-rag-system-evaluation.html" class="pagination-link" aria-label="6. RAG System Evaluation">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">6. RAG System Evaluation</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./06-rag-system-evaluation.html" class="pagination-link" aria-label="RAG System Evaluation">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RAG System Evaluation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

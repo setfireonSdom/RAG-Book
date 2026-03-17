@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; 4. Retrieval Optimization – RAG Book</title>
+<title>4&nbsp; Retrieval Optimization – RAG Book</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-retrieval-optimization.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">4. Retrieval Optimization</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-retrieval-optimization.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Retrieval Optimization</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -154,43 +154,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-introduction-to-rag.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">1. Introduction to RAG</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to RAG</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-data-preparation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">2. Data Preparation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Preparation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-index-construction-and-optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">3. Index Construction and Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Index Construction and Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-retrieval-optimization.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">4. Retrieval Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Retrieval Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-generation-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">5. Generation Integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generation Integration</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-rag-system-evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">6. RAG System Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RAG System Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-advanced-rag-architectures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">7. Advanced RAG Architectures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced RAG Architectures</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -215,23 +215,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#dense-retrieval" id="toc-dense-retrieval" class="nav-link active" data-scroll-target="#dense-retrieval"><span class="header-section-number">4.1</span> 4.1 Dense Retrieval</a></li>
-  <li><a href="#sparse-retrieval" id="toc-sparse-retrieval" class="nav-link" data-scroll-target="#sparse-retrieval"><span class="header-section-number">4.2</span> 4.2 Sparse Retrieval</a></li>
-  <li><a href="#hybrid-retrieval-systems" id="toc-hybrid-retrieval-systems" class="nav-link" data-scroll-target="#hybrid-retrieval-systems"><span class="header-section-number">4.3</span> 4.3 Hybrid Retrieval Systems</a></li>
-  <li><a href="#implementing-hybrid-search" id="toc-implementing-hybrid-search" class="nav-link" data-scroll-target="#implementing-hybrid-search"><span class="header-section-number">4.4</span> 4.4 Implementing Hybrid Search</a>
+  <li><a href="#dense-retrieval" id="toc-dense-retrieval" class="nav-link active" data-scroll-target="#dense-retrieval"><span class="header-section-number">4.1</span> Dense Retrieval</a></li>
+  <li><a href="#sparse-retrieval" id="toc-sparse-retrieval" class="nav-link" data-scroll-target="#sparse-retrieval"><span class="header-section-number">4.2</span> Sparse Retrieval</a></li>
+  <li><a href="#hybrid-retrieval-systems" id="toc-hybrid-retrieval-systems" class="nav-link" data-scroll-target="#hybrid-retrieval-systems"><span class="header-section-number">4.3</span> Hybrid Retrieval Systems</a></li>
+  <li><a href="#implementing-hybrid-search" id="toc-implementing-hybrid-search" class="nav-link" data-scroll-target="#implementing-hybrid-search"><span class="header-section-number">4.4</span> Implementing Hybrid Search</a>
   <ul class="collapse">
   <li><a href="#practical-example-dense-vs-sparse-vs-hybrid" id="toc-practical-example-dense-vs-sparse-vs-hybrid" class="nav-link" data-scroll-target="#practical-example-dense-vs-sparse-vs-hybrid"><span class="header-section-number">4.4.1</span> Practical Example: Dense vs Sparse vs Hybrid</a></li>
   </ul></li>
-  <li><a href="#query-construction" id="toc-query-construction" class="nav-link" data-scroll-target="#query-construction"><span class="header-section-number">4.5</span> 4.5 Query Construction</a></li>
-  <li><a href="#text-to-metadata-filtering" id="toc-text-to-metadata-filtering" class="nav-link" data-scroll-target="#text-to-metadata-filtering"><span class="header-section-number">4.6</span> 4.6 Text-to-Metadata Filtering</a></li>
-  <li><a href="#text-to-cypher-queries" id="toc-text-to-cypher-queries" class="nav-link" data-scroll-target="#text-to-cypher-queries"><span class="header-section-number">4.7</span> 4.7 Text-to-Cypher Queries</a></li>
-  <li><a href="#text-to-sql-retrieval-systems" id="toc-text-to-sql-retrieval-systems" class="nav-link" data-scroll-target="#text-to-sql-retrieval-systems"><span class="header-section-number">4.8</span> 4.8 Text-to-SQL Retrieval Systems</a></li>
-  <li><a href="#query-rewriting-and-reformulation" id="toc-query-rewriting-and-reformulation" class="nav-link" data-scroll-target="#query-rewriting-and-reformulation"><span class="header-section-number">4.9</span> 4.9 Query Rewriting and Reformulation</a></li>
-  <li><a href="#query-routing-and-distribution" id="toc-query-routing-and-distribution" class="nav-link" data-scroll-target="#query-routing-and-distribution"><span class="header-section-number">4.10</span> 4.10 Query Routing and Distribution</a></li>
-  <li><a href="#retrieval-pipelines" id="toc-retrieval-pipelines" class="nav-link" data-scroll-target="#retrieval-pipelines"><span class="header-section-number">4.11</span> 4.11 Retrieval Pipelines</a></li>
-  <li><a href="#re-ranking-methods" id="toc-re-ranking-methods" class="nav-link" data-scroll-target="#re-ranking-methods"><span class="header-section-number">4.12</span> 4.12 Re-ranking Methods</a></li>
-  <li><a href="#context-compression" id="toc-context-compression" class="nav-link" data-scroll-target="#context-compression"><span class="header-section-number">4.13</span> 4.13 Context Compression</a></li>
-  <li><a href="#retrieval-correction" id="toc-retrieval-correction" class="nav-link" data-scroll-target="#retrieval-correction"><span class="header-section-number">4.14</span> 4.14 Retrieval Correction</a></li>
+  <li><a href="#query-construction" id="toc-query-construction" class="nav-link" data-scroll-target="#query-construction"><span class="header-section-number">4.5</span> Query Construction</a></li>
+  <li><a href="#text-to-metadata-filtering" id="toc-text-to-metadata-filtering" class="nav-link" data-scroll-target="#text-to-metadata-filtering"><span class="header-section-number">4.6</span> Text-to-Metadata Filtering</a></li>
+  <li><a href="#text-to-cypher-queries" id="toc-text-to-cypher-queries" class="nav-link" data-scroll-target="#text-to-cypher-queries"><span class="header-section-number">4.7</span> Text-to-Cypher Queries</a></li>
+  <li><a href="#text-to-sql-retrieval-systems" id="toc-text-to-sql-retrieval-systems" class="nav-link" data-scroll-target="#text-to-sql-retrieval-systems"><span class="header-section-number">4.8</span> Text-to-SQL Retrieval Systems</a></li>
+  <li><a href="#query-rewriting-and-reformulation" id="toc-query-rewriting-and-reformulation" class="nav-link" data-scroll-target="#query-rewriting-and-reformulation"><span class="header-section-number">4.9</span> Query Rewriting and Reformulation</a></li>
+  <li><a href="#query-routing-and-distribution" id="toc-query-routing-and-distribution" class="nav-link" data-scroll-target="#query-routing-and-distribution"><span class="header-section-number">4.10</span> Query Routing and Distribution</a></li>
+  <li><a href="#retrieval-pipelines" id="toc-retrieval-pipelines" class="nav-link" data-scroll-target="#retrieval-pipelines"><span class="header-section-number">4.11</span> Retrieval Pipelines</a></li>
+  <li><a href="#re-ranking-methods" id="toc-re-ranking-methods" class="nav-link" data-scroll-target="#re-ranking-methods"><span class="header-section-number">4.12</span> Re-ranking Methods</a></li>
+  <li><a href="#context-compression" id="toc-context-compression" class="nav-link" data-scroll-target="#context-compression"><span class="header-section-number">4.13</span> Context Compression</a></li>
+  <li><a href="#retrieval-correction" id="toc-retrieval-correction" class="nav-link" data-scroll-target="#retrieval-correction"><span class="header-section-number">4.14</span> Retrieval Correction</a></li>
   </ul>
 </nav>
     </div>
@@ -240,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">4. Retrieval Optimization</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Retrieval Optimization</span></h1>
 </div>
 
 
@@ -258,22 +258,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <section id="dense-retrieval" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="dense-retrieval"><span class="header-section-number">4.1</span> 4.1 Dense Retrieval</h2>
+<h2 data-number="4.1" class="anchored" data-anchor-id="dense-retrieval"><span class="header-section-number">4.1</span> Dense Retrieval</h2>
 <p>Dense retrieval uses embeddings to represent both queries and documents. It excels when semantic similarity matters more than exact token overlap, which is why it is common in modern RAG systems.</p>
 <p>Its weakness is that semantic closeness is not always the same as relevance. Dense retrievers may miss exact identifiers, formulas, or niche terminology unless the embeddings capture them well.</p>
 </section>
 <section id="sparse-retrieval" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="sparse-retrieval"><span class="header-section-number">4.2</span> 4.2 Sparse Retrieval</h2>
+<h2 data-number="4.2" class="anchored" data-anchor-id="sparse-retrieval"><span class="header-section-number">4.2</span> Sparse Retrieval</h2>
 <p>Sparse retrieval methods such as BM25 rely on token statistics and lexical matching. They are strong for exact phrases, IDs, error codes, and terminology-heavy domains.</p>
 <p>Many production systems still benefit from sparse retrieval because users often ask questions with language that directly overlaps the source text.</p>
 </section>
 <section id="hybrid-retrieval-systems" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="hybrid-retrieval-systems"><span class="header-section-number">4.3</span> 4.3 Hybrid Retrieval Systems</h2>
+<h2 data-number="4.3" class="anchored" data-anchor-id="hybrid-retrieval-systems"><span class="header-section-number">4.3</span> Hybrid Retrieval Systems</h2>
 <p>Hybrid retrieval combines dense and sparse signals. This is often one of the highest-return upgrades for a baseline system because the two methods fail differently.</p>
 <p>Dense retrieval broadens semantic coverage; sparse retrieval preserves exact matching. Together, they often improve recall and robustness.</p>
 </section>
 <section id="implementing-hybrid-search" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="implementing-hybrid-search"><span class="header-section-number">4.4</span> 4.4 Implementing Hybrid Search</h2>
+<h2 data-number="4.4" class="anchored" data-anchor-id="implementing-hybrid-search"><span class="header-section-number">4.4</span> Implementing Hybrid Search</h2>
 <p>A practical hybrid pipeline might:</p>
 <ol type="1">
 <li>retrieve candidates from a dense index;</li>
@@ -285,16 +285,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The implementation details vary, but the principle is stable: use cheaper methods for candidate generation and more expensive methods for final ranking.</p>
 <section id="practical-example-dense-vs-sparse-vs-hybrid" class="level3" data-number="4.4.1">
 <h3 data-number="4.4.1" class="anchored" data-anchor-id="practical-example-dense-vs-sparse-vs-hybrid"><span class="header-section-number">4.4.1</span> Practical Example: Dense vs Sparse vs Hybrid</h3>
-<p>This chapter’s example script, <code>code/retrieval_compare.py</code>, compares three retrieval strategies on the actual book corpus after it has been ingested and indexed:</p>
+<p>This chapter’s example script, <code>code/cli/retrieval_compare.py</code>, compares three retrieval strategies on the actual book corpus after it has been ingested and indexed:</p>
 <ul>
-<li>dense retrieval using <code>bge-m3:latest</code> embeddings from Ollama;</li>
+<li>dense retrieval using the selected embedding model, with <code>bge-m3:latest</code> as the default baseline in this project;</li>
 <li>sparse retrieval using a small BM25 implementation;</li>
 <li>hybrid retrieval using weighted score fusion.</li>
 </ul>
 <p>Run it with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/ingest_book.py</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/build_book_index.py</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/retrieval_compare.py <span class="at">--question</span> <span class="st">"How does the book compare RAG with fine-tuning?"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/ingest_book.py</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/build_book_index.py <span class="at">--embed-model</span> bge-m3:latest</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/retrieval_compare.py <span class="at">--question</span> <span class="st">"How does the book compare RAG with fine-tuning?"</span> <span class="at">--embed-model</span> bge-m3:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The key hybrid scoring logic is simple:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hybrid_scores(question: <span class="bu">str</span>, chunks: <span class="bu">list</span>[<span class="bu">str</span>], alpha: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">float</span>]:</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    dense <span class="op">=</span> min_max_normalize(dense_scores(question, chunks))</span>
@@ -307,37 +307,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 </section>
 <section id="query-construction" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="query-construction"><span class="header-section-number">4.5</span> 4.5 Query Construction</h2>
+<h2 data-number="4.5" class="anchored" data-anchor-id="query-construction"><span class="header-section-number">4.5</span> Query Construction</h2>
 <p>Users do not always phrase questions in ways that match the underlying corpus. Query construction bridges that gap by expanding, reformulating, or decomposing the request into retrieval-friendly forms.</p>
 <p>Examples include generating synonyms, extracting entities, or turning a broad question into several narrower subqueries.</p>
 </section>
 <section id="text-to-metadata-filtering" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="text-to-metadata-filtering"><span class="header-section-number">4.6</span> 4.6 Text-to-Metadata Filtering</h2>
+<h2 data-number="4.6" class="anchored" data-anchor-id="text-to-metadata-filtering"><span class="header-section-number">4.6</span> Text-to-Metadata Filtering</h2>
 <p>Metadata filters can sharply improve retrieval precision. If the user asks about a specific product line, date range, region, document type, or policy version, the retriever should use that structure whenever possible.</p>
 <p>This reduces search space and often makes the answer more auditable.</p>
 </section>
 <section id="text-to-cypher-queries" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="text-to-cypher-queries"><span class="header-section-number">4.7</span> 4.7 Text-to-Cypher Queries</h2>
+<h2 data-number="4.7" class="anchored" data-anchor-id="text-to-cypher-queries"><span class="header-section-number">4.7</span> Text-to-Cypher Queries</h2>
 <p>When knowledge is represented as a graph, the retrieval problem changes. Instead of fetching free-text chunks, the system may need to generate a graph query such as Cypher to traverse entities and relationships.</p>
 <p>This is useful when the user asks questions about connections, dependencies, ownership, lineage, or multi-hop relationships.</p>
 </section>
 <section id="text-to-sql-retrieval-systems" class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="text-to-sql-retrieval-systems"><span class="header-section-number">4.8</span> 4.8 Text-to-SQL Retrieval Systems</h2>
+<h2 data-number="4.8" class="anchored" data-anchor-id="text-to-sql-retrieval-systems"><span class="header-section-number">4.8</span> Text-to-SQL Retrieval Systems</h2>
 <p>For tabular or warehouse-backed data, a natural-language request may be better handled by generating SQL than by retrieving prose. This is especially true for analytical questions, aggregations, or filtered summaries.</p>
 <p>Text-to-SQL should still be considered part of retrieval in the broad sense: it is a method for obtaining the evidence needed to answer.</p>
 </section>
 <section id="query-rewriting-and-reformulation" class="level2" data-number="4.9">
-<h2 data-number="4.9" class="anchored" data-anchor-id="query-rewriting-and-reformulation"><span class="header-section-number">4.9</span> 4.9 Query Rewriting and Reformulation</h2>
+<h2 data-number="4.9" class="anchored" data-anchor-id="query-rewriting-and-reformulation"><span class="header-section-number">4.9</span> Query Rewriting and Reformulation</h2>
 <p>Query rewriting can improve difficult searches, especially when user queries are vague, conversational, or underspecified. A system may rewrite a question into a canonical form before retrieval, or generate several alternative search intents in parallel.</p>
 <p>The main risk is drift. Rewriting should help recover relevant evidence, not silently change the user’s meaning.</p>
 </section>
 <section id="query-routing-and-distribution" class="level2" data-number="4.10">
-<h2 data-number="4.10" class="anchored" data-anchor-id="query-routing-and-distribution"><span class="header-section-number">4.10</span> 4.10 Query Routing and Distribution</h2>
+<h2 data-number="4.10" class="anchored" data-anchor-id="query-routing-and-distribution"><span class="header-section-number">4.10</span> Query Routing and Distribution</h2>
 <p>Advanced systems do not send every question to the same retriever. They route based on intent, modality, risk level, or source type. One query might go to a vector index, another to SQL, and another to a graph store.</p>
 <p>Routing turns retrieval into orchestration. The challenge is deciding when the extra complexity yields enough quality gain.</p>
 </section>
 <section id="retrieval-pipelines" class="level2" data-number="4.11">
-<h2 data-number="4.11" class="anchored" data-anchor-id="retrieval-pipelines"><span class="header-section-number">4.11</span> 4.11 Retrieval Pipelines</h2>
+<h2 data-number="4.11" class="anchored" data-anchor-id="retrieval-pipelines"><span class="header-section-number">4.11</span> Retrieval Pipelines</h2>
 <p>A retrieval pipeline is often multi-stage:</p>
 <ul>
 <li>candidate generation;</li>
@@ -349,18 +349,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Seeing retrieval as a pipeline helps teams isolate failure modes and optimize the right layer.</p>
 </section>
 <section id="re-ranking-methods" class="level2" data-number="4.12">
-<h2 data-number="4.12" class="anchored" data-anchor-id="re-ranking-methods"><span class="header-section-number">4.12</span> 4.12 Re-ranking Methods</h2>
+<h2 data-number="4.12" class="anchored" data-anchor-id="re-ranking-methods"><span class="header-section-number">4.12</span> Re-ranking Methods</h2>
 <p>Re-rankers apply a stronger relevance model to a small candidate set. Cross-encoders, reranking APIs, or task-specific scoring heuristics can all improve the quality of the final selected context.</p>
 <p>They are especially valuable when the first-stage retriever has good recall but mediocre ordering.</p>
 <p>In a local-first setup, a useful exercise is to first compare dense, sparse, and hybrid retrieval without a re-ranker. Only after that baseline is understood should a stronger second-stage scorer be added. This keeps the source of gains interpretable.</p>
 </section>
 <section id="context-compression" class="level2" data-number="4.13">
-<h2 data-number="4.13" class="anchored" data-anchor-id="context-compression"><span class="header-section-number">4.13</span> 4.13 Context Compression</h2>
+<h2 data-number="4.13" class="anchored" data-anchor-id="context-compression"><span class="header-section-number">4.13</span> Context Compression</h2>
 <p>Even good retrieval can return more text than the generator should receive. Compression methods trim, summarize, or extract the most relevant spans before generation.</p>
 <p>Compression can reduce token cost and improve focus, but it must preserve the evidence needed for faithful answers.</p>
 </section>
 <section id="retrieval-correction" class="level2" data-number="4.14">
-<h2 data-number="4.14" class="anchored" data-anchor-id="retrieval-correction"><span class="header-section-number">4.14</span> 4.14 Retrieval Correction</h2>
+<h2 data-number="4.14" class="anchored" data-anchor-id="retrieval-correction"><span class="header-section-number">4.14</span> Retrieval Correction</h2>
 <p>No retrieval stack is perfect. Strong systems include correction strategies such as fallback searches, empty-result handling, confidence thresholds, or user clarification loops.</p>
 <p>The practical objective is not perfect retrieval. It is graceful behavior when retrieval is uncertain or incomplete.</p>
 <p>The local scripts in this book are intentionally transparent, so the reader can inspect the retrieved chapter chunks directly. That manual inspection habit is often the fastest way to diagnose whether a problem comes from chunking, embeddings, lexical mismatch, or the generation prompt.</p>
@@ -771,13 +771,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./03-index-construction-and-optimization.html" class="pagination-link" aria-label="3. Index Construction and Optimization">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">3. Index Construction and Optimization</span></span>
+      <a href="./03-index-construction-and-optimization.html" class="pagination-link" aria-label="Index Construction and Optimization">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Index Construction and Optimization</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./05-generation-integration.html" class="pagination-link" aria-label="5. Generation Integration">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">5. Generation Integration</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./05-generation-integration.html" class="pagination-link" aria-label="Generation Integration">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generation Integration</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

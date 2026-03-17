@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; 7. Advanced RAG Architectures – RAG Book</title>
+<title>7&nbsp; Advanced RAG Architectures – RAG Book</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-advanced-rag-architectures.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">7. Advanced RAG Architectures</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-advanced-rag-architectures.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced RAG Architectures</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -119,43 +119,43 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-introduction-to-rag.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">1. Introduction to RAG</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to RAG</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-data-preparation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">2. Data Preparation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Preparation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-index-construction-and-optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">3. Index Construction and Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Index Construction and Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-retrieval-optimization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">4. Retrieval Optimization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Retrieval Optimization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-generation-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">5. Generation Integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generation Integration</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-rag-system-evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">6. RAG System Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RAG System Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-advanced-rag-architectures.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">7. Advanced RAG Architectures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced RAG Architectures</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -180,11 +180,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#limitations-of-traditional-rag" id="toc-limitations-of-traditional-rag" class="nav-link active" data-scroll-target="#limitations-of-traditional-rag"><span class="header-section-number">7.1</span> 7.1 Limitations of Traditional RAG</a></li>
-  <li><a href="#knowledge-graph-augmented-rag" id="toc-knowledge-graph-augmented-rag" class="nav-link" data-scroll-target="#knowledge-graph-augmented-rag"><span class="header-section-number">7.2</span> 7.2 Knowledge-Graph-Augmented RAG</a></li>
-  <li><a href="#graph-based-retrieval-pipelines" id="toc-graph-based-retrieval-pipelines" class="nav-link" data-scroll-target="#graph-based-retrieval-pipelines"><span class="header-section-number">7.3</span> 7.3 Graph-Based Retrieval Pipelines</a></li>
-  <li><a href="#integrating-graph-retrieval-with-llms" id="toc-integrating-graph-retrieval-with-llms" class="nav-link" data-scroll-target="#integrating-graph-retrieval-with-llms"><span class="header-section-number">7.4</span> 7.4 Integrating Graph Retrieval with LLMs</a></li>
-  <li><a href="#toward-next-generation-rag-systems" id="toc-toward-next-generation-rag-systems" class="nav-link" data-scroll-target="#toward-next-generation-rag-systems"><span class="header-section-number">7.5</span> 7.5 Toward Next-Generation RAG Systems</a></li>
+  <li><a href="#limitations-of-traditional-rag" id="toc-limitations-of-traditional-rag" class="nav-link active" data-scroll-target="#limitations-of-traditional-rag"><span class="header-section-number">7.1</span> Limitations of Traditional RAG</a></li>
+  <li><a href="#knowledge-graph-augmented-rag" id="toc-knowledge-graph-augmented-rag" class="nav-link" data-scroll-target="#knowledge-graph-augmented-rag"><span class="header-section-number">7.2</span> Knowledge-Graph-Augmented RAG</a></li>
+  <li><a href="#graph-based-retrieval-pipelines" id="toc-graph-based-retrieval-pipelines" class="nav-link" data-scroll-target="#graph-based-retrieval-pipelines"><span class="header-section-number">7.3</span> Graph-Based Retrieval Pipelines</a></li>
+  <li><a href="#integrating-graph-retrieval-with-llms" id="toc-integrating-graph-retrieval-with-llms" class="nav-link" data-scroll-target="#integrating-graph-retrieval-with-llms"><span class="header-section-number">7.4</span> Integrating Graph Retrieval with LLMs</a></li>
+  <li><a href="#toward-next-generation-rag-systems" id="toc-toward-next-generation-rag-systems" class="nav-link" data-scroll-target="#toward-next-generation-rag-systems"><span class="header-section-number">7.5</span> Toward Next-Generation RAG Systems</a></li>
   </ul>
 </nav>
     </div>
@@ -193,7 +193,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">7. Advanced RAG Architectures</span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced RAG Architectures</span></h1>
 </div>
 
 
@@ -211,17 +211,17 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="limitations-of-traditional-rag" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="limitations-of-traditional-rag"><span class="header-section-number">7.1</span> 7.1 Limitations of Traditional RAG</h2>
+<h2 data-number="7.1" class="anchored" data-anchor-id="limitations-of-traditional-rag"><span class="header-section-number">7.1</span> Limitations of Traditional RAG</h2>
 <p>Traditional RAG is often built around a straightforward assumption: retrieve the top few chunks from a vector index, then generate an answer. This works well for many tasks, but it struggles with multi-hop reasoning, structured relationships, long workflows, and questions that require precise backend execution.</p>
 <p>As systems mature, these limitations become more visible than benchmark demos suggest.</p>
 </section>
 <section id="knowledge-graph-augmented-rag" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="knowledge-graph-augmented-rag"><span class="header-section-number">7.2</span> 7.2 Knowledge-Graph-Augmented RAG</h2>
+<h2 data-number="7.2" class="anchored" data-anchor-id="knowledge-graph-augmented-rag"><span class="header-section-number">7.2</span> Knowledge-Graph-Augmented RAG</h2>
 <p>Knowledge graphs add explicit entities and relationships to the retrieval landscape. Instead of only searching over text similarity, the system can retrieve along graph edges such as ownership, dependency, causality, membership, or chronology.</p>
 <p>This is powerful when the meaning of a question lies in how facts connect rather than in whether a paragraph happens to mention them together.</p>
 </section>
 <section id="graph-based-retrieval-pipelines" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="graph-based-retrieval-pipelines"><span class="header-section-number">7.3</span> 7.3 Graph-Based Retrieval Pipelines</h2>
+<h2 data-number="7.3" class="anchored" data-anchor-id="graph-based-retrieval-pipelines"><span class="header-section-number">7.3</span> Graph-Based Retrieval Pipelines</h2>
 <p>Graph-based retrieval pipelines typically combine:</p>
 <ul>
 <li>entity recognition or linking;</li>
@@ -232,12 +232,12 @@ ul.task-list li input[type="checkbox"] {
 <p>The benefit is deeper reasoning over connected knowledge. The cost is higher modeling and maintenance complexity.</p>
 </section>
 <section id="integrating-graph-retrieval-with-llms" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="integrating-graph-retrieval-with-llms"><span class="header-section-number">7.4</span> 7.4 Integrating Graph Retrieval with LLMs</h2>
+<h2 data-number="7.4" class="anchored" data-anchor-id="integrating-graph-retrieval-with-llms"><span class="header-section-number">7.4</span> Integrating Graph Retrieval with LLMs</h2>
 <p>When an LLM consumes graph-derived evidence, the prompt or tool layer needs to preserve relationship semantics clearly. A raw dump of nodes and edges is rarely enough. The evidence should be translated into an interpretable form, with provenance and path information when possible.</p>
 <p>This makes graph retrieval more understandable to both the model and the human reviewer.</p>
 </section>
 <section id="toward-next-generation-rag-systems" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="toward-next-generation-rag-systems"><span class="header-section-number">7.5</span> 7.5 Toward Next-Generation RAG Systems</h2>
+<h2 data-number="7.5" class="anchored" data-anchor-id="toward-next-generation-rag-systems"><span class="header-section-number">7.5</span> Toward Next-Generation RAG Systems</h2>
 <p>Next-generation RAG systems are likely to be adaptive rather than monolithic. They will:</p>
 <ul>
 <li>route requests across multiple backends;</li>
@@ -654,8 +654,8 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./06-rag-system-evaluation.html" class="pagination-link" aria-label="6. RAG System Evaluation">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">6. RAG System Evaluation</span></span>
+      <a href="./06-rag-system-evaluation.html" class="pagination-link" aria-label="RAG System Evaluation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RAG System Evaluation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
