@@ -1,0 +1,11 @@
+.env
+__pycache__/
+code/__pycache__/
+*.pyc
+.DS_Store
+**/__pycache__/
+**/*.pyc
+code/build/
+
+/.quarto/
+**/*.quarto_ipynb

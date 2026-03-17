@@ -1,0 +1,17 @@
+[
+  {
+    "question": "When should RAG be preferred over fine-tuning in this book?",
+    "expected_keywords": ["external knowledge", "fine-tuning", "behavior"],
+    "expected_source_path": "01-introduction-to-rag.qmd"
+  },
+  {
+    "question": "What three dimensions does the book use for RAG evaluation?",
+    "expected_keywords": ["context relevance", "faithfulness", "answer relevance"],
+    "expected_source_path": "06-rag-system-evaluation.qmd"
+  },
+  {
+    "question": "Why does the book say hybrid retrieval is useful?",
+    "expected_keywords": ["dense", "sparse", "robustness"],
+    "expected_source_path": "04-retrieval-optimization.qmd"
+  }
+]

@@ -1,0 +1,97 @@
+# 3. Index Construction and Optimization
+
+## 3.1 Embeddings and Their Role in RAG
+
+Embeddings map content into vector spaces where semantically similar items are located near one another. In dense retrieval systems, embeddings are the main bridge between a user query and the candidate passages that might answer it.
+
+Their role is powerful but bounded. An embedding model captures similarity according to its training data and objective. If that notion of similarity does not match the task, retrieval quality will suffer.
+
+## 3.2 Evolution of Embedding Models
+
+Embedding models have evolved from relatively narrow sentence encoders into stronger multilingual and domain-aware models. Better training data, contrastive objectives, and larger model capacities have all improved retrieval quality.
+
+At the same time, the problem remains use-case dependent. A model that performs well on public benchmarks may still struggle on internal jargon, code snippets, legal clauses, or highly structured records.
+
+## 3.3 Training Principles of Embedding Models
+
+Many modern embedding models are trained with contrastive learning. Positive pairs are pulled together in vector space, while negatives are pushed apart. This teaches the model a geometry of similarity.
+
+The important practical insight is that "similarity" depends on the training objective. Semantic equivalence, topical relatedness, paraphrase behavior, and relevance for retrieval are related but not identical concepts.
+
+## 3.4 Embedding Model Selection
+
+Model selection should consider:
+
+- retrieval quality on representative tasks;
+- dimensionality and storage cost;
+- latency and throughput;
+- multilingual performance;
+- licensing and deployment constraints.
+
+Benchmarks such as MTEB are useful starting points, but internal evaluation remains essential. The best model is the one that performs reliably on your corpus and query distribution.
+
+## 3.5 Multimodal Embeddings
+
+Not all knowledge is textual. Many real systems need to search over images, slides, screenshots, diagrams, and mixed media. Multimodal embeddings aim to place text and non-text inputs in compatible representational spaces.
+
+This enables cross-modal retrieval, such as finding figures from a textual query or retrieving image-caption pairs that explain a concept.
+
+## 3.6 CLIP and Vision-Language Representations
+
+CLIP is a landmark example of joint text-image representation learning. By aligning images and their textual descriptions, it demonstrated how a shared embedding space can support flexible retrieval across modalities.
+
+The broader lesson is that RAG can operate over any evidence type that can be indexed and retrieved, not just prose paragraphs.
+
+## 3.7 Multimodal Embedding Models in Practice
+
+In practice, multimodal systems need careful document modeling. An image alone may be insufficient; the surrounding caption, section title, page number, and document identity may be equally important retrieval signals.
+
+Good multimodal indexing often combines vector similarity with structural metadata rather than treating the embedding as the only source of truth.
+
+## 3.8 Vector Databases and Similarity Search
+
+Vector databases store embeddings and support nearest-neighbor search. They usually also support metadata filtering, persistence, and operational features such as replication or sharding.
+
+For small experiments, a local index may be enough. For production systems with large corpora, frequent updates, or multi-tenant workloads, operational concerns become central.
+
+## 3.9 Vector Indexing and ANN Search
+
+Approximate nearest-neighbor (ANN) indexing makes vector retrieval tractable at scale. Structures such as HNSW, IVF, and PQ trade exactness for speed and memory efficiency.
+
+These choices directly affect recall, latency, and cost. Index tuning is therefore a product decision as much as an engineering one.
+
+## 3.10 Local Vector Stores (FAISS)
+
+FAISS is widely used for local experimentation and efficient similarity search. It is flexible, fast, and ideal for prototyping retrieval behavior before committing to a larger serving stack.
+
+Its limitations are mostly operational. Production deployments often need higher-level concerns such as multi-user isolation, managed persistence, or distributed scaling.
+
+## 3.11 Distributed Vector Databases (Milvus)
+
+Distributed systems such as Milvus are designed for larger-scale workloads, where indexing, serving, and storage need to be managed across nodes. They are useful when datasets are large, update frequency is significant, or operational guarantees matter.
+
+Choosing such a system should be justified by workload needs, not by trend-following alone.
+
+## 3.12 Index Optimization Techniques
+
+Index optimization includes:
+
+- selecting the right ANN structure;
+- tuning recall-latency parameters;
+- managing vector compression;
+- partitioning by metadata or tenant;
+- refreshing stale indexes safely.
+
+The best index is not necessarily the fastest one. It is the one that helps the whole application meet quality and latency targets simultaneously.
+
+## 3.13 Context Expansion Strategies
+
+Sometimes the top retrieved chunk is too narrow to be useful in isolation. Context expansion methods add neighboring chunks, parent sections, or linked records to reconstruct the local information neighborhood.
+
+This can improve answer quality, especially in documents with strong sequential structure. The cost is extra tokens and possible noise, so it should be evaluated carefully.
+
+## 3.14 Structured Indexing
+
+Not all retrieval targets belong in a vector store alone. Tables, entities, graphs, and canonical records may be better indexed in structured systems alongside vector search.
+
+Structured indexing is often what separates a demo from a robust product. The strongest systems use each storage and retrieval mechanism for the type of knowledge it represents best.

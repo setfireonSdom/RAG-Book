@@ -1,0 +1,131 @@
+# 4. Retrieval Optimization
+
+## 4.1 Dense Retrieval
+
+Dense retrieval uses embeddings to represent both queries and documents. It excels when semantic similarity matters more than exact token overlap, which is why it is common in modern RAG systems.
+
+Its weakness is that semantic closeness is not always the same as relevance. Dense retrievers may miss exact identifiers, formulas, or niche terminology unless the embeddings capture them well.
+
+## 4.2 Sparse Retrieval
+
+Sparse retrieval methods such as BM25 rely on token statistics and lexical matching. They are strong for exact phrases, IDs, error codes, and terminology-heavy domains.
+
+Many production systems still benefit from sparse retrieval because users often ask questions with language that directly overlaps the source text.
+
+## 4.3 Hybrid Retrieval Systems
+
+Hybrid retrieval combines dense and sparse signals. This is often one of the highest-return upgrades for a baseline system because the two methods fail differently.
+
+Dense retrieval broadens semantic coverage; sparse retrieval preserves exact matching. Together, they often improve recall and robustness.
+
+## 4.4 Implementing Hybrid Search
+
+A practical hybrid pipeline might:
+
+1. retrieve candidates from a dense index;
+2. retrieve candidates from a sparse index;
+3. merge and deduplicate results;
+4. apply re-ranking with a stronger model;
+5. assemble the final context window.
+
+The implementation details vary, but the principle is stable: use cheaper methods for candidate generation and more expensive methods for final ranking.
+
+### Practical Example: Dense vs Sparse vs Hybrid
+
+This chapter's example script, `code/cli/retrieval_compare.py`, compares three retrieval strategies on the actual book corpus after it has been ingested and indexed:
+
+- dense retrieval using the selected embedding model, with `bge-m3:latest` as the default baseline in this project;
+- sparse retrieval using a small BM25 implementation;
+- hybrid retrieval using weighted score fusion.
+
+Run it with:
+
+```bash
+python3 code/cli/ingest_book.py
+python3 code/cli/build_book_index.py --embed-model bge-m3:latest
+python3 code/cli/retrieval_compare.py --question "How does the book compare RAG with fine-tuning?" --embed-model bge-m3:latest
+```
+
+The key hybrid scoring logic is simple:
+
+```python
+def hybrid_scores(question: str, chunks: list[str], alpha: float) -> dict[int, float]:
+    dense = min_max_normalize(dense_scores(question, chunks))
+    sparse = min_max_normalize(sparse_scores(question, chunks))
+    return {
+        index: alpha * dense.get(index, 0.0) + (1 - alpha) * sparse.get(index, 0.0)
+        for index in range(len(chunks))
+    }
+```
+
+This code highlights an important engineering idea: hybrid retrieval does not have to start with a complicated platform. Even a straightforward weighted merge is enough to show why lexical and semantic signals complement each other when searching a real chapter set.
+
+## 4.5 Query Construction
+
+Users do not always phrase questions in ways that match the underlying corpus. Query construction bridges that gap by expanding, reformulating, or decomposing the request into retrieval-friendly forms.
+
+Examples include generating synonyms, extracting entities, or turning a broad question into several narrower subqueries.
+
+## 4.6 Text-to-Metadata Filtering
+
+Metadata filters can sharply improve retrieval precision. If the user asks about a specific product line, date range, region, document type, or policy version, the retriever should use that structure whenever possible.
+
+This reduces search space and often makes the answer more auditable.
+
+## 4.7 Text-to-Cypher Queries
+
+When knowledge is represented as a graph, the retrieval problem changes. Instead of fetching free-text chunks, the system may need to generate a graph query such as Cypher to traverse entities and relationships.
+
+This is useful when the user asks questions about connections, dependencies, ownership, lineage, or multi-hop relationships.
+
+## 4.8 Text-to-SQL Retrieval Systems
+
+For tabular or warehouse-backed data, a natural-language request may be better handled by generating SQL than by retrieving prose. This is especially true for analytical questions, aggregations, or filtered summaries.
+
+Text-to-SQL should still be considered part of retrieval in the broad sense: it is a method for obtaining the evidence needed to answer.
+
+## 4.9 Query Rewriting and Reformulation
+
+Query rewriting can improve difficult searches, especially when user queries are vague, conversational, or underspecified. A system may rewrite a question into a canonical form before retrieval, or generate several alternative search intents in parallel.
+
+The main risk is drift. Rewriting should help recover relevant evidence, not silently change the user's meaning.
+
+## 4.10 Query Routing and Distribution
+
+Advanced systems do not send every question to the same retriever. They route based on intent, modality, risk level, or source type. One query might go to a vector index, another to SQL, and another to a graph store.
+
+Routing turns retrieval into orchestration. The challenge is deciding when the extra complexity yields enough quality gain.
+
+## 4.11 Retrieval Pipelines
+
+A retrieval pipeline is often multi-stage:
+
+- candidate generation;
+- filtering;
+- ranking;
+- context assembly;
+- optional citation or provenance tagging.
+
+Seeing retrieval as a pipeline helps teams isolate failure modes and optimize the right layer.
+
+## 4.12 Re-ranking Methods
+
+Re-rankers apply a stronger relevance model to a small candidate set. Cross-encoders, reranking APIs, or task-specific scoring heuristics can all improve the quality of the final selected context.
+
+They are especially valuable when the first-stage retriever has good recall but mediocre ordering.
+
+In a local-first setup, a useful exercise is to first compare dense, sparse, and hybrid retrieval without a re-ranker. Only after that baseline is understood should a stronger second-stage scorer be added. This keeps the source of gains interpretable.
+
+## 4.13 Context Compression
+
+Even good retrieval can return more text than the generator should receive. Compression methods trim, summarize, or extract the most relevant spans before generation.
+
+Compression can reduce token cost and improve focus, but it must preserve the evidence needed for faithful answers.
+
+## 4.14 Retrieval Correction
+
+No retrieval stack is perfect. Strong systems include correction strategies such as fallback searches, empty-result handling, confidence thresholds, or user clarification loops.
+
+The practical objective is not perfect retrieval. It is graceful behavior when retrieval is uncertain or incomplete.
+
+The local scripts in this book are intentionally transparent, so the reader can inspect the retrieved chapter chunks directly. That manual inspection habit is often the fastest way to diagnose whether a problem comes from chunking, embeddings, lexical mismatch, or the generation prompt.

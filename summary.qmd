@@ -1,0 +1,17 @@
+# Summary
+
+RAG is best understood not as a single algorithm, but as a systems pattern for grounding language models in external knowledge at runtime. Across this book, we moved from first principles to implementation concerns, from retrieval quality to evaluation rigor, and from simple pipelines to more advanced architectures.
+
+Several themes repeat throughout every chapter.
+
+First, data quality determines system quality. No embedding model, vector database, or prompt can fully compensate for broken ingestion, poor chunk boundaries, stale documents, or inconsistent metadata.
+
+Second, retrieval is a modeling problem, not just an infrastructure problem. The act of converting a user request into evidence selection requires choices about representation, indexing, query formulation, ranking, filtering, and context assembly.
+
+Third, generation must be treated as a constrained interface. Once documents are retrieved, the system still needs careful prompt design, output structure, and tool orchestration to produce answers that are useful and faithful.
+
+Fourth, evaluation cannot be postponed. A RAG system that "looks good in demos" may still fail in coverage, grounding, latency, or operational robustness. Strong teams define quality criteria early and measure them continuously.
+
+Finally, the future of RAG is likely to be more heterogeneous rather than less. Vector retrieval will remain important, but graph reasoning, tool use, structured backends, workflow routing, and adaptive planning will continue to expand what retrieval-augmented systems can do.
+
+If this book has one practical message, it is this: build RAG systems layer by layer, observe them carefully, and optimize them with evidence rather than intuition alone.

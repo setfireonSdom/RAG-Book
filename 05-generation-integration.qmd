@@ -1,0 +1,55 @@
+# 5. Generation Integration
+
+## 5.1 From Retrieval to Generation
+
+Retrieval only creates the possibility of a good answer. The generation layer decides whether that evidence is used clearly, faithfully, and in a form the user can trust.
+
+This transition is where many systems become fragile. If the prompt is underspecified, the model may ignore evidence. If too much context is injected, the model may become distracted. If the task is vague, the answer may sound plausible while failing the actual need.
+
+## 5.2 Prompt Design with Retrieved Context
+
+Good prompt design tells the model what the retrieved context represents and how it should be used. Typical instructions include:
+
+- answer using the provided sources;
+- state uncertainty when evidence is insufficient;
+- cite relevant passages or document IDs;
+- separate grounded facts from assumptions;
+- avoid inventing unsupported details.
+
+Prompt design is not only about wording elegance. It is interface design between retrieval output and model behavior.
+
+## 5.3 Structured Output Generation
+
+Many RAG systems should not return free-form prose alone. They may need JSON, tables, lists of citations, extracted fields, or machine-actionable results.
+
+Structured output reduces ambiguity, makes downstream integration easier, and can improve evaluation because outputs become easier to compare.
+
+## 5.4 JSON and Schema-Based Generation
+
+Schema-based generation defines the fields the model must produce and the constraints each field must follow. This is especially useful for extraction, classification, workflow triggering, or UI-backed applications.
+
+When schema validation fails, the system can retry, repair, or fall back. This turns generation into a more dependable software component.
+
+## 5.5 Framework-Based Implementations
+
+Frameworks can help with prompt templates, chains, document objects, and response parsing. They speed up prototyping and reduce boilerplate, especially in early development.
+
+The risk is abstraction leakage. Teams should still understand what documents are passed, how prompts are assembled, and where errors originate.
+
+## 5.6 Framework-Agnostic Structured Generation
+
+The core principles work even without a framework:
+
+1. assemble relevant context;
+2. state the task clearly;
+3. define output expectations;
+4. validate the response;
+5. log evidence and outcome.
+
+This makes the system easier to reason about and port across runtimes or vendors.
+
+## 5.7 Function Calling for Tool Integration
+
+Function calling extends RAG beyond passive answering. After retrieval, the model may decide to invoke a tool: fetch a record, create a ticket, run a query, or verify a citation.
+
+This turns the system into an agentic workflow, which can be powerful but also more failure-prone. Tool selection, argument validation, and permission boundaries therefore become part of the RAG design space.
