@@ -4,7 +4,7 @@ A practical book project about Retrieval-Augmented Generation (RAG), paired with
 
 This repository combines three things:
 
-- the Quarto source of the book;
+- the source of the book;
 - a runnable RAG codebase under `code/`;
 - a publishable static site under `docs/` for GitHub Pages.
 
@@ -12,7 +12,7 @@ This repository combines three things:
 
 ### Book
 
-The book is written in Quarto and covers:
+The book covers:
 
 - RAG fundamentals;
 - data preparation;
@@ -42,7 +42,6 @@ The `docs/` folder contains the rendered book site for GitHub Pages.
 ```text
 .
 ├── *.qmd
-├── _quarto.yml
 ├── code/
 │   ├── app/
 │   ├── cli/
@@ -100,7 +99,7 @@ streamlit run code/app/chat_app.py
 
 ## Build And Publish The Book
 
-The Quarto source stays in the repository root.
+The book source stays in the repository root.
 
 After rendering the book locally, copy the contents of `_book/` into `docs/`. GitHub Pages should publish from `docs/`.
 
