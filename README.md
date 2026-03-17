@@ -97,19 +97,6 @@ Start the chat UI:
 streamlit run code/app/chat_app.py
 ```
 
-## Build And Publish The Book
-
-The book source stays in the repository root.
-
-After rendering the book locally, copy the contents of `_book/` into `docs/`. GitHub Pages should publish from `docs/`.
-
-## Helpful Project Notes
-
-- [CURRENT_SYSTEM_GUIDE.md](/Users/yummmy/Downloads/book/RAG_Book/RAG%20Book/CURRENT_SYSTEM_GUIDE.md)
-  Explains how the current codebase works.
-- [PROJECT_ROADMAP.md](/Users/yummmy/Downloads/book/RAG_Book/RAG%20Book/PROJECT_ROADMAP.md)
-  Describes the recommended next stages for the project.
-
 ## Project Goal
 
 This is both a learning project and a portfolio project.
