@@ -6,6 +6,7 @@ code/__pycache__/
 **/__pycache__/
 **/*.pyc
 code/build/
+.Rproj.user/
 
 /.quarto/
 **/*.quarto_ipynb
