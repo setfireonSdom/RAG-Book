@@ -11,6 +11,8 @@ code/build/
 .RData
 .Ruserdata
 RAG Book.Rproj
+CURRENT_SYSTEM_GUIDE.md
+PROJECT_ROADMAP.md
 
 /.quarto/
 **/*.quarto_ipynb
