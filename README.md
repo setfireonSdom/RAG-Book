@@ -49,9 +49,7 @@ The `docs/` folder contains the rendered book site for GitHub Pages.
 │   ├── data/
 │   └── build/
 ├── docs/
-├── requirements.txt
-├── CURRENT_SYSTEM_GUIDE.md
-└── PROJECT_ROADMAP.md
+└── requirements.txt
 ```
 
 ## Local Setup

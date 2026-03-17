@@ -13,6 +13,7 @@ code/build/
 RAG Book.Rproj
 CURRENT_SYSTEM_GUIDE.md
 PROJECT_ROADMAP.md
+PRIVATE_PROJECT_PLAYBOOK.md
 
 /.quarto/
 **/*.quarto_ipynb
