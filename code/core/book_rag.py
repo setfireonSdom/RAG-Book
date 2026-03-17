@@ -246,6 +246,13 @@ def tokenize(text: str) -> list[str]:
     return re.findall(r"[a-z0-9][a-z0-9\-\.]*", text.lower())
 
 
+def detect_answer_language(question: str) -> str:
+    # Use a simple heuristic so the model follows the user's question language.
+    if re.search(r"[\u4e00-\u9fff]", question):
+        return "Chinese"
+    return "English"
+
+
 def sparse_scores(question: str, corpus: list[dict[str, str]]) -> dict[str, float]:
     tokenized_chunks = [tokenize(item["text"]) for item in corpus]
     query_tokens = tokenize(question)
@@ -314,6 +321,7 @@ def top_results(corpus: list[dict[str, str]], scores: dict[str, float], k: int) 
 
 
 def build_prompt(question: str, retrieved: list[dict[str, str]]) -> str:
+    answer_language = detect_answer_language(question)
     context = "\n\n".join(
         f"[{index}] {item['source_path']} | {item['section']} | score={item['score']:.3f}\n{item['text']}"
         for index, item in enumerate(retrieved, start=1)
@@ -323,7 +331,8 @@ def build_prompt(question: str, retrieved: list[dict[str, str]]) -> str:
         You are answering questions about the book project in the local workspace.
         Use only the retrieved context below.
         If the retrieved context is insufficient, say that clearly.
-        Give a concise answer in English and finish with a line that starts with "Sources:".
+        Give a concise answer in {answer_language}.
+        Keep the final citation line in the format "Sources: ...".
 
         Question:
         {question}
