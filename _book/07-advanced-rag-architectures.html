@@ -180,11 +180,20 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#limitations-of-traditional-rag" id="toc-limitations-of-traditional-rag" class="nav-link active" data-scroll-target="#limitations-of-traditional-rag"><span class="header-section-number">7.1</span> Limitations of Traditional RAG</a></li>
-  <li><a href="#knowledge-graph-augmented-rag" id="toc-knowledge-graph-augmented-rag" class="nav-link" data-scroll-target="#knowledge-graph-augmented-rag"><span class="header-section-number">7.2</span> Knowledge-Graph-Augmented RAG</a></li>
-  <li><a href="#graph-based-retrieval-pipelines" id="toc-graph-based-retrieval-pipelines" class="nav-link" data-scroll-target="#graph-based-retrieval-pipelines"><span class="header-section-number">7.3</span> Graph-Based Retrieval Pipelines</a></li>
-  <li><a href="#integrating-graph-retrieval-with-llms" id="toc-integrating-graph-retrieval-with-llms" class="nav-link" data-scroll-target="#integrating-graph-retrieval-with-llms"><span class="header-section-number">7.4</span> Integrating Graph Retrieval with LLMs</a></li>
-  <li><a href="#toward-next-generation-rag-systems" id="toc-toward-next-generation-rag-systems" class="nav-link" data-scroll-target="#toward-next-generation-rag-systems"><span class="header-section-number">7.5</span> Toward Next-Generation RAG Systems</a></li>
+  <li><a href="#when-baseline-rag-stops-being-enough" id="toc-when-baseline-rag-stops-being-enough" class="nav-link active" data-scroll-target="#when-baseline-rag-stops-being-enough"><span class="header-section-number">7.1</span> When Baseline RAG Stops Being Enough</a></li>
+  <li><a href="#the-limits-of-a-simple-retrieve-then-generate-loop" id="toc-the-limits-of-a-simple-retrieve-then-generate-loop" class="nav-link" data-scroll-target="#the-limits-of-a-simple-retrieve-then-generate-loop"><span class="header-section-number">7.2</span> The Limits of a Simple Retrieve-Then-Generate Loop</a></li>
+  <li><a href="#multi-hop-questions" id="toc-multi-hop-questions" class="nav-link" data-scroll-target="#multi-hop-questions"><span class="header-section-number">7.3</span> Multi-Hop Questions</a></li>
+  <li><a href="#multiple-retrieval-backends" id="toc-multiple-retrieval-backends" class="nav-link" data-scroll-target="#multiple-retrieval-backends"><span class="header-section-number">7.4</span> Multiple Retrieval Backends</a></li>
+  <li><a href="#query-routing" id="toc-query-routing" class="nav-link" data-scroll-target="#query-routing"><span class="header-section-number">7.5</span> Query Routing</a></li>
+  <li><a href="#knowledge-graphs-and-relationship-centered-retrieval" id="toc-knowledge-graphs-and-relationship-centered-retrieval" class="nav-link" data-scroll-target="#knowledge-graphs-and-relationship-centered-retrieval"><span class="header-section-number">7.6</span> Knowledge Graphs and Relationship-Centered Retrieval</a></li>
+  <li><a href="#graph-augmented-rag" id="toc-graph-augmented-rag" class="nav-link" data-scroll-target="#graph-augmented-rag"><span class="header-section-number">7.7</span> Graph-Augmented RAG</a></li>
+  <li><a href="#retrieval-over-live-systems" id="toc-retrieval-over-live-systems" class="nav-link" data-scroll-target="#retrieval-over-live-systems"><span class="header-section-number">7.8</span> Retrieval Over Live Systems</a></li>
+  <li><a href="#agentic-and-multi-step-retrieval" id="toc-agentic-and-multi-step-retrieval" class="nav-link" data-scroll-target="#agentic-and-multi-step-retrieval"><span class="header-section-number">7.9</span> Agentic and Multi-Step Retrieval</a></li>
+  <li><a href="#personalization-and-access-control" id="toc-personalization-and-access-control" class="nav-link" data-scroll-target="#personalization-and-access-control"><span class="header-section-number">7.10</span> Personalization and Access Control</a></li>
+  <li><a href="#observability-becomes-more-important-as-architecture-grows" id="toc-observability-becomes-more-important-as-architecture-grows" class="nav-link" data-scroll-target="#observability-becomes-more-important-as-architecture-grows"><span class="header-section-number">7.11</span> Observability Becomes More Important as Architecture Grows</a></li>
+  <li><a href="#do-not-upgrade-architecture-too-early" id="toc-do-not-upgrade-architecture-too-early" class="nav-link" data-scroll-target="#do-not-upgrade-architecture-too-early"><span class="header-section-number">7.12</span> Do Not Upgrade Architecture Too Early</a></li>
+  <li><a href="#what-this-means-for-this-project" id="toc-what-this-means-for-this-project" class="nav-link" data-scroll-target="#what-this-means-for-this-project"><span class="header-section-number">7.13</span> What This Means for This Project</a></li>
+  <li><a href="#closing-thought" id="toc-closing-thought" class="nav-link" data-scroll-target="#closing-thought"><span class="header-section-number">7.14</span> Closing Thought</a></li>
   </ul>
 </nav>
     </div>
@@ -210,43 +219,245 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="limitations-of-traditional-rag" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="limitations-of-traditional-rag"><span class="header-section-number">7.1</span> Limitations of Traditional RAG</h2>
-<p>Traditional RAG is often built around a straightforward assumption: retrieve the top few chunks from a vector index, then generate an answer. This works well for many tasks, but it struggles with multi-hop reasoning, structured relationships, long workflows, and questions that require precise backend execution.</p>
-<p>As systems mature, these limitations become more visible than benchmark demos suggest.</p>
-</section>
-<section id="knowledge-graph-augmented-rag" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="knowledge-graph-augmented-rag"><span class="header-section-number">7.2</span> Knowledge-Graph-Augmented RAG</h2>
-<p>Knowledge graphs add explicit entities and relationships to the retrieval landscape. Instead of only searching over text similarity, the system can retrieve along graph edges such as ownership, dependency, causality, membership, or chronology.</p>
-<p>This is powerful when the meaning of a question lies in how facts connect rather than in whether a paragraph happens to mention them together.</p>
-</section>
-<section id="graph-based-retrieval-pipelines" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="graph-based-retrieval-pipelines"><span class="header-section-number">7.3</span> Graph-Based Retrieval Pipelines</h2>
-<p>Graph-based retrieval pipelines typically combine:</p>
+<section id="when-baseline-rag-stops-being-enough" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="when-baseline-rag-stops-being-enough"><span class="header-section-number">7.1</span> When Baseline RAG Stops Being Enough</h2>
+<p>By this point in the book, we have built up a baseline RAG pipeline:</p>
 <ul>
-<li>entity recognition or linking;</li>
-<li>graph traversal or neighborhood expansion;</li>
-<li>optional text retrieval for supporting descriptions;</li>
-<li>ranking over both nodes and passages.</li>
+<li>prepare documents;</li>
+<li>chunk them;</li>
+<li>index them;</li>
+<li>retrieve evidence;</li>
+<li>generate an answer;</li>
+<li>evaluate the result.</li>
 </ul>
-<p>The benefit is deeper reasoning over connected knowledge. The cost is higher modeling and maintenance complexity.</p>
-</section>
-<section id="integrating-graph-retrieval-with-llms" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="integrating-graph-retrieval-with-llms"><span class="header-section-number">7.4</span> Integrating Graph Retrieval with LLMs</h2>
-<p>When an LLM consumes graph-derived evidence, the prompt or tool layer needs to preserve relationship semantics clearly. A raw dump of nodes and edges is rarely enough. The evidence should be translated into an interpretable form, with provenance and path information when possible.</p>
-<p>This makes graph retrieval more understandable to both the model and the human reviewer.</p>
-</section>
-<section id="toward-next-generation-rag-systems" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="toward-next-generation-rag-systems"><span class="header-section-number">7.5</span> Toward Next-Generation RAG Systems</h2>
-<p>Next-generation RAG systems are likely to be adaptive rather than monolithic. They will:</p>
+<p>That baseline is enough for many useful systems. In fact, a lot of teams would benefit more from building a clean baseline well than from jumping too quickly into advanced ideas.</p>
+<p>So this chapter is not here to say “basic RAG is obsolete.” It is here to answer a more practical question:</p>
 <ul>
-<li>route requests across multiple backends;</li>
-<li>combine vector, sparse, structured, and graph retrieval;</li>
-<li>use tool calls to verify and enrich evidence;</li>
-<li>personalize context assembly by task and user role;</li>
-<li>evaluate themselves continuously in production.</li>
+<li>when does the baseline approach stop being enough?</li>
 </ul>
-<p>The long-term lesson is simple: RAG is not disappearing. It is broadening into a family of grounding strategies for LLM systems. Teams that understand the underlying retrieval problems will be best positioned to build reliable applications as the tooling evolves.</p>
+<p>That is the right starting point for advanced architecture.</p>
+</section>
+<section id="the-limits-of-a-simple-retrieve-then-generate-loop" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="the-limits-of-a-simple-retrieve-then-generate-loop"><span class="header-section-number">7.2</span> The Limits of a Simple Retrieve-Then-Generate Loop</h2>
+<p>A simple RAG loop usually looks like this:</p>
+<pre class="text"><code>question
+-&gt; retrieve top chunks
+-&gt; put chunks into prompt
+-&gt; generate answer</code></pre>
+<p>This works well when:</p>
+<ul>
+<li>the needed evidence is mostly contained in a few chunks;</li>
+<li>the question is direct;</li>
+<li>the corpus is mostly text;</li>
+<li>the answer does not depend on many connected facts.</li>
+</ul>
+<p>It starts to struggle when:</p>
+<ul>
+<li>the answer depends on several separate pieces of evidence;</li>
+<li>the system needs to reason across relationships, not just paragraphs;</li>
+<li>the answer should come from tables, records, or APIs, not only text;</li>
+<li>one retrieval method is no longer enough for the kinds of questions users ask.</li>
+</ul>
+<p>That is usually the point where architecture needs to become more flexible.</p>
+</section>
+<section id="multi-hop-questions" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="multi-hop-questions"><span class="header-section-number">7.3</span> Multi-Hop Questions</h2>
+<p>One common limit of baseline RAG is the multi-hop question.</p>
+<p>A multi-hop question is one where the answer depends on combining more than one piece of evidence.</p>
+<p>For example:</p>
+<ul>
+<li>which component depends on the service owned by team X;</li>
+<li>what changed between the earlier policy and the later version;</li>
+<li>which retrieval method does the book recommend, and why.</li>
+</ul>
+<p>A baseline retriever may find one useful chunk, but miss the second or third piece needed to complete the answer.</p>
+<p>This does not mean baseline RAG is useless. It means retrieval and context assembly may need to become more deliberate.</p>
+</section>
+<section id="multiple-retrieval-backends" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="multiple-retrieval-backends"><span class="header-section-number">7.4</span> Multiple Retrieval Backends</h2>
+<p>As systems grow, it becomes more common that no single retrieval method is enough.</p>
+<p>Some questions are best answered by:</p>
+<ul>
+<li>vector search over chunks;</li>
+<li>keyword search;</li>
+<li>metadata filtering;</li>
+<li>SQL over tables;</li>
+<li>graph traversal;</li>
+<li>API calls to live systems.</li>
+</ul>
+<p>This leads to an important idea:</p>
+<ul>
+<li>advanced RAG is often not one better retriever;</li>
+<li>it is often a system that can choose among several retrieval paths.</li>
+</ul>
+<p>That is a big shift. The problem changes from “How do I rank chunks?” to “Which retrieval path fits this question?”</p>
+</section>
+<section id="query-routing" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="query-routing"><span class="header-section-number">7.5</span> Query Routing</h2>
+<p>Query routing is the step where the system decides where a question should go.</p>
+<p>For example:</p>
+<ul>
+<li>a conceptual question may go to vector retrieval;</li>
+<li>a question with an exact product ID may go to keyword or structured lookup;</li>
+<li>a reporting question may go to SQL;</li>
+<li>a relationship question may go to a graph or dependency model.</li>
+</ul>
+<p>Routing becomes useful when sending every question to the same retriever starts producing clearly avoidable mistakes.</p>
+<p>The benefit is better fit between question type and retrieval method.</p>
+<p>The cost is more complexity. Routing logic can fail too, so it should be added when there is a real need, not just because it sounds advanced.</p>
+</section>
+<section id="knowledge-graphs-and-relationship-centered-retrieval" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="knowledge-graphs-and-relationship-centered-retrieval"><span class="header-section-number">7.6</span> Knowledge Graphs and Relationship-Centered Retrieval</h2>
+<p>Text chunks are good at storing explanations, descriptions, and local context.</p>
+<p>They are less natural when the main value lies in explicit relationships, such as:</p>
+<ul>
+<li>ownership;</li>
+<li>dependency;</li>
+<li>chronology;</li>
+<li>hierarchy;</li>
+<li>membership;</li>
+<li>causality.</li>
+</ul>
+<p>That is where graph-based approaches can help.</p>
+<p>A knowledge graph makes entities and relationships explicit. Instead of asking only “Which chunk is semantically similar?”, the system can also ask:</p>
+<ul>
+<li>which entities are connected;</li>
+<li>what path links these concepts;</li>
+<li>what upstream and downstream dependencies exist.</li>
+</ul>
+<p>This can be useful when the answer depends more on structure than on prose.</p>
+</section>
+<section id="graph-augmented-rag" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="graph-augmented-rag"><span class="header-section-number">7.7</span> Graph-Augmented RAG</h2>
+<p>Graph-augmented RAG does not replace text retrieval entirely. More often, it adds another source of evidence.</p>
+<p>A typical pattern might be:</p>
+<ol type="1">
+<li>identify key entities in the question;</li>
+<li>traverse graph relationships;</li>
+<li>retrieve supporting text around those entities;</li>
+<li>combine both kinds of evidence for generation.</li>
+</ol>
+<p>This can help with questions where text similarity alone is not enough.</p>
+<p>The tradeoff is that graph systems require more modeling effort. Someone has to define or extract entities and relationships in a way that stays useful over time.</p>
+<p>So graph-based retrieval is powerful, but it should be justified by the task.</p>
+</section>
+<section id="retrieval-over-live-systems" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="retrieval-over-live-systems"><span class="header-section-number">7.8</span> Retrieval Over Live Systems</h2>
+<p>Another limit of baseline RAG appears when the source of truth is not static text.</p>
+<p>Sometimes the answer should come from:</p>
+<ul>
+<li>a live database;</li>
+<li>an internal API;</li>
+<li>a warehouse;</li>
+<li>a ticketing system;</li>
+<li>a knowledge service that changes often.</li>
+</ul>
+<p>In those cases, a chunk-based text index may not be the best source of truth. The retrieval step may need to fetch live data or generate a structured query.</p>
+<p>This is one reason modern RAG often overlaps with tool use. The system is not only retrieving passages. It is retrieving evidence from the right system of record.</p>
+</section>
+<section id="agentic-and-multi-step-retrieval" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="agentic-and-multi-step-retrieval"><span class="header-section-number">7.9</span> Agentic and Multi-Step Retrieval</h2>
+<p>Some questions are not answered well in one pass.</p>
+<p>The system may need to:</p>
+<ol type="1">
+<li>retrieve something;</li>
+<li>realize more information is needed;</li>
+<li>run a second search;</li>
+<li>compare results;</li>
+<li>then answer.</li>
+</ol>
+<p>This is a more agentic style of retrieval.</p>
+<p>It can be useful for difficult tasks, but it also creates more room for failure. Each extra step adds latency, complexity, and debugging cost.</p>
+<p>That is why multi-step retrieval should usually be a response to a clear problem, not a default habit.</p>
+</section>
+<section id="personalization-and-access-control" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="personalization-and-access-control"><span class="header-section-number">7.10</span> Personalization and Access Control</h2>
+<p>As RAG systems move closer to real users, two additional needs often appear:</p>
+<ul>
+<li>different users should see different context;</li>
+<li>different users may need different answer styles or evidence scopes.</li>
+</ul>
+<p>This means the system may need to personalize retrieval and also enforce access rules.</p>
+<p>Examples include:</p>
+<ul>
+<li>only showing documents from the user’s team;</li>
+<li>prioritizing the user’s current project or product area;</li>
+<li>filtering out content the user is not authorized to see.</li>
+</ul>
+<p>This is another place where metadata and routing become central. Advanced architecture is often less about clever prompting and more about controlled retrieval behavior.</p>
+</section>
+<section id="observability-becomes-more-important-as-architecture-grows" class="level2" data-number="7.11">
+<h2 data-number="7.11" class="anchored" data-anchor-id="observability-becomes-more-important-as-architecture-grows"><span class="header-section-number">7.11</span> Observability Becomes More Important as Architecture Grows</h2>
+<p>The more advanced the retrieval design becomes, the harder it is to debug by intuition alone.</p>
+<p>If the system now includes:</p>
+<ul>
+<li>multiple retrievers;</li>
+<li>routing rules;</li>
+<li>tool calls;</li>
+<li>graph traversal;</li>
+<li>reranking;</li>
+<li>context expansion;</li>
+</ul>
+<p>then failure can happen in many places.</p>
+<p>That is why advanced RAG systems need stronger observability. The team needs to see:</p>
+<ul>
+<li>what path the question took;</li>
+<li>what was retrieved at each step;</li>
+<li>what was filtered out;</li>
+<li>what evidence reached the generator;</li>
+<li>what the final answer used.</li>
+</ul>
+<p>Without that visibility, complexity grows faster than understanding.</p>
+</section>
+<section id="do-not-upgrade-architecture-too-early" class="level2" data-number="7.12">
+<h2 data-number="7.12" class="anchored" data-anchor-id="do-not-upgrade-architecture-too-early"><span class="header-section-number">7.12</span> Do Not Upgrade Architecture Too Early</h2>
+<p>This may be the most important advice in the chapter.</p>
+<p>It is easy to read about graph RAG, agentic retrieval, or multi-backend routing and assume that a stronger system must be more complex.</p>
+<p>That is not always true.</p>
+<p>A weak baseline does not become strong by adding architectural layers. If chunking is poor, retrieval is weak, or evaluation is shallow, advanced architecture may only make the system harder to understand.</p>
+<p>So the better rule is:</p>
+<ul>
+<li>move to advanced architecture when the current design has a clear limit you can name.</li>
+</ul>
+<p>That limit might be:</p>
+<ul>
+<li>too many multi-hop failures;</li>
+<li>too many structured queries;</li>
+<li>too much need for metadata filtering;</li>
+<li>too much dependence on live records;</li>
+<li>too many question types for one retriever to handle well.</li>
+</ul>
+<p>If you cannot name the current limit, the system may not be ready for a bigger architecture.</p>
+</section>
+<section id="what-this-means-for-this-project" class="level2" data-number="7.13">
+<h2 data-number="7.13" class="anchored" data-anchor-id="what-this-means-for-this-project"><span class="header-section-number">7.13</span> What This Means for This Project</h2>
+<p>This repository is still a baseline-first project.</p>
+<p>That is a strength, not a weakness.</p>
+<p>Right now the project is good for learning because:</p>
+<ul>
+<li>the pipeline is visible;</li>
+<li>the data flow is understandable;</li>
+<li>the retrieval logic is inspectable;</li>
+<li>the evaluation loop is simple enough to follow.</li>
+</ul>
+<p>The next upgrade for this project is probably not a graph system yet. A more natural next step would be things like:</p>
+<ul>
+<li>stronger indexing;</li>
+<li>better chunking rules;</li>
+<li>metadata-aware retrieval;</li>
+<li>reranking;</li>
+<li>richer evaluation.</li>
+</ul>
+<p>Those improvements keep the project understandable while making it more realistic.</p>
+<p>Only after the baseline becomes well understood does it make sense to consider larger architectural changes.</p>
+</section>
+<section id="closing-thought" class="level2" data-number="7.14">
+<h2 data-number="7.14" class="anchored" data-anchor-id="closing-thought"><span class="header-section-number">7.14</span> Closing Thought</h2>
+<p>The main lesson of advanced RAG is not that every system should become more complicated.</p>
+<p>The real lesson is that retrieval should match the shape of the problem.</p>
+<p>Sometimes a clean chunk-and-retrieve pipeline is enough.</p>
+<p>Sometimes the task requires multiple retrieval methods, live systems, or explicit relationships.</p>
+<p>The important skill is not memorizing architecture names. It is learning to see what kind of evidence a question really needs, and then designing the retrieval system around that need.</p>
 
 
 </section>

@@ -1,44 +1,324 @@
 # Retrieval Optimization
 
+## Why Retrieval Still Fails After Indexing
+
+By the end of Chapter 3, the system has chunks, embeddings, and an index. That is enough to start retrieving. But it is not enough to guarantee good retrieval.
+
+This is the next important idea in RAG: having a searchable index does not mean the system will reliably find the best evidence.
+
+A system can still fail in ways like these:
+
+- it finds text that is related, but not actually useful;
+- it misses the chunk with the exact term the user cares about;
+- it retrieves a broad explanation when the user needed a narrow fact;
+- it brings back several almost-duplicate chunks instead of complementary evidence.
+
+So this chapter is about a more specific question than the last one.
+
+Chapter 3 asked:
+
+- how do we make chunks searchable?
+
+Chapter 4 asks:
+
+- how do we retrieve the right chunks more reliably?
+
+## What Retrieval Is Really Trying to Do
+
+In plain language, retrieval is trying to do two things at once:
+
+- not miss useful evidence;
+- not include too much irrelevant evidence.
+
+Those goals pull in opposite directions.
+
+If retrieval is too broad, the generator gets noisy context and may answer vaguely. If retrieval is too narrow, the generator may miss the key evidence and answer from partial information.
+
+That is why retrieval work is mostly about tradeoffs, not perfect rules.
+
 ## Dense Retrieval
 
-Dense retrieval uses embeddings to represent both queries and documents. It excels when semantic similarity matters more than exact token overlap, which is why it is common in modern RAG systems.
+Dense retrieval uses embeddings for both the question and the stored chunks. It is strong when the user's wording and the document's wording are different, but the meaning is similar.
 
-Its weakness is that semantic closeness is not always the same as relevance. Dense retrievers may miss exact identifiers, formulas, or niche terminology unless the embeddings capture them well.
+For example, a user might ask:
+
+```text
+When is RAG a better choice than fine-tuning?
+```
+
+The relevant chunk might say:
+
+```text
+RAG is strongest when the challenge is access to external knowledge.
+```
+
+The exact words do not match perfectly, but the meaning is close. Dense retrieval is good at this kind of match.
+
+In this project, dense retrieval works by embedding the question and comparing it with each chunk embedding using cosine similarity.
+
+The practical strength of dense retrieval is semantic matching.
+
+The practical weakness is that semantic matching is not always enough.
 
 ## Sparse Retrieval
 
-Sparse retrieval methods such as BM25 rely on token statistics and lexical matching. They are strong for exact phrases, IDs, error codes, and terminology-heavy domains.
+Sparse retrieval is based more directly on word overlap. Methods such as BM25 give higher scores to chunks that contain important query terms.
 
-Many production systems still benefit from sparse retrieval because users often ask questions with language that directly overlaps the source text.
+This is useful when the user's wording matters a lot, such as:
 
-## Hybrid Retrieval Systems
+- product names;
+- error messages;
+- abbreviations;
+- IDs;
+- exact phrases from documentation.
 
-Hybrid retrieval combines dense and sparse signals. This is often one of the highest-return upgrades for a baseline system because the two methods fail differently.
+Sparse retrieval can look old-fashioned compared with embedding-based methods, but it remains very useful because many real user questions contain the exact words that matter.
 
-Dense retrieval broadens semantic coverage; sparse retrieval preserves exact matching. Together, they often improve recall and robustness.
+Its weakness is the opposite of dense retrieval's weakness. If the wording changes a lot, sparse retrieval may miss clearly related chunks.
 
-## Implementing Hybrid Search
+## Dense and Sparse Fail in Different Ways
 
-A practical hybrid pipeline might:
+This is one of the most useful things to understand in retrieval.
 
-1. retrieve candidates from a dense index;
-2. retrieve candidates from a sparse index;
-3. merge and deduplicate results;
-4. apply re-ranking with a stronger model;
-5. assemble the final context window.
+Dense retrieval may fail like this:
 
-The implementation details vary, but the principle is stable: use cheaper methods for candidate generation and more expensive methods for final ranking.
+- it finds chunks that feel semantically related, but miss the exact point;
+- it overlooks exact terms that matter;
+- it returns broad conceptual text instead of the most direct evidence.
 
-### Practical Example: Dense vs Sparse vs Hybrid
+Sparse retrieval may fail like this:
 
-This chapter's example script, `code/cli/retrieval_compare.py`, compares three retrieval strategies on the actual book corpus after it has been ingested and indexed:
+- it misses paraphrases;
+- it struggles when the user asks in different words from the source text;
+- it can overvalue repeated keywords even when the chunk is not the best answer.
 
-- dense retrieval using the selected embedding model, with `bge-m3:latest` as the default baseline in this project;
-- sparse retrieval using a small BM25 implementation;
-- hybrid retrieval using weighted score fusion.
+Because they fail differently, combining them often works better than relying on one alone.
 
-Run it with:
+## Hybrid Retrieval
+
+Hybrid retrieval combines dense and sparse signals.
+
+The basic idea is simple:
+
+- dense retrieval helps with meaning;
+- sparse retrieval helps with exact wording;
+- together they are often more stable.
+
+This project already includes a simple hybrid retriever. It does not need a fancy platform to be useful. Even a basic score merge can make retrieval noticeably better.
+
+The current implementation normalizes the dense and sparse scores, then combines them with a weight:
+
+```python
+def hybrid_scores(question: str, corpus: list[dict[str, str]], index_data: dict, alpha: float = 0.65) -> dict[str, float]:
+    dense = min_max_normalize(dense_scores(question, index_data))
+    sparse = min_max_normalize(sparse_scores(question, corpus))
+    all_ids = {item["chunk_id"] for item in corpus}
+    return {
+        chunk_id: alpha * dense.get(chunk_id, 0.0) + (1 - alpha) * sparse.get(chunk_id, 0.0)
+        for chunk_id in all_ids
+    }
+```
+
+You do not need to focus on the syntax first. The important idea is that the system is giving part of the decision to semantic similarity and part of the decision to word-level matching.
+
+## A Simple Example: Why Hybrid Can Help
+
+Imagine a user asks:
+
+```text
+How does the book compare RAG with fine-tuning?
+```
+
+One chunk may contain the exact phrase "RAG vs. Fine-Tuning." Another may talk about "external knowledge" and "behavior" without repeating the full query wording.
+
+Sparse retrieval may prefer the chunk with the exact phrase.
+
+Dense retrieval may prefer the chunk with the strongest semantic explanation.
+
+Hybrid retrieval has a chance to surface both kinds of evidence near the top.
+
+That often makes the final answer better because the generator sees both the direct match and the more explanatory support.
+
+## Retrieval as a Pipeline, Not One Step
+
+It helps to stop thinking of retrieval as a single search action.
+
+In many systems, retrieval is really a pipeline:
+
+1. generate candidates;
+2. filter them;
+3. rank them;
+4. assemble the final context.
+
+This mental model is useful because it shows where different tools belong.
+
+For example:
+
+- dense and sparse retrieval are often candidate-generation methods;
+- metadata filtering narrows the search space;
+- reranking improves final ordering;
+- context assembly decides what the generator actually sees.
+
+This chapter will keep using that pipeline view.
+
+## Using Metadata to Improve Retrieval
+
+Metadata becomes especially important here.
+
+Suppose the corpus contains:
+
+- several versions of a policy;
+- documents from different teams;
+- content from different dates;
+- material the user may or may not be allowed to access.
+
+In those cases, vector similarity alone is not enough. The system may retrieve a chunk that is semantically relevant but wrong for the user's situation.
+
+Metadata filtering helps prevent that.
+
+Examples include filtering by:
+
+- source type;
+- section;
+- date;
+- team;
+- product;
+- access scope.
+
+This is one reason Chapter 2 mattered so much. Good metadata gives retrieval more control.
+
+## Query Rewriting and Query Construction
+
+Users do not always ask clean, retrieval-friendly questions.
+
+A user may be vague:
+
+```text
+What does the book say about when to use this?
+```
+
+Or too broad:
+
+```text
+Explain retrieval.
+```
+
+Or too conversational:
+
+```text
+I kind of forget, what's the part where dense and sparse are combined?
+```
+
+Query rewriting tries to turn that into a better retrieval query.
+
+This can include:
+
+- adding likely keywords;
+- rewriting into a clearer form;
+- splitting one broad question into several narrower ones.
+
+The benefit is obvious: better retrieval inputs can lead to better results.
+
+The danger is also obvious: rewriting should not change what the user meant.
+
+So query rewriting is helpful, but it should be treated carefully.
+
+## Re-ranking
+
+A common pattern in retrieval is that the system finds a decent candidate set, but the order is not great.
+
+For example, maybe the best chunk is in the top 10, but not in the top 3. If the generator only sees the top few chunks, that ordering problem becomes an answer-quality problem.
+
+Re-ranking is a second pass over a smaller candidate set. A stronger relevance model looks at those candidates and tries to sort them better.
+
+This is useful when:
+
+- first-stage retrieval has decent recall;
+- but the final ordering is noisy.
+
+In a small project, it is often smart to understand dense, sparse, and hybrid retrieval first. Only after that should reranking be added. Otherwise it becomes hard to tell where the improvement came from.
+
+## Context Assembly
+
+Even after ranking, the system still has one more important job: deciding what context to actually pass to the generator.
+
+This is not trivial.
+
+If the system passes only one narrow chunk, the answer may miss key detail.
+
+If it passes too many chunks, the prompt may become noisy.
+
+So context assembly asks questions like:
+
+- how many chunks should be included;
+- should neighboring chunks be added;
+- should duplicate or near-duplicate chunks be removed;
+- should very long chunks be trimmed.
+
+This is where retrieval quality and generation quality meet.
+
+## Context Expansion and Compression
+
+Two opposite moves are common here.
+
+Context expansion means adding nearby or related text when one chunk is too narrow on its own.
+
+Context compression means trimming or summarizing when the retrieved material is too long or repetitive.
+
+Both are trying to solve the same problem:
+
+- give the generator enough evidence, but not too much noise.
+
+Neither move is always correct. Both should be tested on real questions.
+
+## Retrieval Over Structured Sources
+
+Not every retrieval problem is "search chunks of text."
+
+Sometimes the right answer lives in:
+
+- a table;
+- a SQL database;
+- a graph;
+- a system of records.
+
+In those cases, the retrieval step may need to do something different, such as:
+
+- generate SQL;
+- generate a graph query;
+- filter structured records by fields.
+
+This still counts as retrieval in the broad sense. The system is still trying to fetch the evidence needed to answer the question. It is just not always using free-text chunk search.
+
+This matters because many people first learn RAG as "embed chunks, retrieve chunks, prompt model." That is a useful baseline, but not the whole retrieval design space.
+
+## How to Inspect Retrieval Failures
+
+When retrieval feels weak, it helps to ask a few concrete questions.
+
+Did the right chunk never appear at all?
+
+- Then the problem may be chunking, indexing, metadata, or query mismatch.
+
+Did the right chunk appear, but too low in the ranking?
+
+- Then the problem may be scoring or the lack of reranking.
+
+Did several top chunks say almost the same thing?
+
+- Then the problem may be duplication or weak context assembly.
+
+Did retrieval return something related but not specific enough?
+
+- Then dense retrieval may be too broad on its own, or the query may need better construction.
+
+This kind of debugging matters because "retrieval is bad" is too vague to fix.
+
+## How This Project Lets You Compare Retrieval Methods
+
+This repository includes `code/cli/retrieval_compare.py`, which is helpful because it makes retrieval visible.
+
+You can run:
 
 ```bash
 python3 code/cli/ingest_book.py
@@ -46,86 +326,27 @@ python3 code/cli/build_book_index.py --embed-model bge-m3:latest
 python3 code/cli/retrieval_compare.py --question "How does the book compare RAG with fine-tuning?" --embed-model bge-m3:latest
 ```
 
-The key hybrid scoring logic is simple:
+That script compares:
 
-```python
-def hybrid_scores(question: str, chunks: list[str], alpha: float) -> dict[int, float]:
-    dense = min_max_normalize(dense_scores(question, chunks))
-    sparse = min_max_normalize(sparse_scores(question, chunks))
-    return {
-        index: alpha * dense.get(index, 0.0) + (1 - alpha) * sparse.get(index, 0.0)
-        for index in range(len(chunks))
-    }
+- dense retrieval;
+- sparse retrieval;
+- hybrid retrieval.
+
+This is useful because it trains the right habit: inspect the retrieved chunks directly. Do not judge the system only by the final answer. Often the fastest way to improve a RAG system is to look at what was retrieved and ask whether that evidence actually makes sense.
+
+## What This Chapter Adds to the Pipeline
+
+At this point, the project flow looks like this:
+
+```text
+documents
+-> cleaned chunks
+-> embeddings and index
+-> retrieval and ranking
+-> prompt context
+-> answer
 ```
 
-This code highlights an important engineering idea: hybrid retrieval does not have to start with a complicated platform. Even a straightforward weighted merge is enough to show why lexical and semantic signals complement each other when searching a real chapter set.
+So the next step is clear.
 
-## Query Construction
-
-Users do not always phrase questions in ways that match the underlying corpus. Query construction bridges that gap by expanding, reformulating, or decomposing the request into retrieval-friendly forms.
-
-Examples include generating synonyms, extracting entities, or turning a broad question into several narrower subqueries.
-
-## Text-to-Metadata Filtering
-
-Metadata filters can sharply improve retrieval precision. If the user asks about a specific product line, date range, region, document type, or policy version, the retriever should use that structure whenever possible.
-
-This reduces search space and often makes the answer more auditable.
-
-## Text-to-Cypher Queries
-
-When knowledge is represented as a graph, the retrieval problem changes. Instead of fetching free-text chunks, the system may need to generate a graph query such as Cypher to traverse entities and relationships.
-
-This is useful when the user asks questions about connections, dependencies, ownership, lineage, or multi-hop relationships.
-
-## Text-to-SQL Retrieval Systems
-
-For tabular or warehouse-backed data, a natural-language request may be better handled by generating SQL than by retrieving prose. This is especially true for analytical questions, aggregations, or filtered summaries.
-
-Text-to-SQL should still be considered part of retrieval in the broad sense: it is a method for obtaining the evidence needed to answer.
-
-## Query Rewriting and Reformulation
-
-Query rewriting can improve difficult searches, especially when user queries are vague, conversational, or underspecified. A system may rewrite a question into a canonical form before retrieval, or generate several alternative search intents in parallel.
-
-The main risk is drift. Rewriting should help recover relevant evidence, not silently change the user's meaning.
-
-## Query Routing and Distribution
-
-Advanced systems do not send every question to the same retriever. They route based on intent, modality, risk level, or source type. One query might go to a vector index, another to SQL, and another to a graph store.
-
-Routing turns retrieval into orchestration. The challenge is deciding when the extra complexity yields enough quality gain.
-
-## Retrieval Pipelines
-
-A retrieval pipeline is often multi-stage:
-
-- candidate generation;
-- filtering;
-- ranking;
-- context assembly;
-- optional citation or provenance tagging.
-
-Seeing retrieval as a pipeline helps teams isolate failure modes and optimize the right layer.
-
-## Re-ranking Methods
-
-Re-rankers apply a stronger relevance model to a small candidate set. Cross-encoders, reranking APIs, or task-specific scoring heuristics can all improve the quality of the final selected context.
-
-They are especially valuable when the first-stage retriever has good recall but mediocre ordering.
-
-In a local-first setup, a useful exercise is to first compare dense, sparse, and hybrid retrieval without a re-ranker. Only after that baseline is understood should a stronger second-stage scorer be added. This keeps the source of gains interpretable.
-
-## Context Compression
-
-Even good retrieval can return more text than the generator should receive. Compression methods trim, summarize, or extract the most relevant spans before generation.
-
-Compression can reduce token cost and improve focus, but it must preserve the evidence needed for faithful answers.
-
-## Retrieval Correction
-
-No retrieval stack is perfect. Strong systems include correction strategies such as fallback searches, empty-result handling, confidence thresholds, or user clarification loops.
-
-The practical objective is not perfect retrieval. It is graceful behavior when retrieval is uncertain or incomplete.
-
-The local scripts in this book are intentionally transparent, so the reader can inspect the retrieved chapter chunks directly. That manual inspection habit is often the fastest way to diagnose whether a problem comes from chunking, embeddings, lexical mismatch, or the generation prompt.
+Once retrieval has selected evidence, the system still needs to turn that evidence into a good prompt and a good answer. That is the job of the next chapter.

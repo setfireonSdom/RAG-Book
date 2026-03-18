@@ -1,97 +1,330 @@
 # Index Construction and Optimization
 
+## From Chunks to Searchable Units
+
+At the end of Chapter 2, we had a set of chunks that were clean enough and small enough to retrieve. But those chunks are still just text. The system still needs a way to search them well.
+
+That is the job of indexing.
+
+In plain language, indexing means turning chunks into a form that the retrieval step can search quickly and usefully. In this project, that mostly means creating embeddings for each chunk and saving them in an index file.
+
+So the flow now looks like this:
+
+```text
+raw chapters
+-> cleaned and chunked text
+-> embeddings for each chunk
+-> searchable index
+-> retrieval at question time
+```
+
+This chapter is about that middle step.
+
+## What This Chapter Is Trying to Solve
+
+The main problem is simple: even if the corpus is well prepared, the system still needs a good way to find the right chunks for a new question.
+
+That means this chapter is trying to answer questions like:
+
+- how do we represent chunk meaning in a searchable form;
+- how does the system compare a user question with stored chunks;
+- what is the difference between an embedding model, an index, and a vector database;
+- when is a simple local index enough, and when is a bigger system needed.
+
+If Chapter 2 was about making good chunks, Chapter 3 is about making those chunks searchable.
+
+## Why Plain Text Search Is Not Enough
+
+Suppose a chunk says:
+
+```text
+RAG is strongest when the problem is access to external knowledge.
+```
+
+A user might ask:
+
+```text
+When should I use RAG instead of fine-tuning?
+```
+
+The wording is different, but the meaning is related. Simple keyword search may do fine in some cases, but it can also miss useful matches when the query and the chunk use different words.
+
+That is why dense retrieval exists. Instead of matching only on surface words, it tries to match on semantic similarity.
+
+This does not mean keyword methods stop mattering. It means we often need another tool in addition to exact term matching.
+
 ## Embeddings and Their Role in RAG
 
-Embeddings map content into vector spaces where semantically similar items are located near one another. In dense retrieval systems, embeddings are the main bridge between a user query and the candidate passages that might answer it.
+An embedding is a numeric representation of text. The practical idea is that chunks with similar meaning should end up closer together in that numeric space.
 
-Their role is powerful but bounded. An embedding model captures similarity according to its training data and objective. If that notion of similarity does not match the task, retrieval quality will suffer.
+In a RAG system, embeddings are useful because they let us do this:
 
-## Evolution of Embedding Models
+1. turn each chunk into a vector;
+2. turn the user question into a vector;
+3. compare those vectors;
+4. rank chunks by similarity.
 
-Embedding models have evolved from relatively narrow sentence encoders into stronger multilingual and domain-aware models. Better training data, contrastive objectives, and larger model capacities have all improved retrieval quality.
+That is the core of dense retrieval.
 
-At the same time, the problem remains use-case dependent. A model that performs well on public benchmarks may still struggle on internal jargon, code snippets, legal clauses, or highly structured records.
+The benefit is easy to understand: the system may still retrieve a relevant chunk even when the user does not use the exact same wording as the document.
 
-## Training Principles of Embedding Models
+The limit is also important: embeddings do not "understand" truth. They only encode patterns of similarity learned during training. If the embedding model is weak for the domain, retrieval quality will suffer.
 
-Many modern embedding models are trained with contrastive learning. Positive pairs are pulled together in vector space, while negatives are pushed apart. This teaches the model a geometry of similarity.
+## What an Embedding Model Actually Helps With
 
-The important practical insight is that "similarity" depends on the training objective. Semantic equivalence, topical relatedness, paraphrase behavior, and relevance for retrieval are related but not identical concepts.
+It helps to be concrete here.
 
-## Embedding Model Selection
+An embedding model is good at things like:
 
-Model selection should consider:
+- matching related wording;
+- handling paraphrases;
+- finding semantically similar passages;
+- supporting multilingual or cross-domain matching, if the model is trained for that.
 
-- retrieval quality on representative tasks;
-- dimensionality and storage cost;
-- latency and throughput;
-- multilingual performance;
-- licensing and deployment constraints.
+An embedding model is less reliable for things like:
 
-Benchmarks such as MTEB are useful starting points, but internal evaluation remains essential. The best model is the one that performs reliably on your corpus and query distribution.
+- exact identifiers;
+- strict keyword matching;
+- small but important wording differences;
+- structured constraints such as dates, IDs, or access rules.
 
-## Multimodal Embeddings
+That is why embeddings are powerful, but not sufficient by themselves.
 
-Not all knowledge is textual. Many real systems need to search over images, slides, screenshots, diagrams, and mixed media. Multimodal embeddings aim to place text and non-text inputs in compatible representational spaces.
+## How This Project Builds an Index
 
-This enables cross-modal retrieval, such as finding figures from a textual query or retrieving image-caption pairs that explain a concept.
+In this repository, indexing is intentionally simple. After the book is chunked, the system sends each chunk to an embedding model and stores the result in a JSON file.
 
-## CLIP and Vision-Language Representations
+The key script is `code/cli/build_book_index.py`, and the core embedding call lives in `code/core/book_rag.py`:
 
-CLIP is a landmark example of joint text-image representation learning. By aligning images and their textual descriptions, it demonstrated how a shared embedding space can support flexible retrieval across modalities.
+```python
+def ollama_embed(texts: list[str], embed_model: str = EMBED_MODEL) -> list[list[float]]:
+    model_name = normalize_cloud_model_name(embed_model) if is_cloud_model(embed_model) else embed_model
+    response = ollama_post("/api/embed", {"model": model_name, "input": texts}, model_name=embed_model)
+    return response["embeddings"]
+```
 
-The broader lesson is that RAG can operate over any evidence type that can be indexed and retrieved, not just prose paragraphs.
+That function takes text chunks, sends them to Ollama's embedding endpoint, and gets back vectors.
 
-## Multimodal Embedding Models in Practice
+The index-building script then stores each chunk together with:
 
-In practice, multimodal systems need careful document modeling. An image alone may be insufficient; the surrounding caption, section title, page number, and document identity may be equally important retrieval signals.
+- its chunk id;
+- its source path;
+- its section;
+- its text;
+- its embedding.
 
-Good multimodal indexing often combines vector similarity with structural metadata rather than treating the embedding as the only source of truth.
+So the index is not only a list of vectors. It is a list of vectors tied back to the original chunk content and metadata.
 
-## Vector Databases and Similarity Search
+## Why the Current Index Is Simple but Useful
 
-Vector databases store embeddings and support nearest-neighbor search. They usually also support metadata filtering, persistence, and operational features such as replication or sharding.
+The current design stores embeddings in a JSON file such as `code/build/book_index_*.json`.
 
-For small experiments, a local index may be enough. For production systems with large corpora, frequent updates, or multi-tenant workloads, operational concerns become central.
+That is not the most scalable design, but it is useful for learning because:
 
-## Vector Indexing and ANN Search
+- the whole process stays visible;
+- the stored data is easy to inspect;
+- there is little hidden infrastructure;
+- the connection between chunk text and embedding stays obvious.
 
-Approximate nearest-neighbor (ANN) indexing makes vector retrieval tractable at scale. Structures such as HNSW, IVF, and PQ trade exactness for speed and memory efficiency.
+This is a good baseline for a teaching project. You can see the data, understand the flow, and debug it without needing a separate vector database.
 
-These choices directly affect recall, latency, and cost. Index tuning is therefore a product decision as much as an engineering one.
+## Dense Retrieval in Plain Language
 
-## Local Vector Stores (FAISS)
+Once the chunks are embedded, the system can compare a question embedding with each stored chunk embedding.
 
-FAISS is widely used for local experimentation and efficient similarity search. It is flexible, fast, and ideal for prototyping retrieval behavior before committing to a larger serving stack.
+In this project, that comparison is done with cosine similarity:
 
-Its limitations are mostly operational. Production deployments often need higher-level concerns such as multi-user isolation, managed persistence, or distributed scaling.
+```python
+def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
+    numerator = sum(a * b for a, b in zip(vec_a, vec_b))
+    norm_a = math.sqrt(sum(a * a for a in vec_a))
+    norm_b = math.sqrt(sum(b * b for b in vec_b))
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+    return numerator / (norm_a * norm_b)
+```
 
-## Distributed Vector Databases (Milvus)
+You do not need to worry too much about the math here. The practical meaning is enough: the closer the vectors point in the same direction, the more similar the system considers the texts.
 
-Distributed systems such as Milvus are designed for larger-scale workloads, where indexing, serving, and storage need to be managed across nodes. They are useful when datasets are large, update frequency is significant, or operational guarantees matter.
+That gives the system a way to rank chunks by semantic closeness to the user's question.
 
-Choosing such a system should be justified by workload needs, not by trend-following alone.
+## Why Embeddings Alone Are Not the Whole Story
 
-## Index Optimization Techniques
+It is easy to overtrust embeddings once they start working.
 
-Index optimization includes:
+But dense retrieval still has common failure cases:
 
-- selecting the right ANN structure;
-- tuning recall-latency parameters;
-- managing vector compression;
-- partitioning by metadata or tenant;
-- refreshing stale indexes safely.
+- it may miss exact keywords that matter;
+- it may rank vaguely related text too highly;
+- it may struggle with codes, IDs, or product names;
+- it may not respect business rules such as time, tenant, or permissions.
 
-The best index is not necessarily the fastest one. It is the one that helps the whole application meet quality and latency targets simultaneously.
+That is one reason hybrid retrieval is useful. Dense retrieval is good at semantic matching. Sparse retrieval is often better at exact term matching. Using both can produce more stable results.
 
-## Context Expansion Strategies
+So the right mental model is:
 
-Sometimes the top retrieved chunk is too narrow to be useful in isolation. Context expansion methods add neighboring chunks, parent sections, or linked records to reconstruct the local information neighborhood.
+- embeddings help the system search by meaning;
+- they do not remove the need for other retrieval signals.
 
-This can improve answer quality, especially in documents with strong sequential structure. The cost is extra tokens and possible noise, so it should be evaluated carefully.
+## How to Choose an Embedding Model
 
-## Structured Indexing
+Model choice matters, but it helps to keep the decision grounded.
 
-Not all retrieval targets belong in a vector store alone. Tables, entities, graphs, and canonical records may be better indexed in structured systems alongside vector search.
+In practice, you usually care about:
 
-Structured indexing is often what separates a demo from a robust product. The strongest systems use each storage and retrieval mechanism for the type of knowledge it represents best.
+- does it retrieve the right chunks on your questions;
+- does it handle your language mix well;
+- is it fast enough for your workload;
+- is the vector size reasonable for storage and latency;
+- can you run it where you need to run it.
+
+Public benchmarks are useful, but your own corpus matters more. A model that looks strong on a leaderboard may still be awkward for your documents.
+
+For this project, the default embedding model is `bge-m3:latest`. That is a practical baseline, not a claim that one model is always best.
+
+## The Difference Between an Embedding, an Index, and a Vector Database
+
+These terms are easy to blur together, so it is worth separating them clearly.
+
+An embedding model:
+
+- turns text into vectors.
+
+An index:
+
+- is the searchable data structure built from those vectors.
+
+A vector database:
+
+- is a storage and retrieval system built to manage vector indexes, metadata, updates, and search at larger scale.
+
+In a small project, these can all feel like one thing because the same script may handle all of them. But they are different layers.
+
+This repository has:
+
+- an embedding model;
+- a simple local JSON index;
+- no full vector database yet.
+
+That distinction matters because it helps you see what problem each tool is solving.
+
+## Why ANN Search Exists
+
+If a project has only a small number of chunks, it is possible to compare a question embedding against every chunk directly. That is basically what this project does now.
+
+But as the corpus grows, that gets slower and more expensive.
+
+Approximate nearest-neighbor search, usually shortened to ANN, is the family of methods used to make vector search faster at larger scale. The core tradeoff is simple:
+
+- exact search tries harder to find the very best matches;
+- approximate search is faster, but may miss some of them.
+
+This tradeoff is normal. The point is not to be mathematically perfect. The point is to meet the application's quality and latency needs.
+
+## FAISS and Local Vector Search
+
+FAISS is a common tool for local vector search. It is often a good next step after a project outgrows a hand-rolled Python loop over JSON embeddings.
+
+Why teams like it:
+
+- it is fast;
+- it supports common vector search workflows;
+- it is good for experiments and local systems.
+
+Why it does not solve everything:
+
+- it is not a full application platform;
+- metadata handling is more limited than in some managed systems;
+- production concerns still need extra engineering.
+
+For this project, FAISS would be a natural upgrade because it would keep the learning setup local while making indexing and search more realistic.
+
+## Vector Databases and When They Matter
+
+Vector databases become more useful when the retrieval system needs more than just "store some vectors and search them."
+
+They matter more when you need things like:
+
+- large corpora;
+- frequent updates;
+- metadata filtering;
+- multiple users or tenants;
+- operational guarantees around persistence and scale.
+
+For a small teaching project, a local index is often enough. For a production system, storage and serving concerns usually become much more important.
+
+This is why it helps to separate two questions:
+
+- do I need better retrieval quality;
+- do I need stronger retrieval infrastructure.
+
+Those are related, but not the same decision.
+
+## Structured Indexing Still Matters
+
+Not everything should be pushed into embeddings.
+
+Some kinds of information are better handled in structured form:
+
+- tables;
+- records with stable fields;
+- entity lists;
+- timestamps;
+- access rules;
+- graph relationships.
+
+If a user asks for "the latest policy after January 2025" or "all products in category X," embeddings alone are not enough. Structured fields matter.
+
+This is why strong RAG systems often combine vector search with metadata filters, keyword search, SQL, or other retrieval methods.
+
+## Context Expansion After Retrieval
+
+Sometimes the best-matching chunk is still too narrow to answer the question well.
+
+For example, the chunk may contain a definition, but not the caveat that appears in the next paragraph. In that case, the system may benefit from adding neighboring chunks or the parent section.
+
+This is usually called context expansion.
+
+It can help because:
+
+- answers often need a little more surrounding context;
+- documents often contain meaning spread across nearby chunks.
+
+It can also hurt because:
+
+- more context means more tokens;
+- extra context can add noise.
+
+So this is another design choice that should be tested, not assumed.
+
+## How to Tell Whether the Index Is Working
+
+As with chunking, a practical question is: how do we know this part is good enough?
+
+Some useful checks are:
+
+- do semantically similar questions retrieve the same useful chunks;
+- do obvious keyword questions still work well;
+- are clearly relevant chunks missing from the top results;
+- does changing the embedding model noticeably improve retrieval;
+- does the system stay fast enough as the corpus grows.
+
+These checks help keep Chapter 3 tied to system behavior rather than turning it into a list of tools.
+
+## What This Chapter Adds to the Pipeline
+
+Chapter 2 produced retrieval-ready chunks.
+
+Chapter 3 turns those chunks into a searchable index.
+
+So the handoff now becomes:
+
+```text
+documents
+-> cleaned chunks with metadata
+-> embeddings
+-> index
+-> retrieval
+```
+
+That sets up the next chapter naturally. Once the system has chunks and a way to search them, the next question is no longer "How do we store information?" It becomes "How do we retrieve the right information reliably?"

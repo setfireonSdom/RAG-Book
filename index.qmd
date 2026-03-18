@@ -1,8 +1,10 @@
 # Preface {.unnumbered}
 
-Retrieval-Augmented Generation, usually shortened to RAG, has become one of the most practical patterns for building useful systems with large language models. Instead of asking a model to answer from static pretraining alone, a RAG system retrieves relevant information at runtime and conditions generation on that evidence. The result is often more current, more controllable, and easier to ground in enterprise knowledge.
+Retrieval-Augmented Generation, usually shortened to RAG, is one of the most useful ways to build applications with large language models. Instead of asking a model to answer from pretraining alone, a RAG system looks up relevant information at runtime and asks the model to answer with that evidence in view.
 
-This book is written as a practical map of the RAG landscape. It does not assume that every reader is a researcher, and it does not pretend that RAG is a single recipe. In practice, a production-grade RAG system is a pipeline with tradeoffs across ingestion, chunking, embeddings, indexing, retrieval, prompting, evaluation, and operations. We will move through those pieces in order and keep connecting them back to system behavior.
+That sounds simple, but in practice RAG is not one trick. It is a pipeline. Documents have to be prepared. Chunks have to be indexed. Retrieval has to bring back the right evidence. Prompts have to make the model use that evidence well. And the whole system has to be evaluated so we can tell whether it is actually helping.
+
+This book is written for readers who want that pipeline explained in a practical way. The goal is not to show off every tool in the ecosystem. The goal is to make the moving parts clear enough that you can understand them, debug them, and build with them.
 
 ## Who This Book Is For
 
@@ -23,30 +25,30 @@ By the end of this book, you should be able to:
 -   prepare and structure data for retrieval;
 -   choose embedding, indexing, and vector storage strategies;
 -   design dense, sparse, hybrid, and structured retrieval flows;
--   integrate retrieved context into robust generation pipelines;
--   evaluate faithfulness, relevance, and retrieval quality;
+-   turn retrieved evidence into grounded answers;
+-   evaluate retrieval quality, grounding, and answer quality;
 -   understand where advanced architectures such as graph-augmented RAG fit.
 
 ## How the Book Is Organized
 
 The book is organized into seven main chapters:
 
-1.  Introduction to RAG introduces the pattern, its motivations, and its limits.
-2.  Data Preparation covers ingestion, cleaning, and chunking.
-3.  Index Construction and Optimization focuses on embeddings and vector infrastructure.
-4.  Retrieval Optimization examines how to get the right evidence at the right time.
-5.  Generation Integration connects retrieval output to prompts, schemas, and tools.
-6.  RAG System Evaluation discusses how to measure whether the system is actually working.
-7.  Advanced RAG Architectures explores graph-based and next-generation directions.
+1.  Introduction to RAG explains what RAG is, what problem it solves, and where its limits begin.
+2.  Data Preparation shows how raw source material becomes retrieval-ready chunks.
+3.  Index Construction and Optimization explains how those chunks become searchable.
+4.  Retrieval Optimization focuses on how to find the right evidence more reliably.
+5.  Generation Integration shows how retrieved evidence becomes a grounded answer.
+6.  RAG System Evaluation explains how to tell which part of the system is working and which part is not.
+7.  Advanced RAG Architectures asks when a baseline pipeline is no longer enough and what comes next.
 
 ## A Practical Reading Strategy
 
 If you are new to RAG, start with Chapters 1 through 3 to build a strong base. If you already have a prototype and need better results, Chapters 4 through 6 will likely be the highest leverage. If you are designing longer-term platform capabilities, Chapter 7 will help you think beyond the default vector-search pattern.
 
-Throughout the book, the emphasis is on decisions. A RAG system is rarely made good by one clever trick. It becomes good when each layer is good enough for the use case, and when the interfaces between layers are deliberately designed.
+Throughout the book, the emphasis is on decisions. A RAG system is rarely made good by one clever trick. It becomes good when each layer is good enough for the use case, and when the handoff between layers is clear.
 
 ## Final Note Before We Begin
 
-RAG is sometimes marketed as an easy way to bolt external knowledge onto a model. In reality, it is closer to information retrieval, data engineering, prompt design, and system evaluation working together. That complexity is exactly why it is worth studying carefully. When the pieces align, RAG can be one of the most effective ways to build reliable LLM applications.
+RAG is sometimes marketed as an easy way to bolt external knowledge onto a model. In reality, it is closer to information retrieval, data preparation, prompt design, and evaluation working together. That complexity is exactly why it is worth studying carefully. When the pieces align, RAG can be one of the most effective ways to build reliable LLM applications.
 
-The next chapter starts with the core question: what exactly is RAG, and why has it become such a central design pattern for modern LLM systems?
+The next chapter starts with the most basic question in the whole subject: what exactly is RAG, and why do people use it in the first place?

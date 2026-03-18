@@ -1,65 +1,190 @@
 # RAG System Evaluation
 
-## Why Evaluating RAG Is Difficult
+## Why Evaluation Matters
 
-RAG evaluation is difficult because the system contains interacting components with different failure modes. Retrieval may surface weak evidence. Generation may misread strong evidence. The final answer alone does not always reveal where the failure began.
+By this point in the book, the system can:
 
-This is why mature teams evaluate intermediate artifacts as well as final responses.
+- turn documents into chunks;
+- turn chunks into a searchable index;
+- retrieve candidate evidence;
+- generate an answer from that evidence.
 
-## The RAG Evaluation Triad
+That sounds like a complete pipeline. But one hard question remains:
 
-A useful mental model is the evaluation triad:
+- how do we know whether the pipeline is actually working well?
 
-- context relevance: did the system retrieve the right evidence?
-- faithfulness or groundedness: did the answer stay supported by that evidence?
-- answer relevance: did the answer actually address the user's need?
+This is where evaluation comes in.
 
-These dimensions are related but distinct. A system can retrieve relevant context and still generate an off-target answer. It can also answer fluently while being weakly grounded.
+Evaluation is not just about getting one final score. Its real job is to help us see what is working, what is failing, and where the failure starts.
+
+That matters because a weak answer can come from several different places:
+
+- the right content never entered the corpus;
+- the chunking made the evidence hard to retrieve;
+- retrieval found the wrong chunks;
+- retrieval found good chunks, but generation used them badly;
+- the answer sounded polished, but did not actually answer the question.
+
+If we only look at the final answer, those failure modes get mixed together.
+
+## Why RAG Evaluation Is Harder Than Plain LLM Evaluation
+
+A plain LLM task might only ask:
+
+- did the model answer well?
+
+A RAG task has to ask at least two more things:
+
+- did the system retrieve the right evidence;
+- did the answer stay supported by that evidence.
+
+So RAG evaluation is harder because it is not judging one step. It is judging a chain of steps.
+
+That is why a final answer can be bad even when the retriever did a good job. The opposite can also happen: the answer may sound fine even though retrieval was weak.
+
+This is the core reason evaluation needs to be broken into parts.
+
+## The Three Main Questions
+
+A simple way to think about RAG evaluation is to ask three questions.
+
+First:
+
+- did the system retrieve useful evidence?
+
+Second:
+
+- did the answer stay supported by that evidence?
+
+Third:
+
+- did the answer actually help with the user's question?
+
+These three questions are often described as:
+
+- context relevance;
+- grounding, also called faithfulness;
+- answer relevance.
+
+The names are less important than the idea behind them.
 
 ## Context Relevance
 
-Context relevance measures whether the retrieved material is useful for answering the question. This can be assessed with human labels, model-based judgments, or task-specific heuristics.
+Context relevance is about the retrieved material.
 
-Inspecting retrieved chunks directly is one of the fastest ways to improve a system early in development.
+The basic question is:
 
-## Faithfulness and Groundedness
+- if a human looked at these retrieved chunks, would they say these are good pieces of evidence for answering the question?
 
-Faithfulness asks whether the answer is supported by the retrieved evidence. Grounded systems should be able to point to where a claim came from, not merely sound convincing.
+This matters because the generator can only work with what retrieval gives it.
 
-This is one of the most important properties in high-stakes applications. When faithfulness is weak, polished language becomes a liability rather than a strength.
+If the retrieved chunks are weak, incomplete, or off-topic, generation is already at a disadvantage.
+
+Some practical signs of poor context relevance are:
+
+- the right chapter never appears;
+- the right topic appears, but only in a vague way;
+- the top results repeat each other instead of covering the answer;
+- one crucial chunk is missing.
+
+In practice, inspecting retrieved chunks directly is often one of the fastest ways to improve a system.
+
+## Grounding
+
+Grounding asks whether the final answer is supported by the retrieved evidence.
+
+In plainer language:
+
+- did the answer stick to what the retrieved text actually supports?
+
+This matters because a model can sound convincing while still adding claims that were not in the evidence.
+
+That is a dangerous failure mode in RAG. The whole reason to retrieve evidence is to reduce unsupported answering. If the answer drifts away from the evidence, the system loses much of its value.
+
+Some practical signs of weak grounding are:
+
+- the answer includes details that never appeared in the retrieved chunks;
+- the answer overstates what the evidence actually said;
+- the answer merges evidence and guesswork without making the difference clear;
+- the citation line looks plausible, but the cited chunks do not really support the claim.
 
 ## Answer Relevance
 
-An answer can be grounded yet still unhelpful. It may omit the requested comparison, fail to summarize, or answer a nearby question instead of the exact one asked.
+An answer can be grounded and still not be very helpful.
 
-Answer relevance therefore focuses on task fulfillment from the user's perspective.
+For example:
 
-## Evaluation Workflows
+- it may summarize the wrong part of the evidence;
+- it may answer a nearby question instead of the user's actual question;
+- it may be too vague;
+- it may omit the comparison or decision the user needed.
 
-A practical evaluation workflow usually includes:
+That is why answer relevance is its own category.
 
-1. a representative query set;
-2. expected behaviors or reference answers;
-3. per-stage logging for retrieval and generation;
-4. automated metrics where useful;
-5. targeted human review for difficult cases.
+The key question is:
 
-Evaluation should be iterative and continuous, not a one-time gate before launch.
+- did the answer actually solve the user's task?
 
-### A Tiny Local Evaluation Loop
+This is important because good retrieval and good grounding are necessary, but not sufficient. The answer still has to be useful.
 
-This book includes a deliberately small evaluation script at `code/cli/evaluate_book.py`. It runs a handful of example questions from `code/data/book_eval_questions.json`, calls the book-question-answering pipeline, and checks two basic conditions:
+## A Simple Way to Debug with These Three Questions
 
-- whether the expected chapter is retrieved;
-- whether the final answer contains the expected key ideas.
+These three checks are useful because they help locate the problem.
 
-You can run it with:
+If context relevance is weak:
+
+- the problem is likely in data preparation, indexing, retrieval, or filtering.
+
+If context relevance is good, but grounding is weak:
+
+- the problem is likely in prompt design, context assembly, or generation behavior.
+
+If context relevance and grounding are both decent, but answer relevance is weak:
+
+- the problem may be task framing, output design, or the way the question is interpreted.
+
+This is why evaluation is not just measurement. It is diagnosis.
+
+## What a Practical Evaluation Workflow Looks Like
+
+A useful evaluation workflow does not need to be huge at first.
+
+Even a small setup can be valuable if it is repeatable.
+
+A practical workflow usually includes:
+
+1. a set of representative questions;
+2. some expectation for what good behavior looks like;
+3. visibility into retrieved chunks;
+4. a way to compare runs after changes;
+5. periodic manual review.
+
+This matters more than trying to build a perfect benchmark too early.
+
+The first goal is not to impress anyone with evaluation sophistication. The first goal is to catch regressions and learn where the system is weak.
+
+## The Small Evaluation Loop in This Project
+
+This repository already includes a small evaluation script:
+
+- `code/cli/evaluate_book.py`
+
+It uses a small question set from:
+
+- `code/data/book_eval_questions.json`
+
+The script runs the question-answering pipeline and checks two basic things:
+
+- whether the expected chapter appears in the output;
+- whether the answer includes expected keywords.
+
+You can run it like this:
 
 ```bash
 python3 code/cli/evaluate_book.py --chat-model qwen3.5:2b --embed-model bge-m3:latest
 ```
 
-The script is intentionally lightweight:
+The core loop is simple:
 
 ```python
 for item in items:
@@ -68,34 +193,118 @@ for item in items:
     answer_ok = all(keyword.lower() in output.lower() for keyword in item["expected_keywords"])
 ```
 
-This is not a complete evaluation framework, but it teaches the right habit: measure retrieval and generation separately whenever possible.
+This is not a full evaluation framework, but it already teaches the right habit:
 
-In the current project, the evaluation script can be pointed at a selected CLI question-answering configuration. For example, a cloud-model run can be tested with:
+- ask repeatable questions;
+- check retrieval behavior;
+- check answer behavior;
+- compare results after changes.
 
-```bash
-python3 code/cli/evaluate_book.py --chat-model deepseek-v3.1:671b-cloud --embed-model bge-m3:latest
+For a learning project, that is a good start.
+
+## What This Evaluation Does Well
+
+The current evaluator is useful because it is:
+
+- small;
+- easy to understand;
+- tied to the real project corpus;
+- repeatable across different model choices and retrieval settings.
+
+That means it can catch simple regressions after changes to:
+
+- chunking;
+- retrieval weights;
+- prompt design;
+- model selection.
+
+This is already much better than relying only on casual manual testing.
+
+## What This Evaluation Does Not Yet Do
+
+The current evaluator is also limited.
+
+It does not yet measure things like:
+
+- whether the retrieved chunk was the best one, only whether an expected chapter appeared;
+- whether the answer was fully supported, only whether certain keywords appeared;
+- whether the answer was concise or well structured;
+- whether citations truly matched specific claims;
+- whether behavior stayed strong across many query styles.
+
+So the right way to think about it is:
+
+- this is a useful regression check;
+- it is not yet a complete RAG evaluation system.
+
+That distinction matters because simple evaluation is still valuable, as long as we are honest about what it can and cannot tell us.
+
+## Human Review Still Matters
+
+Automated checks are helpful, but they do not replace reading real outputs.
+
+Human review is still important because a person can notice things such as:
+
+- the retrieved chunks are technically related, but not the best evidence;
+- the answer sounds fine, but misses the user's main need;
+- the wording suggests more certainty than the evidence supports;
+- the output format is awkward even though the facts are present.
+
+In early-stage RAG work, a small amount of careful human review often gives more insight than a large pile of weak metrics.
+
+## Model-Based Evaluation and Framework Tools
+
+As systems grow, teams often add stronger evaluation tools.
+
+These may include:
+
+- model-based judges;
+- frameworks such as RAGAS;
+- observability tools such as Phoenix;
+- richer trace logging and comparison dashboards.
+
+These tools can be useful, especially when the system becomes too large for only manual review.
+
+But they should be treated as aids, not as magic truth machines.
+
+The important question is always the same:
+
+- do these evaluation methods help us understand and improve real system behavior?
+
+If the answer is yes, they are useful. If not, they can become another layer of noise.
+
+## What to Measure as the Project Grows
+
+As the system becomes stronger, evaluation can grow in stages.
+
+A reasonable path is:
+
+1. start with a small fixed question set;
+2. inspect retrieval outputs manually;
+3. compare answer quality after changes;
+4. add stronger labels or model-based judgments later;
+5. track failures by category, not only by pass or fail.
+
+This progression matters because it keeps the evaluation system matched to the maturity of the project.
+
+## What This Chapter Adds to the Pipeline
+
+At this point, the project flow looks like this:
+
+```text
+documents
+-> cleaned chunks
+-> embeddings and index
+-> retrieval and ranking
+-> prompt assembly
+-> answer
+-> evaluation
 ```
 
-The interactive Streamlit app can also use different local or cloud chat models, but those UI runs should still be treated as exploratory comparisons unless the model choices are fixed inside an evaluation workflow.
+That gives the project a full loop.
 
-## LlamaIndex Evaluation
+The next chapter can now step back and ask a broader question:
 
-Framework-provided evaluation modules can accelerate experimentation by offering ready-made abstractions for query sets, judgments, and comparison runs. They are useful for building a habit of measurement early.
+- once the baseline RAG pipeline is working, what does it look like to go beyond this basic design?
 
-Still, teams should validate that the framework metrics align with product reality rather than treating built-in scores as final truth.
-
-## RAGAS
-
-RAGAS popularized a practical approach to assessing RAG behavior across multiple dimensions using model-assisted judgments. It is especially useful when human labeling capacity is limited and relative comparisons matter more than absolute scores.
-
-Like all synthetic or model-based evaluation, it should be triangulated with human inspection.
-
-The tiny evaluator in this book can be seen as the lowest rung on the same ladder. It is not sophisticated, but it forces the system to answer repeatable questions over the real book corpus and gives the reader a place to add stronger metrics later.
-
-## Phoenix (Arize Phoenix)
-
-Observability platforms such as Phoenix help teams inspect traces, prompts, retrieved documents, and output quality over time. This is essential once a RAG system serves real users and accumulates operational complexity.
-
-Evaluation is not complete when a metric is computed. It becomes complete when the team can connect measurements back to concrete system changes.
-
-For a learner, the most important step is to start logging and comparing outputs early. Once a local pipeline exists over the real chapter files, even a small JSON evaluation set can reveal regressions after changing chunking, prompts, retrieval weights, or model choices.
+That is where advanced architectures come in.

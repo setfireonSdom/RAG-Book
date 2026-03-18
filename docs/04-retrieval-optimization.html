@@ -215,23 +215,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#dense-retrieval" id="toc-dense-retrieval" class="nav-link active" data-scroll-target="#dense-retrieval"><span class="header-section-number">4.1</span> Dense Retrieval</a></li>
-  <li><a href="#sparse-retrieval" id="toc-sparse-retrieval" class="nav-link" data-scroll-target="#sparse-retrieval"><span class="header-section-number">4.2</span> Sparse Retrieval</a></li>
-  <li><a href="#hybrid-retrieval-systems" id="toc-hybrid-retrieval-systems" class="nav-link" data-scroll-target="#hybrid-retrieval-systems"><span class="header-section-number">4.3</span> Hybrid Retrieval Systems</a></li>
-  <li><a href="#implementing-hybrid-search" id="toc-implementing-hybrid-search" class="nav-link" data-scroll-target="#implementing-hybrid-search"><span class="header-section-number">4.4</span> Implementing Hybrid Search</a>
-  <ul class="collapse">
-  <li><a href="#practical-example-dense-vs-sparse-vs-hybrid" id="toc-practical-example-dense-vs-sparse-vs-hybrid" class="nav-link" data-scroll-target="#practical-example-dense-vs-sparse-vs-hybrid"><span class="header-section-number">4.4.1</span> Practical Example: Dense vs Sparse vs Hybrid</a></li>
-  </ul></li>
-  <li><a href="#query-construction" id="toc-query-construction" class="nav-link" data-scroll-target="#query-construction"><span class="header-section-number">4.5</span> Query Construction</a></li>
-  <li><a href="#text-to-metadata-filtering" id="toc-text-to-metadata-filtering" class="nav-link" data-scroll-target="#text-to-metadata-filtering"><span class="header-section-number">4.6</span> Text-to-Metadata Filtering</a></li>
-  <li><a href="#text-to-cypher-queries" id="toc-text-to-cypher-queries" class="nav-link" data-scroll-target="#text-to-cypher-queries"><span class="header-section-number">4.7</span> Text-to-Cypher Queries</a></li>
-  <li><a href="#text-to-sql-retrieval-systems" id="toc-text-to-sql-retrieval-systems" class="nav-link" data-scroll-target="#text-to-sql-retrieval-systems"><span class="header-section-number">4.8</span> Text-to-SQL Retrieval Systems</a></li>
-  <li><a href="#query-rewriting-and-reformulation" id="toc-query-rewriting-and-reformulation" class="nav-link" data-scroll-target="#query-rewriting-and-reformulation"><span class="header-section-number">4.9</span> Query Rewriting and Reformulation</a></li>
-  <li><a href="#query-routing-and-distribution" id="toc-query-routing-and-distribution" class="nav-link" data-scroll-target="#query-routing-and-distribution"><span class="header-section-number">4.10</span> Query Routing and Distribution</a></li>
-  <li><a href="#retrieval-pipelines" id="toc-retrieval-pipelines" class="nav-link" data-scroll-target="#retrieval-pipelines"><span class="header-section-number">4.11</span> Retrieval Pipelines</a></li>
-  <li><a href="#re-ranking-methods" id="toc-re-ranking-methods" class="nav-link" data-scroll-target="#re-ranking-methods"><span class="header-section-number">4.12</span> Re-ranking Methods</a></li>
-  <li><a href="#context-compression" id="toc-context-compression" class="nav-link" data-scroll-target="#context-compression"><span class="header-section-number">4.13</span> Context Compression</a></li>
-  <li><a href="#retrieval-correction" id="toc-retrieval-correction" class="nav-link" data-scroll-target="#retrieval-correction"><span class="header-section-number">4.14</span> Retrieval Correction</a></li>
+  <li><a href="#why-retrieval-still-fails-after-indexing" id="toc-why-retrieval-still-fails-after-indexing" class="nav-link active" data-scroll-target="#why-retrieval-still-fails-after-indexing"><span class="header-section-number">4.1</span> Why Retrieval Still Fails After Indexing</a></li>
+  <li><a href="#what-retrieval-is-really-trying-to-do" id="toc-what-retrieval-is-really-trying-to-do" class="nav-link" data-scroll-target="#what-retrieval-is-really-trying-to-do"><span class="header-section-number">4.2</span> What Retrieval Is Really Trying to Do</a></li>
+  <li><a href="#dense-retrieval" id="toc-dense-retrieval" class="nav-link" data-scroll-target="#dense-retrieval"><span class="header-section-number">4.3</span> Dense Retrieval</a></li>
+  <li><a href="#sparse-retrieval" id="toc-sparse-retrieval" class="nav-link" data-scroll-target="#sparse-retrieval"><span class="header-section-number">4.4</span> Sparse Retrieval</a></li>
+  <li><a href="#dense-and-sparse-fail-in-different-ways" id="toc-dense-and-sparse-fail-in-different-ways" class="nav-link" data-scroll-target="#dense-and-sparse-fail-in-different-ways"><span class="header-section-number">4.5</span> Dense and Sparse Fail in Different Ways</a></li>
+  <li><a href="#hybrid-retrieval" id="toc-hybrid-retrieval" class="nav-link" data-scroll-target="#hybrid-retrieval"><span class="header-section-number">4.6</span> Hybrid Retrieval</a></li>
+  <li><a href="#a-simple-example-why-hybrid-can-help" id="toc-a-simple-example-why-hybrid-can-help" class="nav-link" data-scroll-target="#a-simple-example-why-hybrid-can-help"><span class="header-section-number">4.7</span> A Simple Example: Why Hybrid Can Help</a></li>
+  <li><a href="#retrieval-as-a-pipeline-not-one-step" id="toc-retrieval-as-a-pipeline-not-one-step" class="nav-link" data-scroll-target="#retrieval-as-a-pipeline-not-one-step"><span class="header-section-number">4.8</span> Retrieval as a Pipeline, Not One Step</a></li>
+  <li><a href="#using-metadata-to-improve-retrieval" id="toc-using-metadata-to-improve-retrieval" class="nav-link" data-scroll-target="#using-metadata-to-improve-retrieval"><span class="header-section-number">4.9</span> Using Metadata to Improve Retrieval</a></li>
+  <li><a href="#query-rewriting-and-query-construction" id="toc-query-rewriting-and-query-construction" class="nav-link" data-scroll-target="#query-rewriting-and-query-construction"><span class="header-section-number">4.10</span> Query Rewriting and Query Construction</a></li>
+  <li><a href="#re-ranking" id="toc-re-ranking" class="nav-link" data-scroll-target="#re-ranking"><span class="header-section-number">4.11</span> Re-ranking</a></li>
+  <li><a href="#context-assembly" id="toc-context-assembly" class="nav-link" data-scroll-target="#context-assembly"><span class="header-section-number">4.12</span> Context Assembly</a></li>
+  <li><a href="#context-expansion-and-compression" id="toc-context-expansion-and-compression" class="nav-link" data-scroll-target="#context-expansion-and-compression"><span class="header-section-number">4.13</span> Context Expansion and Compression</a></li>
+  <li><a href="#retrieval-over-structured-sources" id="toc-retrieval-over-structured-sources" class="nav-link" data-scroll-target="#retrieval-over-structured-sources"><span class="header-section-number">4.14</span> Retrieval Over Structured Sources</a></li>
+  <li><a href="#how-to-inspect-retrieval-failures" id="toc-how-to-inspect-retrieval-failures" class="nav-link" data-scroll-target="#how-to-inspect-retrieval-failures"><span class="header-section-number">4.15</span> How to Inspect Retrieval Failures</a></li>
+  <li><a href="#how-this-project-lets-you-compare-retrieval-methods" id="toc-how-this-project-lets-you-compare-retrieval-methods" class="nav-link" data-scroll-target="#how-this-project-lets-you-compare-retrieval-methods"><span class="header-section-number">4.16</span> How This Project Lets You Compare Retrieval Methods</a></li>
+  <li><a href="#what-this-chapter-adds-to-the-pipeline" id="toc-what-this-chapter-adds-to-the-pipeline" class="nav-link" data-scroll-target="#what-this-chapter-adds-to-the-pipeline"><span class="header-section-number">4.17</span> What This Chapter Adds to the Pipeline</a></li>
   </ul>
 </nav>
     </div>
@@ -257,113 +257,279 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="dense-retrieval" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="dense-retrieval"><span class="header-section-number">4.1</span> Dense Retrieval</h2>
-<p>Dense retrieval uses embeddings to represent both queries and documents. It excels when semantic similarity matters more than exact token overlap, which is why it is common in modern RAG systems.</p>
-<p>Its weakness is that semantic closeness is not always the same as relevance. Dense retrievers may miss exact identifiers, formulas, or niche terminology unless the embeddings capture them well.</p>
+<section id="why-retrieval-still-fails-after-indexing" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="why-retrieval-still-fails-after-indexing"><span class="header-section-number">4.1</span> Why Retrieval Still Fails After Indexing</h2>
+<p>By the end of Chapter 3, the system has chunks, embeddings, and an index. That is enough to start retrieving. But it is not enough to guarantee good retrieval.</p>
+<p>This is the next important idea in RAG: having a searchable index does not mean the system will reliably find the best evidence.</p>
+<p>A system can still fail in ways like these:</p>
+<ul>
+<li>it finds text that is related, but not actually useful;</li>
+<li>it misses the chunk with the exact term the user cares about;</li>
+<li>it retrieves a broad explanation when the user needed a narrow fact;</li>
+<li>it brings back several almost-duplicate chunks instead of complementary evidence.</li>
+</ul>
+<p>So this chapter is about a more specific question than the last one.</p>
+<p>Chapter 3 asked:</p>
+<ul>
+<li>how do we make chunks searchable?</li>
+</ul>
+<p>Chapter 4 asks:</p>
+<ul>
+<li>how do we retrieve the right chunks more reliably?</li>
+</ul>
 </section>
-<section id="sparse-retrieval" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="sparse-retrieval"><span class="header-section-number">4.2</span> Sparse Retrieval</h2>
-<p>Sparse retrieval methods such as BM25 rely on token statistics and lexical matching. They are strong for exact phrases, IDs, error codes, and terminology-heavy domains.</p>
-<p>Many production systems still benefit from sparse retrieval because users often ask questions with language that directly overlaps the source text.</p>
+<section id="what-retrieval-is-really-trying-to-do" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="what-retrieval-is-really-trying-to-do"><span class="header-section-number">4.2</span> What Retrieval Is Really Trying to Do</h2>
+<p>In plain language, retrieval is trying to do two things at once:</p>
+<ul>
+<li>not miss useful evidence;</li>
+<li>not include too much irrelevant evidence.</li>
+</ul>
+<p>Those goals pull in opposite directions.</p>
+<p>If retrieval is too broad, the generator gets noisy context and may answer vaguely. If retrieval is too narrow, the generator may miss the key evidence and answer from partial information.</p>
+<p>That is why retrieval work is mostly about tradeoffs, not perfect rules.</p>
 </section>
-<section id="hybrid-retrieval-systems" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="hybrid-retrieval-systems"><span class="header-section-number">4.3</span> Hybrid Retrieval Systems</h2>
-<p>Hybrid retrieval combines dense and sparse signals. This is often one of the highest-return upgrades for a baseline system because the two methods fail differently.</p>
-<p>Dense retrieval broadens semantic coverage; sparse retrieval preserves exact matching. Together, they often improve recall and robustness.</p>
+<section id="dense-retrieval" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="dense-retrieval"><span class="header-section-number">4.3</span> Dense Retrieval</h2>
+<p>Dense retrieval uses embeddings for both the question and the stored chunks. It is strong when the user’s wording and the document’s wording are different, but the meaning is similar.</p>
+<p>For example, a user might ask:</p>
+<pre class="text"><code>When is RAG a better choice than fine-tuning?</code></pre>
+<p>The relevant chunk might say:</p>
+<pre class="text"><code>RAG is strongest when the challenge is access to external knowledge.</code></pre>
+<p>The exact words do not match perfectly, but the meaning is close. Dense retrieval is good at this kind of match.</p>
+<p>In this project, dense retrieval works by embedding the question and comparing it with each chunk embedding using cosine similarity.</p>
+<p>The practical strength of dense retrieval is semantic matching.</p>
+<p>The practical weakness is that semantic matching is not always enough.</p>
 </section>
-<section id="implementing-hybrid-search" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="implementing-hybrid-search"><span class="header-section-number">4.4</span> Implementing Hybrid Search</h2>
-<p>A practical hybrid pipeline might:</p>
+<section id="sparse-retrieval" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sparse-retrieval"><span class="header-section-number">4.4</span> Sparse Retrieval</h2>
+<p>Sparse retrieval is based more directly on word overlap. Methods such as BM25 give higher scores to chunks that contain important query terms.</p>
+<p>This is useful when the user’s wording matters a lot, such as:</p>
+<ul>
+<li>product names;</li>
+<li>error messages;</li>
+<li>abbreviations;</li>
+<li>IDs;</li>
+<li>exact phrases from documentation.</li>
+</ul>
+<p>Sparse retrieval can look old-fashioned compared with embedding-based methods, but it remains very useful because many real user questions contain the exact words that matter.</p>
+<p>Its weakness is the opposite of dense retrieval’s weakness. If the wording changes a lot, sparse retrieval may miss clearly related chunks.</p>
+</section>
+<section id="dense-and-sparse-fail-in-different-ways" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="dense-and-sparse-fail-in-different-ways"><span class="header-section-number">4.5</span> Dense and Sparse Fail in Different Ways</h2>
+<p>This is one of the most useful things to understand in retrieval.</p>
+<p>Dense retrieval may fail like this:</p>
+<ul>
+<li>it finds chunks that feel semantically related, but miss the exact point;</li>
+<li>it overlooks exact terms that matter;</li>
+<li>it returns broad conceptual text instead of the most direct evidence.</li>
+</ul>
+<p>Sparse retrieval may fail like this:</p>
+<ul>
+<li>it misses paraphrases;</li>
+<li>it struggles when the user asks in different words from the source text;</li>
+<li>it can overvalue repeated keywords even when the chunk is not the best answer.</li>
+</ul>
+<p>Because they fail differently, combining them often works better than relying on one alone.</p>
+</section>
+<section id="hybrid-retrieval" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="hybrid-retrieval"><span class="header-section-number">4.6</span> Hybrid Retrieval</h2>
+<p>Hybrid retrieval combines dense and sparse signals.</p>
+<p>The basic idea is simple:</p>
+<ul>
+<li>dense retrieval helps with meaning;</li>
+<li>sparse retrieval helps with exact wording;</li>
+<li>together they are often more stable.</li>
+</ul>
+<p>This project already includes a simple hybrid retriever. It does not need a fancy platform to be useful. Even a basic score merge can make retrieval noticeably better.</p>
+<p>The current implementation normalizes the dense and sparse scores, then combines them with a weight:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hybrid_scores(question: <span class="bu">str</span>, corpus: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]], index_data: <span class="bu">dict</span>, alpha: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.65</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">float</span>]:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    dense <span class="op">=</span> min_max_normalize(dense_scores(question, index_data))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    sparse <span class="op">=</span> min_max_normalize(sparse_scores(question, corpus))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    all_ids <span class="op">=</span> {item[<span class="st">"chunk_id"</span>] <span class="cf">for</span> item <span class="kw">in</span> corpus}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        chunk_id: alpha <span class="op">*</span> dense.get(chunk_id, <span class="fl">0.0</span>) <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> alpha) <span class="op">*</span> sparse.get(chunk_id, <span class="fl">0.0</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> chunk_id <span class="kw">in</span> all_ids</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You do not need to focus on the syntax first. The important idea is that the system is giving part of the decision to semantic similarity and part of the decision to word-level matching.</p>
+</section>
+<section id="a-simple-example-why-hybrid-can-help" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="a-simple-example-why-hybrid-can-help"><span class="header-section-number">4.7</span> A Simple Example: Why Hybrid Can Help</h2>
+<p>Imagine a user asks:</p>
+<pre class="text"><code>How does the book compare RAG with fine-tuning?</code></pre>
+<p>One chunk may contain the exact phrase “RAG vs.&nbsp;Fine-Tuning.” Another may talk about “external knowledge” and “behavior” without repeating the full query wording.</p>
+<p>Sparse retrieval may prefer the chunk with the exact phrase.</p>
+<p>Dense retrieval may prefer the chunk with the strongest semantic explanation.</p>
+<p>Hybrid retrieval has a chance to surface both kinds of evidence near the top.</p>
+<p>That often makes the final answer better because the generator sees both the direct match and the more explanatory support.</p>
+</section>
+<section id="retrieval-as-a-pipeline-not-one-step" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="retrieval-as-a-pipeline-not-one-step"><span class="header-section-number">4.8</span> Retrieval as a Pipeline, Not One Step</h2>
+<p>It helps to stop thinking of retrieval as a single search action.</p>
+<p>In many systems, retrieval is really a pipeline:</p>
 <ol type="1">
-<li>retrieve candidates from a dense index;</li>
-<li>retrieve candidates from a sparse index;</li>
-<li>merge and deduplicate results;</li>
-<li>apply re-ranking with a stronger model;</li>
-<li>assemble the final context window.</li>
+<li>generate candidates;</li>
+<li>filter them;</li>
+<li>rank them;</li>
+<li>assemble the final context.</li>
 </ol>
-<p>The implementation details vary, but the principle is stable: use cheaper methods for candidate generation and more expensive methods for final ranking.</p>
-<section id="practical-example-dense-vs-sparse-vs-hybrid" class="level3" data-number="4.4.1">
-<h3 data-number="4.4.1" class="anchored" data-anchor-id="practical-example-dense-vs-sparse-vs-hybrid"><span class="header-section-number">4.4.1</span> Practical Example: Dense vs Sparse vs Hybrid</h3>
-<p>This chapter’s example script, <code>code/cli/retrieval_compare.py</code>, compares three retrieval strategies on the actual book corpus after it has been ingested and indexed:</p>
+<p>This mental model is useful because it shows where different tools belong.</p>
+<p>For example:</p>
 <ul>
-<li>dense retrieval using the selected embedding model, with <code>bge-m3:latest</code> as the default baseline in this project;</li>
-<li>sparse retrieval using a small BM25 implementation;</li>
-<li>hybrid retrieval using weighted score fusion.</li>
+<li>dense and sparse retrieval are often candidate-generation methods;</li>
+<li>metadata filtering narrows the search space;</li>
+<li>reranking improves final ordering;</li>
+<li>context assembly decides what the generator actually sees.</li>
 </ul>
-<p>Run it with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/ingest_book.py</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/build_book_index.py <span class="at">--embed-model</span> bge-m3:latest</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/retrieval_compare.py <span class="at">--question</span> <span class="st">"How does the book compare RAG with fine-tuning?"</span> <span class="at">--embed-model</span> bge-m3:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The key hybrid scoring logic is simple:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hybrid_scores(question: <span class="bu">str</span>, chunks: <span class="bu">list</span>[<span class="bu">str</span>], alpha: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">float</span>]:</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    dense <span class="op">=</span> min_max_normalize(dense_scores(question, chunks))</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    sparse <span class="op">=</span> min_max_normalize(sparse_scores(question, chunks))</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        index: alpha <span class="op">*</span> dense.get(index, <span class="fl">0.0</span>) <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> alpha) <span class="op">*</span> sparse.get(index, <span class="fl">0.0</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> index <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(chunks))</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This code highlights an important engineering idea: hybrid retrieval does not have to start with a complicated platform. Even a straightforward weighted merge is enough to show why lexical and semantic signals complement each other when searching a real chapter set.</p>
+<p>This chapter will keep using that pipeline view.</p>
 </section>
-</section>
-<section id="query-construction" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="query-construction"><span class="header-section-number">4.5</span> Query Construction</h2>
-<p>Users do not always phrase questions in ways that match the underlying corpus. Query construction bridges that gap by expanding, reformulating, or decomposing the request into retrieval-friendly forms.</p>
-<p>Examples include generating synonyms, extracting entities, or turning a broad question into several narrower subqueries.</p>
-</section>
-<section id="text-to-metadata-filtering" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="text-to-metadata-filtering"><span class="header-section-number">4.6</span> Text-to-Metadata Filtering</h2>
-<p>Metadata filters can sharply improve retrieval precision. If the user asks about a specific product line, date range, region, document type, or policy version, the retriever should use that structure whenever possible.</p>
-<p>This reduces search space and often makes the answer more auditable.</p>
-</section>
-<section id="text-to-cypher-queries" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="text-to-cypher-queries"><span class="header-section-number">4.7</span> Text-to-Cypher Queries</h2>
-<p>When knowledge is represented as a graph, the retrieval problem changes. Instead of fetching free-text chunks, the system may need to generate a graph query such as Cypher to traverse entities and relationships.</p>
-<p>This is useful when the user asks questions about connections, dependencies, ownership, lineage, or multi-hop relationships.</p>
-</section>
-<section id="text-to-sql-retrieval-systems" class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="text-to-sql-retrieval-systems"><span class="header-section-number">4.8</span> Text-to-SQL Retrieval Systems</h2>
-<p>For tabular or warehouse-backed data, a natural-language request may be better handled by generating SQL than by retrieving prose. This is especially true for analytical questions, aggregations, or filtered summaries.</p>
-<p>Text-to-SQL should still be considered part of retrieval in the broad sense: it is a method for obtaining the evidence needed to answer.</p>
-</section>
-<section id="query-rewriting-and-reformulation" class="level2" data-number="4.9">
-<h2 data-number="4.9" class="anchored" data-anchor-id="query-rewriting-and-reformulation"><span class="header-section-number">4.9</span> Query Rewriting and Reformulation</h2>
-<p>Query rewriting can improve difficult searches, especially when user queries are vague, conversational, or underspecified. A system may rewrite a question into a canonical form before retrieval, or generate several alternative search intents in parallel.</p>
-<p>The main risk is drift. Rewriting should help recover relevant evidence, not silently change the user’s meaning.</p>
-</section>
-<section id="query-routing-and-distribution" class="level2" data-number="4.10">
-<h2 data-number="4.10" class="anchored" data-anchor-id="query-routing-and-distribution"><span class="header-section-number">4.10</span> Query Routing and Distribution</h2>
-<p>Advanced systems do not send every question to the same retriever. They route based on intent, modality, risk level, or source type. One query might go to a vector index, another to SQL, and another to a graph store.</p>
-<p>Routing turns retrieval into orchestration. The challenge is deciding when the extra complexity yields enough quality gain.</p>
-</section>
-<section id="retrieval-pipelines" class="level2" data-number="4.11">
-<h2 data-number="4.11" class="anchored" data-anchor-id="retrieval-pipelines"><span class="header-section-number">4.11</span> Retrieval Pipelines</h2>
-<p>A retrieval pipeline is often multi-stage:</p>
+<section id="using-metadata-to-improve-retrieval" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="using-metadata-to-improve-retrieval"><span class="header-section-number">4.9</span> Using Metadata to Improve Retrieval</h2>
+<p>Metadata becomes especially important here.</p>
+<p>Suppose the corpus contains:</p>
 <ul>
-<li>candidate generation;</li>
-<li>filtering;</li>
-<li>ranking;</li>
-<li>context assembly;</li>
-<li>optional citation or provenance tagging.</li>
+<li>several versions of a policy;</li>
+<li>documents from different teams;</li>
+<li>content from different dates;</li>
+<li>material the user may or may not be allowed to access.</li>
 </ul>
-<p>Seeing retrieval as a pipeline helps teams isolate failure modes and optimize the right layer.</p>
+<p>In those cases, vector similarity alone is not enough. The system may retrieve a chunk that is semantically relevant but wrong for the user’s situation.</p>
+<p>Metadata filtering helps prevent that.</p>
+<p>Examples include filtering by:</p>
+<ul>
+<li>source type;</li>
+<li>section;</li>
+<li>date;</li>
+<li>team;</li>
+<li>product;</li>
+<li>access scope.</li>
+</ul>
+<p>This is one reason Chapter 2 mattered so much. Good metadata gives retrieval more control.</p>
 </section>
-<section id="re-ranking-methods" class="level2" data-number="4.12">
-<h2 data-number="4.12" class="anchored" data-anchor-id="re-ranking-methods"><span class="header-section-number">4.12</span> Re-ranking Methods</h2>
-<p>Re-rankers apply a stronger relevance model to a small candidate set. Cross-encoders, reranking APIs, or task-specific scoring heuristics can all improve the quality of the final selected context.</p>
-<p>They are especially valuable when the first-stage retriever has good recall but mediocre ordering.</p>
-<p>In a local-first setup, a useful exercise is to first compare dense, sparse, and hybrid retrieval without a re-ranker. Only after that baseline is understood should a stronger second-stage scorer be added. This keeps the source of gains interpretable.</p>
+<section id="query-rewriting-and-query-construction" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="query-rewriting-and-query-construction"><span class="header-section-number">4.10</span> Query Rewriting and Query Construction</h2>
+<p>Users do not always ask clean, retrieval-friendly questions.</p>
+<p>A user may be vague:</p>
+<pre class="text"><code>What does the book say about when to use this?</code></pre>
+<p>Or too broad:</p>
+<pre class="text"><code>Explain retrieval.</code></pre>
+<p>Or too conversational:</p>
+<pre class="text"><code>I kind of forget, what's the part where dense and sparse are combined?</code></pre>
+<p>Query rewriting tries to turn that into a better retrieval query.</p>
+<p>This can include:</p>
+<ul>
+<li>adding likely keywords;</li>
+<li>rewriting into a clearer form;</li>
+<li>splitting one broad question into several narrower ones.</li>
+</ul>
+<p>The benefit is obvious: better retrieval inputs can lead to better results.</p>
+<p>The danger is also obvious: rewriting should not change what the user meant.</p>
+<p>So query rewriting is helpful, but it should be treated carefully.</p>
 </section>
-<section id="context-compression" class="level2" data-number="4.13">
-<h2 data-number="4.13" class="anchored" data-anchor-id="context-compression"><span class="header-section-number">4.13</span> Context Compression</h2>
-<p>Even good retrieval can return more text than the generator should receive. Compression methods trim, summarize, or extract the most relevant spans before generation.</p>
-<p>Compression can reduce token cost and improve focus, but it must preserve the evidence needed for faithful answers.</p>
+<section id="re-ranking" class="level2" data-number="4.11">
+<h2 data-number="4.11" class="anchored" data-anchor-id="re-ranking"><span class="header-section-number">4.11</span> Re-ranking</h2>
+<p>A common pattern in retrieval is that the system finds a decent candidate set, but the order is not great.</p>
+<p>For example, maybe the best chunk is in the top 10, but not in the top 3. If the generator only sees the top few chunks, that ordering problem becomes an answer-quality problem.</p>
+<p>Re-ranking is a second pass over a smaller candidate set. A stronger relevance model looks at those candidates and tries to sort them better.</p>
+<p>This is useful when:</p>
+<ul>
+<li>first-stage retrieval has decent recall;</li>
+<li>but the final ordering is noisy.</li>
+</ul>
+<p>In a small project, it is often smart to understand dense, sparse, and hybrid retrieval first. Only after that should reranking be added. Otherwise it becomes hard to tell where the improvement came from.</p>
 </section>
-<section id="retrieval-correction" class="level2" data-number="4.14">
-<h2 data-number="4.14" class="anchored" data-anchor-id="retrieval-correction"><span class="header-section-number">4.14</span> Retrieval Correction</h2>
-<p>No retrieval stack is perfect. Strong systems include correction strategies such as fallback searches, empty-result handling, confidence thresholds, or user clarification loops.</p>
-<p>The practical objective is not perfect retrieval. It is graceful behavior when retrieval is uncertain or incomplete.</p>
-<p>The local scripts in this book are intentionally transparent, so the reader can inspect the retrieved chapter chunks directly. That manual inspection habit is often the fastest way to diagnose whether a problem comes from chunking, embeddings, lexical mismatch, or the generation prompt.</p>
+<section id="context-assembly" class="level2" data-number="4.12">
+<h2 data-number="4.12" class="anchored" data-anchor-id="context-assembly"><span class="header-section-number">4.12</span> Context Assembly</h2>
+<p>Even after ranking, the system still has one more important job: deciding what context to actually pass to the generator.</p>
+<p>This is not trivial.</p>
+<p>If the system passes only one narrow chunk, the answer may miss key detail.</p>
+<p>If it passes too many chunks, the prompt may become noisy.</p>
+<p>So context assembly asks questions like:</p>
+<ul>
+<li>how many chunks should be included;</li>
+<li>should neighboring chunks be added;</li>
+<li>should duplicate or near-duplicate chunks be removed;</li>
+<li>should very long chunks be trimmed.</li>
+</ul>
+<p>This is where retrieval quality and generation quality meet.</p>
+</section>
+<section id="context-expansion-and-compression" class="level2" data-number="4.13">
+<h2 data-number="4.13" class="anchored" data-anchor-id="context-expansion-and-compression"><span class="header-section-number">4.13</span> Context Expansion and Compression</h2>
+<p>Two opposite moves are common here.</p>
+<p>Context expansion means adding nearby or related text when one chunk is too narrow on its own.</p>
+<p>Context compression means trimming or summarizing when the retrieved material is too long or repetitive.</p>
+<p>Both are trying to solve the same problem:</p>
+<ul>
+<li>give the generator enough evidence, but not too much noise.</li>
+</ul>
+<p>Neither move is always correct. Both should be tested on real questions.</p>
+</section>
+<section id="retrieval-over-structured-sources" class="level2" data-number="4.14">
+<h2 data-number="4.14" class="anchored" data-anchor-id="retrieval-over-structured-sources"><span class="header-section-number">4.14</span> Retrieval Over Structured Sources</h2>
+<p>Not every retrieval problem is “search chunks of text.”</p>
+<p>Sometimes the right answer lives in:</p>
+<ul>
+<li>a table;</li>
+<li>a SQL database;</li>
+<li>a graph;</li>
+<li>a system of records.</li>
+</ul>
+<p>In those cases, the retrieval step may need to do something different, such as:</p>
+<ul>
+<li>generate SQL;</li>
+<li>generate a graph query;</li>
+<li>filter structured records by fields.</li>
+</ul>
+<p>This still counts as retrieval in the broad sense. The system is still trying to fetch the evidence needed to answer the question. It is just not always using free-text chunk search.</p>
+<p>This matters because many people first learn RAG as “embed chunks, retrieve chunks, prompt model.” That is a useful baseline, but not the whole retrieval design space.</p>
+</section>
+<section id="how-to-inspect-retrieval-failures" class="level2" data-number="4.15">
+<h2 data-number="4.15" class="anchored" data-anchor-id="how-to-inspect-retrieval-failures"><span class="header-section-number">4.15</span> How to Inspect Retrieval Failures</h2>
+<p>When retrieval feels weak, it helps to ask a few concrete questions.</p>
+<p>Did the right chunk never appear at all?</p>
+<ul>
+<li>Then the problem may be chunking, indexing, metadata, or query mismatch.</li>
+</ul>
+<p>Did the right chunk appear, but too low in the ranking?</p>
+<ul>
+<li>Then the problem may be scoring or the lack of reranking.</li>
+</ul>
+<p>Did several top chunks say almost the same thing?</p>
+<ul>
+<li>Then the problem may be duplication or weak context assembly.</li>
+</ul>
+<p>Did retrieval return something related but not specific enough?</p>
+<ul>
+<li>Then dense retrieval may be too broad on its own, or the query may need better construction.</li>
+</ul>
+<p>This kind of debugging matters because “retrieval is bad” is too vague to fix.</p>
+</section>
+<section id="how-this-project-lets-you-compare-retrieval-methods" class="level2" data-number="4.16">
+<h2 data-number="4.16" class="anchored" data-anchor-id="how-this-project-lets-you-compare-retrieval-methods"><span class="header-section-number">4.16</span> How This Project Lets You Compare Retrieval Methods</h2>
+<p>This repository includes <code>code/cli/retrieval_compare.py</code>, which is helpful because it makes retrieval visible.</p>
+<p>You can run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/ingest_book.py</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/build_book_index.py <span class="at">--embed-model</span> bge-m3:latest</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/retrieval_compare.py <span class="at">--question</span> <span class="st">"How does the book compare RAG with fine-tuning?"</span> <span class="at">--embed-model</span> bge-m3:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That script compares:</p>
+<ul>
+<li>dense retrieval;</li>
+<li>sparse retrieval;</li>
+<li>hybrid retrieval.</li>
+</ul>
+<p>This is useful because it trains the right habit: inspect the retrieved chunks directly. Do not judge the system only by the final answer. Often the fastest way to improve a RAG system is to look at what was retrieved and ask whether that evidence actually makes sense.</p>
+</section>
+<section id="what-this-chapter-adds-to-the-pipeline" class="level2" data-number="4.17">
+<h2 data-number="4.17" class="anchored" data-anchor-id="what-this-chapter-adds-to-the-pipeline"><span class="header-section-number">4.17</span> What This Chapter Adds to the Pipeline</h2>
+<p>At this point, the project flow looks like this:</p>
+<pre class="text"><code>documents
+-&gt; cleaned chunks
+-&gt; embeddings and index
+-&gt; retrieval and ranking
+-&gt; prompt context
+-&gt; answer</code></pre>
+<p>So the next step is clear.</p>
+<p>Once retrieval has selected evidence, the system still needs to turn that evidence into a good prompt and a good answer. That is the job of the next chapter.</p>
 
 
 </section>

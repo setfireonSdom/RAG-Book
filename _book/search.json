@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "RAG Book",
     "section": "",
-    "text": "Preface\nRetrieval-Augmented Generation, usually shortened to RAG, has become one of the most practical patterns for building useful systems with large language models. Instead of asking a model to answer from static pretraining alone, a RAG system retrieves relevant information at runtime and conditions generation on that evidence. The result is often more current, more controllable, and easier to ground in enterprise knowledge.\nThis book is written as a practical map of the RAG landscape. It does not assume that every reader is a researcher, and it does not pretend that RAG is a single recipe. In practice, a production-grade RAG system is a pipeline with tradeoffs across ingestion, chunking, embeddings, indexing, retrieval, prompting, evaluation, and operations. We will move through those pieces in order and keep connecting them back to system behavior.",
+    "text": "Preface\nRetrieval-Augmented Generation, usually shortened to RAG, is one of the most useful ways to build applications with large language models. Instead of asking a model to answer from pretraining alone, a RAG system looks up relevant information at runtime and asks the model to answer with that evidence in view.\nThat sounds simple, but in practice RAG is not one trick. It is a pipeline. Documents have to be prepared. Chunks have to be indexed. Retrieval has to bring back the right evidence. Prompts have to make the model use that evidence well. And the whole system has to be evaluated so we can tell whether it is actually helping.\nThis book is written for readers who want that pipeline explained in a practical way. The goal is not to show off every tool in the ecosystem. The goal is to make the moving parts clear enough that you can understand them, debug them, and build with them.",
     "crumbs": [
       "Preface"
     ]
@@ -24,7 +24,7 @@
     "href": "index.html#what-you-will-learn",
     "title": "RAG Book",
     "section": "What You Will Learn",
-    "text": "What You Will Learn\nBy the end of this book, you should be able to:\n\nexplain what RAG is and when it is useful;\nprepare and structure data for retrieval;\nchoose embedding, indexing, and vector storage strategies;\ndesign dense, sparse, hybrid, and structured retrieval flows;\nintegrate retrieved context into robust generation pipelines;\nevaluate faithfulness, relevance, and retrieval quality;\nunderstand where advanced architectures such as graph-augmented RAG fit.",
+    "text": "What You Will Learn\nBy the end of this book, you should be able to:\n\nexplain what RAG is and when it is useful;\nprepare and structure data for retrieval;\nchoose embedding, indexing, and vector storage strategies;\ndesign dense, sparse, hybrid, and structured retrieval flows;\nturn retrieved evidence into grounded answers;\nevaluate retrieval quality, grounding, and answer quality;\nunderstand where advanced architectures such as graph-augmented RAG fit.",
     "crumbs": [
       "Preface"
     ]
@@ -34,7 +34,7 @@
     "href": "index.html#how-the-book-is-organized",
     "title": "RAG Book",
     "section": "How the Book Is Organized",
-    "text": "How the Book Is Organized\nThe book is organized into seven main chapters:\n\nIntroduction to RAG introduces the pattern, its motivations, and its limits.\nData Preparation covers ingestion, cleaning, and chunking.\nIndex Construction and Optimization focuses on embeddings and vector infrastructure.\nRetrieval Optimization examines how to get the right evidence at the right time.\nGeneration Integration connects retrieval output to prompts, schemas, and tools.\nRAG System Evaluation discusses how to measure whether the system is actually working.\nAdvanced RAG Architectures explores graph-based and next-generation directions.",
+    "text": "How the Book Is Organized\nThe book is organized into seven main chapters:\n\nIntroduction to RAG explains what RAG is, what problem it solves, and where its limits begin.\nData Preparation shows how raw source material becomes retrieval-ready chunks.\nIndex Construction and Optimization explains how those chunks become searchable.\nRetrieval Optimization focuses on how to find the right evidence more reliably.\nGeneration Integration shows how retrieved evidence becomes a grounded answer.\nRAG System Evaluation explains how to tell which part of the system is working and which part is not.\nAdvanced RAG Architectures asks when a baseline pipeline is no longer enough and what comes next.",
     "crumbs": [
       "Preface"
     ]
@@ -44,7 +44,7 @@
     "href": "index.html#a-practical-reading-strategy",
     "title": "RAG Book",
     "section": "A Practical Reading Strategy",
-    "text": "A Practical Reading Strategy\nIf you are new to RAG, start with Chapters 1 through 3 to build a strong base. If you already have a prototype and need better results, Chapters 4 through 6 will likely be the highest leverage. If you are designing longer-term platform capabilities, Chapter 7 will help you think beyond the default vector-search pattern.\nThroughout the book, the emphasis is on decisions. A RAG system is rarely made good by one clever trick. It becomes good when each layer is good enough for the use case, and when the interfaces between layers are deliberately designed.",
+    "text": "A Practical Reading Strategy\nIf you are new to RAG, start with Chapters 1 through 3 to build a strong base. If you already have a prototype and need better results, Chapters 4 through 6 will likely be the highest leverage. If you are designing longer-term platform capabilities, Chapter 7 will help you think beyond the default vector-search pattern.\nThroughout the book, the emphasis is on decisions. A RAG system is rarely made good by one clever trick. It becomes good when each layer is good enough for the use case, and when the handoff between layers is clear.",
     "crumbs": [
       "Preface"
     ]
@@ -54,7 +54,7 @@
     "href": "index.html#final-note-before-we-begin",
     "title": "RAG Book",
     "section": "Final Note Before We Begin",
-    "text": "Final Note Before We Begin\nRAG is sometimes marketed as an easy way to bolt external knowledge onto a model. In reality, it is closer to information retrieval, data engineering, prompt design, and system evaluation working together. That complexity is exactly why it is worth studying carefully. When the pieces align, RAG can be one of the most effective ways to build reliable LLM applications.\nThe next chapter starts with the core question: what exactly is RAG, and why has it become such a central design pattern for modern LLM systems?",
+    "text": "Final Note Before We Begin\nRAG is sometimes marketed as an easy way to bolt external knowledge onto a model. In reality, it is closer to information retrieval, data preparation, prompt design, and evaluation working together. That complexity is exactly why it is worth studying carefully. When the pieces align, RAG can be one of the most effective ways to build reliable LLM applications.\nThe next chapter starts with the most basic question in the whole subject: what exactly is RAG, and why do people use it in the first place?",
     "crumbs": [
       "Preface"
     ]
@@ -64,7 +64,7 @@
     "href": "01-introduction-to-rag.html",
     "title": "1  Introduction to RAG",
     "section": "",
-    "text": "1.1 What Is Retrieval-Augmented Generation\nRetrieval-Augmented Generation (RAG) is an application pattern in which a language model receives external information at inference time and uses that information to produce an answer. Rather than relying only on parameters learned during pretraining, the model is given a dynamically retrieved context window that is relevant to the current query.\nAt a high level, a RAG system has three stages: retrieve, augment, generate. A user question is transformed into one or more retrieval queries; relevant passages or records are fetched from a knowledge source; then the model is prompted to answer using those materials. The key benefit is that the knowledge source can be updated independently of the model itself.",
+    "text": "1.1 What Is Retrieval-Augmented Generation\nRetrieval-Augmented Generation (RAG) is an application pattern in which a language model receives external information at inference time and uses that information to produce an answer. Rather than relying only on parameters learned during pretraining, the model is given retrieved evidence that is relevant to the current query.\nAt a high level, a RAG system has three stages: retrieve, augment, generate. A user question triggers retrieval, useful passages or records are fetched from a knowledge source, and the model answers with that evidence in view. The key benefit is that the knowledge source can be updated independently of the model itself.\nIn plainer language, RAG is a way of letting the model look things up before it answers.\nThat matters because many useful questions depend on information that is:",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to RAG</span>"
     ]
@@ -73,8 +73,8 @@
     "objectID": "01-introduction-to-rag.html#core-principles-and-system-architecture",
     "href": "01-introduction-to-rag.html#core-principles-and-system-architecture",
     "title": "1  Introduction to RAG",
-    "section": "1.2 Core Principles and System Architecture",
-    "text": "1.2 Core Principles and System Architecture\nA practical RAG system usually contains the following components:\n\na data pipeline that ingests documents, records, or events;\na transformation layer that cleans, chunks, and annotates content;\nan indexing layer that stores vectors, tokens, or structured fields;\na retrieval layer that selects candidate evidence;\na ranking layer that orders or filters candidates;\na generation layer that produces the final answer;\nan evaluation and observability layer that measures quality.\n\nThe architecture matters because errors compound across layers. If chunking is poor, retrieval quality suffers. If retrieval is weak, prompting cannot rescue answer faithfulness. If evaluation is absent, teams often optimize for style instead of correctness.",
+    "section": "1.3 Core Principles and System Architecture",
+    "text": "1.3 Core Principles and System Architecture\nA practical RAG system usually contains the following components:\n\na data pipeline that ingests documents, records, or events;\na transformation layer that cleans, chunks, and annotates content;\nan indexing layer that stores vectors, tokens, or structured fields;\na retrieval layer that selects candidate evidence;\na ranking layer that orders or filters candidates;\na generation layer that produces the final answer;\nan evaluation and observability layer that measures quality.\n\nYou do not need to memorize this list on first read. The important point is simpler: errors compound across layers. If chunking is poor, retrieval quality suffers. If retrieval is weak, prompting cannot rescue grounding. If evaluation is absent, teams often optimize for style instead of correctness.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to RAG</span>"
     ]
@@ -94,7 +94,7 @@
     "href": "01-introduction-to-rag.html#rag-vs.-fine-tuning",
     "title": "1  Introduction to RAG",
     "section": "1.4 RAG vs. Fine-Tuning",
-    "text": "1.4 RAG vs. Fine-Tuning\nRAG and fine-tuning solve different problems.\nRAG is strongest when the challenge is access to external knowledge: product catalogs, internal documentation, support articles, contracts, policies, and rapidly changing facts. Fine-tuning is strongest when the challenge is behavior: tone, style, task formatting, response patterns, or domain-specific output conventions.\nIn practice, many mature systems combine the two. A model may be tuned to follow a task reliably while RAG provides fresh or private facts. The common mistake is assuming one replaces the other in all cases.",
+    "text": "1.4 RAG vs. Fine-Tuning\nRAG and fine-tuning solve different problems.\nRAG is strongest when the challenge is access to external knowledge: product catalogs, internal documentation, support articles, contracts, policies, and rapidly changing facts. Fine-tuning is strongest when the challenge is behavior: tone, style, task formatting, response patterns, or domain-specific output conventions.\nIn practice, many mature systems combine the two. A model may be tuned to follow a task reliably while RAG provides fresh or private facts. The common mistake is assuming one replaces the other in all cases.\nIf you want a short version:\n\nRAG is usually about giving the model better knowledge at answer time;\nfine-tuning is usually about changing how the model behaves.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to RAG</span>"
     ]
@@ -113,8 +113,8 @@
     "objectID": "01-introduction-to-rag.html#getting-started-with-rag-systems",
     "href": "01-introduction-to-rag.html#getting-started-with-rag-systems",
     "title": "1  Introduction to RAG",
-    "section": "1.6 Getting Started with RAG Systems",
-    "text": "1.6 Getting Started with RAG Systems\nThe best way to begin is not with the fanciest architecture. Start with a narrow use case, a clear corpus, and a measurable task. Build a baseline pipeline:\n\nIngest a bounded set of documents.\nNormalize and chunk them.\nEmbed and index the chunks.\nRetrieve top results for a test query set.\nPrompt the model with retrieved context.\nEvaluate answer quality and failure modes.\n\nThis baseline reveals where the real bottleneck lives. For many teams, the first bottleneck is not model choice but document quality and query coverage.",
+    "section": "1.7 Getting Started with RAG Systems",
+    "text": "1.7 Getting Started with RAG Systems\nThe best way to begin is not with the fanciest architecture. Start with a narrow use case, a clear corpus, and a measurable task. Build a baseline pipeline:\n\nIngest a bounded set of documents.\nNormalize and chunk them.\nEmbed and index the chunks.\nRetrieve top results for a test query set.\nPrompt the model with retrieved evidence.\nEvaluate answer quality and failure modes.\n\nThis baseline reveals where the real bottleneck lives. For many teams, the first bottleneck is not model choice but document quality and query coverage.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to RAG</span>"
     ]
@@ -143,8 +143,8 @@
     "objectID": "01-introduction-to-rag.html#a-minimal-rag-implementation",
     "href": "01-introduction-to-rag.html#a-minimal-rag-implementation",
     "title": "1  Introduction to RAG",
-    "section": "1.9 A Minimal RAG Implementation",
-    "text": "1.9 A Minimal RAG Implementation\nThe smallest useful RAG system can be expressed in pseudocode:\ndocuments -&gt; clean -&gt; chunk -&gt; embed -&gt; index\nuser query -&gt; embed -&gt; retrieve top_k chunks\ntop_k chunks + instructions + question -&gt; language model\nlanguage model -&gt; answer with citations or grounded summary\nFrameworks such as LangChain and LlamaIndex can accelerate assembly, while local model runners such as Ollama can help with experimentation. Still, the framework is not the system. Good results come from thoughtful data and evaluation choices, not only from wiring together abstractions.\n\n1.9.1 A Configurable Demo with Ollama\nTo make the architecture concrete, this book uses an Ollama-based setup and turns the book itself into the knowledge base. The current project supports both local models and Ollama cloud models for generation, while the embedding side is typically built with a local embedding model such as bge-m3:latest.\n\ndefault local generator model: qwen3.5:2b\ndefault embedding model: bge-m3:latest\noptional generator choice: selectable local or Ollama cloud model\ningestion script: code/cli/ingest_book.py\nindexing script: code/cli/build_book_index.py\nquestion-answering script: code/cli/ask_book.py\n\nThe workflow is intentionally practical:\n\nread the .qmd chapters listed in _quarto.yml;\nchunk them into retrieval units with source-path metadata;\nembed those chunks with a selected embedding model, usually bge-m3:latest;\nstore the result as a local JSON index;\nanswer questions against the book with a selected Ollama chat model.\n\n\n\n1.9.2 Running the Example\nIf you want to use local models, pull them first:\nollama pull qwen3.5:2b\nollama pull bge-m3:latest\nIf you want to use Ollama cloud models, add OLLAMA_API_KEY to the project’s .env file.\nThen build and query the book index. A local default path looks like this:\npython3 code/cli/ingest_book.py\npython3 code/cli/build_book_index.py --embed-model bge-m3:latest\npython3 code/cli/ask_book.py --question \"What does the book say about hybrid retrieval?\" --chat-model qwen3.5:2b --embed-model bge-m3:latest\nIn the Streamlit interface, the same pipeline is exposed through model selectors in the sidebar, so the reader can switch chat models without editing code.\n\n\n1.9.3 Core Code Path\nThe key ingestion step turns book chapters into reusable retrieval chunks:\ndef build_corpus() -&gt; list[dict[str, str]]:\n    corpus: list[dict[str, str]] = []\n    for document in load_book_documents():\n        corpus.extend(chunk_document(document[\"path\"], document[\"text\"]))\n    return corpus\nThe answering step then retrieves matching chunks from the built index and passes them to the selected generator. This keeps the example grounded in a real artifact: if the chapter text changes, the corpus and answers can change too.\n\n\n1.9.4 Why This Example Matters\nA project like this is useful for two reasons. First, it gives the reader a baseline that can run entirely on local models, while still allowing a faster or stronger cloud chat model when desired. Second, it answers a real question: how do we build a RAG system over a body of source material that we actually care about?\nIn a real project, the next upgrades would usually be better chunking, metadata-aware filtering, a persistent vector store, and stronger evaluation. Those improvements make more sense once a baseline exists and can already answer questions over the full book.",
+    "section": "1.8 A Minimal RAG Implementation",
+    "text": "1.8 A Minimal RAG Implementation\nThe smallest useful RAG system can be expressed in pseudocode:\ndocuments -&gt; clean -&gt; chunk -&gt; embed -&gt; index\nuser query -&gt; embed -&gt; retrieve top_k chunks\ntop_k chunks + instructions + question -&gt; language model\nlanguage model -&gt; answer with citations or grounded summary\nFrameworks such as LangChain and LlamaIndex can accelerate assembly, while local model runners such as Ollama can help with experimentation. Still, the framework is not the system. Good results come from good data, good retrieval, and clear evaluation, not only from wiring together abstractions.\n\n1.8.1 A Configurable Demo with Ollama\nTo make the architecture concrete, this book uses an Ollama-based setup and turns the book itself into the knowledge base. The current project supports both local models and Ollama cloud models for generation, while the embedding side is typically built with a local embedding model such as bge-m3:latest.\n\ndefault local generator model: qwen3.5:2b\ndefault embedding model: bge-m3:latest\noptional generator choice: selectable local or Ollama cloud model\ningestion script: code/cli/ingest_book.py\nindexing script: code/cli/build_book_index.py\nquestion-answering script: code/cli/ask_book.py\n\nThe workflow is intentionally practical:\n\nread the .qmd chapters listed in _quarto.yml;\nturn them into chunks with source-path metadata;\nembed those chunks with a selected embedding model, usually bge-m3:latest;\nstore the result as a local JSON index;\nanswer questions against the book with a selected Ollama chat model.\n\n\n\n1.8.2 Running the Example\nIf you want to use local models, pull them first:\nollama pull qwen3.5:2b\nollama pull bge-m3:latest\nIf you want to use Ollama cloud models, add OLLAMA_API_KEY to the project’s .env file.\nThen build and query the book index. A local default path looks like this:\npython3 code/cli/ingest_book.py\npython3 code/cli/build_book_index.py --embed-model bge-m3:latest\npython3 code/cli/ask_book.py --question \"What does the book say about hybrid retrieval?\" --chat-model qwen3.5:2b --embed-model bge-m3:latest\nIn the Streamlit interface, the same pipeline is exposed through model selectors in the sidebar, so the reader can switch chat models without editing code.\n\n\n1.8.3 Core Code Path\nThe key ingestion step turns book chapters into reusable chunks:\ndef build_corpus() -&gt; list[dict[str, str]]:\n    corpus: list[dict[str, str]] = []\n    for document in load_book_documents():\n        corpus.extend(chunk_document(document[\"path\"], document[\"text\"]))\n    return corpus\nThe answering step then retrieves matching chunks from the built index and passes them to the selected generator. This keeps the example tied to a real artifact: if the chapter text changes, the corpus and answers can change too.\n\n\n1.8.4 Why This Example Matters\nA project like this is useful for two reasons. First, it gives the reader a baseline that can run entirely on local models, while still allowing a faster or stronger cloud chat model when desired. Second, it answers a real question: how do we build a RAG system over a body of source material that we actually care about?\nIn a real project, the next upgrades would usually be better chunking, metadata-aware filtering, a persistent vector store, and stronger evaluation. Those improvements make more sense once a baseline exists and can already answer questions over the full book.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to RAG</span>"
     ]
@@ -154,7 +154,7 @@
     "href": "02-data-preparation.html",
     "title": "2  Data Preparation",
     "section": "",
-    "text": "2.1 The Role of Data in RAG Systems\nData preparation is the foundation of the entire pipeline. Retrieval systems cannot surface information that was never ingested, cannot recover semantics lost during parsing, and cannot rank chunks well if the text boundaries are broken.\nIn many failing RAG systems, retrieval is blamed first. Yet the underlying issue is often incomplete coverage, duplicated content, malformed parsing, or weak metadata. Strong data preparation reduces all of those risks.",
+    "text": "2.1 The Role of Data in RAG Systems\nData preparation is the foundation of the entire pipeline. Retrieval systems cannot surface information that was never ingested, cannot recover semantics lost during parsing, and cannot rank chunks well if the text boundaries are broken.\nIn many failing RAG systems, retrieval is blamed first. Yet the underlying issue is often incomplete coverage, duplicated content, malformed parsing, or weak metadata. Strong data preparation reduces all of those risks.\nIn this project, data preparation is not an abstract preprocessing phase. It is the part of the system that turns the book’s .qmd chapters into a retrieval corpus that can later be embedded, searched, and used as evidence for grounded answers. If this step is weak, every downstream step inherits the weakness.\nAnother way to say this is simple: data preparation decides what the system is able to know later. If important text never enters the corpus, retrieval cannot find it. If the text enters in a broken form, retrieval may find the wrong thing. If the chunk is messy, the model may answer from partial or confusing evidence.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -163,8 +163,8 @@
     "objectID": "02-data-preparation.html#document-ingestion-and-parsing",
     "href": "02-data-preparation.html#document-ingestion-and-parsing",
     "title": "2  Data Preparation",
-    "section": "2.2 Document Ingestion and Parsing",
-    "text": "2.2 Document Ingestion and Parsing\nIngestion is the process of collecting raw material from source systems such as PDFs, HTML pages, markdown files, databases, wikis, tickets, and cloud storage. Parsing then converts those materials into a structured internal representation.\nThe central requirement is fidelity. Titles, sections, tables, lists, code blocks, dates, and authorship metadata often carry critical meaning. If the parser collapses structure too aggressively, downstream retrieval quality declines.",
+    "section": "2.4 Document Ingestion and Parsing",
+    "text": "2.4 Document Ingestion and Parsing\nIngestion is the process of collecting raw material from source systems such as PDFs, HTML pages, markdown files, databases, wikis, tickets, and cloud storage. Parsing then converts those materials into a structured internal representation.\nThe central requirement is fidelity. Titles, sections, tables, lists, code blocks, dates, and authorship metadata often carry critical meaning. If the parser collapses structure too aggressively, downstream retrieval quality declines.\nIn the current repository, ingestion starts from the Quarto book configuration. The system reads _quarto.yml, finds the listed chapter files, and then loads their contents as documents:\ndef parse_quarto_chapters() -&gt; list[Path]:\n    config_path = PROJECT_DIR / \"_quarto.yml\"\n    lines = config_path.read_text(encoding=\"utf-8\").splitlines()\n    chapters: list[Path] = []\n    in_chapters = False\n    for raw_line in lines:\n        line = raw_line.rstrip()\n        stripped = line.strip()\n        if stripped == \"chapters:\":\n            in_chapters = True\n            continue\n        if in_chapters:\n            if re.match(r\"^[A-Za-z]\", line):\n                break\n            match = re.match(r\"^\\s*-\\s+(.+\\.qmd)\\s*$\", line)\n            if match:\n                path = PROJECT_DIR / match.group(1)\n                if path.name != \"references.qmd\":\n                    chapters.append(path)\n    return chapters\nThis is a simple example, but it illustrates an important principle: ingestion should preserve document boundaries and document identity. The retriever later benefits from knowing not only the text itself, but also where that text came from.\n\n2.4.1 Case Study: Technical Chapters as Retrieval Documents\nSuppose the source material is a chapter with headings, paragraphs, and code examples:\n## Hybrid Retrieval\n\nHybrid retrieval combines dense and sparse methods.\n\nDense retrieval helps capture semantic similarity.\n\nSparse retrieval helps preserve exact keyword matching.\nIf this content is parsed poorly, several things can go wrong:\n\nthe heading may be dropped;\nthe paragraphs may be merged into one undifferentiated block;\nthe text may later be split in a place that separates the concept from its explanation.\n\nIn retrieval terms, that means a user may retrieve only a partial definition, only a supporting detail, or a chunk with weak contextual labeling. The parser’s job is therefore not merely to read bytes. It is to preserve enough structure for later retrieval to make sense.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -173,8 +173,8 @@
     "objectID": "02-data-preparation.html#document-loaders-and-processing-tools",
     "href": "02-data-preparation.html#document-loaders-and-processing-tools",
     "title": "2  Data Preparation",
-    "section": "2.3 Document Loaders and Processing Tools",
-    "text": "2.3 Document Loaders and Processing Tools\nDocument loaders are useful because each source format fails in different ways. PDFs may have broken reading order. HTML may include navigation chrome. Spreadsheets may hide semantics in headers. OCR pipelines may introduce noise.\nA robust processing stack usually includes:\n\nformat-specific loaders;\ncontent validators;\ndeduplication checks;\nlanguage detection;\nmetadata enrichment;\noptional OCR and table extraction.\n\nThe goal is not to preserve raw bytes, but to preserve meaning.",
+    "section": "2.5 Document Loaders and Processing Tools",
+    "text": "2.5 Document Loaders and Processing Tools\nDocument loaders are useful because each source format fails in different ways. PDFs may have broken reading order. HTML may include navigation chrome. Spreadsheets may hide semantics in headers. OCR pipelines may introduce noise.\nA robust processing stack usually includes:\n\nformat-specific loaders;\ncontent validators;\ndeduplication checks;\nlanguage detection;\nmetadata enrichment;\noptional OCR and table extraction.\n\nThe goal is not to preserve raw bytes, but to preserve meaning.\nFor a beginner, the key idea is this: different file types break in different ways. A PDF may scramble reading order. An HTML page may include menus and footers that should never become retrieval content. A spreadsheet may depend on row and column labels that plain text loses. That is why data preparation is not one generic “load document” step. It is a set of format-specific fixes.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -183,8 +183,8 @@
     "objectID": "02-data-preparation.html#structured-and-unstructured-data-pipelines",
     "href": "02-data-preparation.html#structured-and-unstructured-data-pipelines",
     "title": "2  Data Preparation",
-    "section": "2.4 Structured and Unstructured Data Pipelines",
-    "text": "2.4 Structured and Unstructured Data Pipelines\nRAG often begins with unstructured text, but many valuable systems depend on structured data too. Product specs, transaction records, support metrics, and knowledge graphs may all contribute useful evidence.\nUnstructured pipelines usually optimize for semantic retrieval. Structured pipelines optimize for precise filtering, joins, and field-level semantics. Mature systems often combine both and route queries differently depending on the user intent.",
+    "section": "2.6 Structured and Unstructured Data Pipelines",
+    "text": "2.6 Structured and Unstructured Data Pipelines\nRAG often begins with unstructured text, but many valuable systems depend on structured data too. Product specs, transaction records, support metrics, and knowledge graphs may all contribute useful evidence.\nUnstructured pipelines usually optimize for semantic retrieval. Structured pipelines optimize for precise filtering, joins, and field-level semantics. Mature systems often combine both and route queries differently depending on the user intent.\nFor example, a chapter in this book is mostly unstructured text. A product catalog is more structured. An FAQ page sits somewhere in between. That difference matters because not every source should be chunked in the same way. A free-form article often benefits from paragraph-aware chunking. An FAQ often works better if one question and one answer stay together as one chunk.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -193,8 +193,8 @@
     "objectID": "02-data-preparation.html#text-cleaning-and-normalization",
     "href": "02-data-preparation.html#text-cleaning-and-normalization",
     "title": "2  Data Preparation",
-    "section": "2.5 Text Cleaning and Normalization",
-    "text": "2.5 Text Cleaning and Normalization\nCleaning should be conservative. Remove obvious noise such as duplicated headers, invisible characters, broken whitespace, or irrelevant boilerplate. Keep information that affects meaning, such as section labels, table headings, bullet relationships, and legal disclaimers.\nNormalization practices commonly include:\n\nstandardizing whitespace and line breaks;\npreserving heading hierarchy;\nconverting lists into readable plain text;\nkeeping source IDs and timestamps;\nattaching provenance metadata to each chunk.\n\nThe right question is always: what context will the retriever and model need later?",
+    "section": "2.7 Text Cleaning and Normalization",
+    "text": "2.7 Text Cleaning and Normalization\nCleaning should be conservative. Remove obvious noise such as duplicated headers, invisible characters, broken whitespace, or irrelevant boilerplate. Keep information that affects meaning, such as section labels, table headings, bullet relationships, and legal disclaimers.\nNormalization practices commonly include:\n\nstandardizing whitespace and line breaks;\npreserving heading hierarchy;\nconverting lists into readable plain text;\nkeeping source IDs and timestamps;\nattaching provenance metadata to each chunk.\n\nThe right question is always: what context will the retriever and model need later?\nThat question sounds basic, but it prevents a common mistake. Many people clean text to make it look tidy. What matters is not whether the text looks tidy. What matters is whether the text still contains the clues needed to answer a future question.\nThe current project uses a lightweight cleaning function before chunking:\ndef strip_quarto_noise(text: str) -&gt; str:\n    text = re.sub(r\"^---\\n.*?\\n---\\n\", \"\", text, flags=re.DOTALL)\n    text = re.sub(r\"```.*?```\", \"\", text, flags=re.DOTALL)\n    text = re.sub(r\"\\{\\.unnumbered\\}\", \"\", text)\n    return text\nThis code removes front matter, fenced code blocks, and a Quarto-specific class marker. The example is useful because it shows both the value and the risk of cleaning. Removing noise can improve retrieval focus, but over-cleaning can also discard information that a user might reasonably ask about.\n\n2.7.1 Case Study: Cleaning Too Little vs. Cleaning Too Much\nConsider a chapter that begins with front matter and formatting metadata:\n---\ntitle: \"Data Preparation\"\n---\n\n# Data Preparation {.unnumbered}\n\nChunking is one of the highest-leverage decisions in RAG.\nIf the system leaves all of that text untouched, retrieval may surface chunks dominated by formatting artifacts rather than substantive content. A user asking about chunking does not need YAML headers or Quarto markers.\nBut cleaning can also go too far. Imagine a policy document like this:\nAccess levels:\n- Admin: full write access\n- Editor: content update only\n- Viewer: read only\nIf cleaning removes the heading or flattens the list into unclear prose, the retriever may lose exactly the distinctions the user cares about. The lesson is simple: cleaning should remove noise, not structure.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -203,8 +203,8 @@
     "objectID": "02-data-preparation.html#why-text-chunking-matters",
     "href": "02-data-preparation.html#why-text-chunking-matters",
     "title": "2  Data Preparation",
-    "section": "2.6 Why Text Chunking Matters",
-    "text": "2.6 Why Text Chunking Matters\nChunking is the process of breaking documents into retrieval units. Chunks that are too small lose context. Chunks that are too large dilute relevance and waste tokens. Chunking is therefore one of the highest-leverage decisions in RAG.\nThe ideal chunk is not a fixed number of characters. It is a unit of meaning that is also small enough to rank, store, and inject efficiently.",
+    "section": "2.9 Why Text Chunking Matters",
+    "text": "2.9 Why Text Chunking Matters\nChunking is the process of breaking documents into chunks for retrieval. Chunks that are too small lose context. Chunks that are too large dilute relevance and waste tokens. Chunking is therefore one of the highest-leverage decisions in RAG.\nThe ideal chunk is not a fixed number of characters. It is a unit of meaning that is also small enough to rank, store, and inject efficiently.\nThis repository uses a structure-aware chunking baseline instead of blind fixed-width slicing. The core logic tracks headings, groups paragraphs, and creates chunks close to a target length:\ndef chunk_document(path: str, text: str, target_chars: int = 1100) -&gt; list[dict[str, str]]:\n    cleaned = strip_quarto_noise(text)\n    lines = cleaned.splitlines()\n    chunks: list[dict[str, str]] = []\n    heading_stack: list[str] = []\n    buffer: list[str] = []\n\n    def flush() -&gt; None:\n        nonlocal buffer\n        body = \"\\n\".join(line.strip() for line in buffer if line.strip()).strip()\n        if not body:\n            buffer = []\n            return\n        title = \" &gt; \".join(heading_stack) if heading_stack else Path(path).stem\n        paragraphs = [part.strip() for part in re.split(r\"\\n\\s*\\n\", body) if part.strip()]\n        current = \"\"\n        chunk_id = len(chunks) + 1\n        for paragraph in paragraphs:\n            candidate = paragraph if not current else f\"{current}\\n\\n{paragraph}\"\n            if current and len(candidate) &gt; target_chars:\n                chunks.append(\n                    {\n                        \"chunk_id\": f\"{Path(path).stem}-{chunk_id}\",\n                        \"source_path\": path,\n                        \"section\": title,\n                        \"text\": current.strip(),\n                    }\n                )\n                chunk_id += 1\n                current = paragraph\n            else:\n                current = candidate\n        if current:\n            chunks.append(\n                {\n                    \"chunk_id\": f\"{Path(path).stem}-{chunk_id}\",\n                    \"source_path\": path,\n                    \"section\": title,\n                    \"text\": current.strip(),\n                }\n            )\n        buffer = []\nEven if the code looks simple, it encodes several important design decisions:\n\nheadings are preserved as section metadata;\nparagraphs are treated as semantic boundaries;\nchunk size is controlled, but not by cutting text in arbitrary positions;\neach chunk carries source provenance for later display and citation.\n\nThis is the main idea of chunking in plain language: keep together what belongs together, and split apart what would otherwise become too long to retrieve well.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -213,8 +213,8 @@
     "objectID": "02-data-preparation.html#fixed-size-chunking",
     "href": "02-data-preparation.html#fixed-size-chunking",
     "title": "2  Data Preparation",
-    "section": "2.7 Fixed-Size Chunking",
-    "text": "2.7 Fixed-Size Chunking\nFixed-size chunking is the simplest baseline: split text into windows of n tokens or characters, optionally with overlap. It is easy to implement and often surprisingly effective for homogeneous documents.\nIts weakness is semantic blindness. Paragraph boundaries, headings, and tables are ignored unless preserved separately. Fixed-size chunking is best treated as a baseline, not a universal answer.",
+    "section": "2.10 Fixed-Size Chunking",
+    "text": "2.10 Fixed-Size Chunking\nFixed-size chunking is the simplest baseline: split text into windows of n tokens or characters, optionally with overlap. It is easy to implement and often surprisingly effective for homogeneous documents.\nIts weakness is semantic blindness. Paragraph boundaries, headings, and tables are ignored unless preserved separately. Fixed-size chunking is best treated as a baseline, not a universal answer.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -223,8 +223,8 @@
     "objectID": "02-data-preparation.html#recursive-chunking-strategies",
     "href": "02-data-preparation.html#recursive-chunking-strategies",
     "title": "2  Data Preparation",
-    "section": "2.8 Recursive Chunking Strategies",
-    "text": "2.8 Recursive Chunking Strategies\nRecursive chunking improves on fixed-size chunking by attempting larger structural boundaries first, then falling back to smaller ones. For example, a pipeline may split by heading, then paragraph, then sentence if necessary.\nThis strategy tends to preserve coherence better while still keeping chunk lengths within target ranges. It is a strong general-purpose default for many text corpora.",
+    "section": "2.11 Recursive Chunking Strategies",
+    "text": "2.11 Recursive Chunking Strategies\nRecursive chunking improves on fixed-size chunking by attempting larger structural boundaries first, then falling back to smaller ones. For example, a pipeline may split by heading, then paragraph, then sentence if necessary.\nThis strategy tends to preserve coherence better while still keeping chunk lengths within target ranges. It is a strong general-purpose default for many text corpora.\nIf fixed-size chunking asks “How many characters should I cut?”, recursive chunking asks “Can I split this at a natural boundary first?” That is usually a better question.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -233,8 +233,8 @@
     "objectID": "02-data-preparation.html#semantic-chunking",
     "href": "02-data-preparation.html#semantic-chunking",
     "title": "2  Data Preparation",
-    "section": "2.9 Semantic Chunking",
-    "text": "2.9 Semantic Chunking\nSemantic chunking tries to split text where the topic changes rather than where the character count ends. This can improve retrieval quality when documents contain long sections that drift across subtopics.\nThe tradeoff is complexity. Semantic chunking can be slower, harder to debug, and sensitive to the segmentation model. It works best when the corpus is dense and concept-heavy enough to justify the extra effort.",
+    "section": "2.12 Semantic Chunking",
+    "text": "2.12 Semantic Chunking\nSemantic chunking tries to split text where the topic changes rather than where the character count ends. This can improve retrieval quality when documents contain long sections that drift across subtopics.\nThe tradeoff is complexity. Semantic chunking can be slower, harder to debug, and sensitive to the segmentation model. It works best when the corpus is dense and concept-heavy enough to justify the extra effort.\nThis sounds attractive, but it is not always the right first step. If the team still does not understand its documents, metadata, or evaluation set, semantic chunking can add complexity before the basics are under control.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -243,8 +243,8 @@
     "objectID": "02-data-preparation.html#structure-aware-chunking",
     "href": "02-data-preparation.html#structure-aware-chunking",
     "title": "2  Data Preparation",
-    "section": "2.10 Structure-Aware Chunking",
-    "text": "2.10 Structure-Aware Chunking\nStructure-aware chunking uses document features such as headings, captions, table boundaries, slide sections, or code blocks. This is often the best choice for technical documentation, legal texts, and academic materials where structure conveys meaning.\nExamples include:\n\nkeeping one FAQ item per chunk;\npreserving an entire table with its caption and notes;\nkeeping code examples together with their explanations;\nsplitting policies by numbered clause.",
+    "section": "2.13 Structure-Aware Chunking",
+    "text": "2.13 Structure-Aware Chunking\nStructure-aware chunking uses document features such as headings, captions, table boundaries, slide sections, or code blocks. This is often the best choice for technical documentation, legal texts, and academic materials where structure conveys meaning.\nExamples include:\n\nkeeping one FAQ item per chunk;\npreserving an entire table with its caption and notes;\nkeeping code examples together with their explanations;\nsplitting policies by numbered clause.\n\n\n2.13.1 Case Study: A Bad Chunk and a Better Chunk\nSuppose a chapter contains this short section:\n## RAG vs. Fine-Tuning\n\nRAG is strongest when the challenge is access to external knowledge.\n\nFine-tuning is strongest when the challenge is behavior, style, or output format.\nA poor fixed split might produce:\nChunk A:\nRAG is strongest when the challenge is access to external knowledge. Fine-tuning\n\nChunk B:\nis strongest when the challenge is behavior, style, or output format.\nThis split damages the comparison itself. A user asking about the difference between RAG and fine-tuning may retrieve only half the contrast.\nA better structure-aware chunk would keep the short section intact:\nsource_path: 01-introduction-to-rag.qmd\nsection: RAG vs. Fine-Tuning\ntext:\nRAG is strongest when the challenge is access to external knowledge.\n\nFine-tuning is strongest when the challenge is behavior, style, or output format.\nThis version is better for retrieval because:\n\nthe heading tells the retriever and the user what question the chunk answers;\nthe comparison stays together instead of being split across chunk boundaries;\nthe source path makes later attribution straightforward.\n\n\n\n2.13.2 Case Study: FAQ-Style Content\nSome materials already contain natural chunk boundaries. FAQ documents are a good example:\nQ: When should RAG be preferred over fine-tuning?\nA: When the main challenge is accessing external or changing knowledge rather than changing model behavior.\nIf the question and answer are split into different chunks, retrieval may find the wording of the question but miss the answer itself. A better strategy is to keep one FAQ item as one chunk, because the semantic unit is the whole exchange, not the individual lines.\nThis example shows a broader point: chunking should follow meaning when possible. Uniform chunk sizes are useful, but document semantics matter more.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -253,8 +253,8 @@
     "objectID": "02-data-preparation.html#chunking-strategies-across-frameworks",
     "href": "02-data-preparation.html#chunking-strategies-across-frameworks",
     "title": "2  Data Preparation",
-    "section": "2.11 Chunking Strategies Across Frameworks",
-    "text": "2.11 Chunking Strategies Across Frameworks\nMost frameworks provide utilities for chunking, but the decision logic still belongs to the system designer. The same corpus can yield very different results under different chunk sizes, overlaps, and structure rules.\nA practical process is to test chunking on a representative query set, inspect retrieved passages manually, and iterate. Chunking is not a preprocessing footnote. It is a retrieval design choice that strongly shapes everything that follows.",
+    "section": "2.15 Chunking Strategies Across Frameworks",
+    "text": "2.15 Chunking Strategies Across Frameworks\nMost frameworks provide utilities for chunking, but the decision logic still belongs to the system designer. The same corpus can yield very different results under different chunk sizes, overlaps, and structure rules.\nA practical process is to test chunking on a representative query set, inspect retrieved passages manually, and iterate. Chunking is not a preprocessing footnote. It is a retrieval design choice that strongly shapes everything that follows.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
     ]
@@ -264,7 +264,7 @@
     "href": "03-index-construction-and-optimization.html",
     "title": "3  Index Construction and Optimization",
     "section": "",
-    "text": "3.1 Embeddings and Their Role in RAG\nEmbeddings map content into vector spaces where semantically similar items are located near one another. In dense retrieval systems, embeddings are the main bridge between a user query and the candidate passages that might answer it.\nTheir role is powerful but bounded. An embedding model captures similarity according to its training data and objective. If that notion of similarity does not match the task, retrieval quality will suffer.",
+    "text": "3.1 From Chunks to Searchable Units\nAt the end of Chapter 2, we had a set of chunks that were clean enough and small enough to retrieve. But those chunks are still just text. The system still needs a way to search them well.\nThat is the job of indexing.\nIn plain language, indexing means turning chunks into a form that the retrieval step can search quickly and usefully. In this project, that mostly means creating embeddings for each chunk and saving them in an index file.\nSo the flow now looks like this:\nThis chapter is about that middle step.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
     ]
@@ -404,7 +404,7 @@
     "href": "04-retrieval-optimization.html",
     "title": "4  Retrieval Optimization",
     "section": "",
-    "text": "4.1 Dense Retrieval\nDense retrieval uses embeddings to represent both queries and documents. It excels when semantic similarity matters more than exact token overlap, which is why it is common in modern RAG systems.\nIts weakness is that semantic closeness is not always the same as relevance. Dense retrievers may miss exact identifiers, formulas, or niche terminology unless the embeddings capture them well.",
+    "text": "4.1 Why Retrieval Still Fails After Indexing\nBy the end of Chapter 3, the system has chunks, embeddings, and an index. That is enough to start retrieving. But it is not enough to guarantee good retrieval.\nThis is the next important idea in RAG: having a searchable index does not mean the system will reliably find the best evidence.\nA system can still fail in ways like these:\nSo this chapter is about a more specific question than the last one.\nChapter 3 asked:\nChapter 4 asks:",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
     ]
@@ -413,8 +413,8 @@
     "objectID": "04-retrieval-optimization.html#sparse-retrieval",
     "href": "04-retrieval-optimization.html#sparse-retrieval",
     "title": "4  Retrieval Optimization",
-    "section": "4.2 Sparse Retrieval",
-    "text": "4.2 Sparse Retrieval\nSparse retrieval methods such as BM25 rely on token statistics and lexical matching. They are strong for exact phrases, IDs, error codes, and terminology-heavy domains.\nMany production systems still benefit from sparse retrieval because users often ask questions with language that directly overlaps the source text.",
+    "section": "4.4 Sparse Retrieval",
+    "text": "4.4 Sparse Retrieval\nSparse retrieval is based more directly on word overlap. Methods such as BM25 give higher scores to chunks that contain important query terms.\nThis is useful when the user’s wording matters a lot, such as:\n\nproduct names;\nerror messages;\nabbreviations;\nIDs;\nexact phrases from documentation.\n\nSparse retrieval can look old-fashioned compared with embedding-based methods, but it remains very useful because many real user questions contain the exact words that matter.\nIts weakness is the opposite of dense retrieval’s weakness. If the wording changes a lot, sparse retrieval may miss clearly related chunks.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
     ]
@@ -544,7 +544,7 @@
     "href": "05-generation-integration.html",
     "title": "5  Generation Integration",
     "section": "",
-    "text": "5.1 From Retrieval to Generation\nRetrieval only creates the possibility of a good answer. The generation layer decides whether that evidence is used clearly, faithfully, and in a form the user can trust.\nThis transition is where many systems become fragile. If the prompt is underspecified, the model may ignore evidence. If too much context is injected, the model may become distracted. If the task is vague, the answer may sound plausible while failing the actual need.",
+    "text": "5.1 Retrieval Is Not the Final Answer\nBy the end of Chapter 4, the system has selected chunks that look useful. But retrieved evidence is not the same thing as a good answer.\nThis is where generation begins.\nThe generator has to do a harder job than it may first appear:\nSo the main question of this chapter is simple:",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
     ]
@@ -553,8 +553,8 @@
     "objectID": "05-generation-integration.html#prompt-design-with-retrieved-context",
     "href": "05-generation-integration.html#prompt-design-with-retrieved-context",
     "title": "5  Generation Integration",
-    "section": "5.2 Prompt Design with Retrieved Context",
-    "text": "5.2 Prompt Design with Retrieved Context\nGood prompt design tells the model what the retrieved context represents and how it should be used. Typical instructions include:\n\nanswer using the provided sources;\nstate uncertainty when evidence is insufficient;\ncite relevant passages or document IDs;\nseparate grounded facts from assumptions;\navoid inventing unsupported details.\n\nPrompt design is not only about wording elegance. It is interface design between retrieval output and model behavior.",
+    "section": "5.4 Prompt Design with Retrieved Context",
+    "text": "5.4 Prompt Design with Retrieved Context\nThe prompt is the interface between retrieval and generation.\nIt tells the model:\n\nwhat the user asked;\nwhat evidence was retrieved;\nhow the evidence should be used;\nwhat the model should do if the evidence is weak;\nwhat form the answer should take.\n\nIn this project, the prompt builder in code/core/book_rag.py makes those choices explicit:\ndef build_prompt(question: str, retrieved: list[dict[str, str]]) -&gt; str:\n    answer_language = detect_answer_language(question)\n    context = \"\\n\\n\".join(\n        f\"[{index}] {item['source_path']} | {item['section']} | score={item['score']:.3f}\\n{item['text']}\"\n        for index, item in enumerate(retrieved, start=1)\n    )\n    return textwrap.dedent(\n        f\"\"\"\n        You are answering questions about the book project in the local workspace.\n        Use only the retrieved context below.\n        If the retrieved context is insufficient, say that clearly.\n        Give a concise answer in {answer_language}.\n        Keep the final citation line in the format \"Sources: ...\".\n\n        Question:\n        {question}\n\n        Retrieved context:\n        {context}\n        \"\"\"\n    ).strip()\nThis is a simple prompt, but it already includes several important ideas:\n\nthe model is told to answer from retrieved context;\nthe model is told to admit when context is not enough;\nthe model is told what language to answer in;\nthe retrieved chunks are labeled with source information.\n\nThat is a good baseline because the generation rules are visible and easy to reason about.",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
     ]
@@ -614,7 +614,7 @@
     "href": "06-rag-system-evaluation.html",
     "title": "6  RAG System Evaluation",
     "section": "",
-    "text": "6.1 Why Evaluating RAG Is Difficult\nRAG evaluation is difficult because the system contains interacting components with different failure modes. Retrieval may surface weak evidence. Generation may misread strong evidence. The final answer alone does not always reveal where the failure began.\nThis is why mature teams evaluate intermediate artifacts as well as final responses.",
+    "text": "6.1 Why Evaluation Matters\nBy this point in the book, the system can:\nThat sounds like a complete pipeline. But one hard question remains:\nThis is where evaluation comes in.\nEvaluation is not just about getting one final score. Its real job is to help us see what is working, what is failing, and where the failure starts.\nThat matters because a weak answer can come from several different places:\nIf we only look at the final answer, those failure modes get mixed together.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
     ]
@@ -633,8 +633,8 @@
     "objectID": "06-rag-system-evaluation.html#context-relevance",
     "href": "06-rag-system-evaluation.html#context-relevance",
     "title": "6  RAG System Evaluation",
-    "section": "6.3 Context Relevance",
-    "text": "6.3 Context Relevance\nContext relevance measures whether the retrieved material is useful for answering the question. This can be assessed with human labels, model-based judgments, or task-specific heuristics.\nInspecting retrieved chunks directly is one of the fastest ways to improve a system early in development.",
+    "section": "6.4 Context Relevance",
+    "text": "6.4 Context Relevance\nContext relevance is about the retrieved material.\nThe basic question is:\n\nif a human looked at these retrieved chunks, would they say these are good pieces of evidence for answering the question?\n\nThis matters because the generator can only work with what retrieval gives it.\nIf the retrieved chunks are weak, incomplete, or off-topic, generation is already at a disadvantage.\nSome practical signs of poor context relevance are:\n\nthe right chapter never appears;\nthe right topic appears, but only in a vague way;\nthe top results repeat each other instead of covering the answer;\none crucial chunk is missing.\n\nIn practice, inspecting retrieved chunks directly is often one of the fastest ways to improve a system.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
     ]
@@ -653,8 +653,8 @@
     "objectID": "06-rag-system-evaluation.html#answer-relevance",
     "href": "06-rag-system-evaluation.html#answer-relevance",
     "title": "6  RAG System Evaluation",
-    "section": "6.5 Answer Relevance",
-    "text": "6.5 Answer Relevance\nAn answer can be grounded yet still unhelpful. It may omit the requested comparison, fail to summarize, or answer a nearby question instead of the exact one asked.\nAnswer relevance therefore focuses on task fulfillment from the user’s perspective.",
+    "section": "6.6 Answer Relevance",
+    "text": "6.6 Answer Relevance\nAn answer can be grounded and still not be very helpful.\nFor example:\n\nit may summarize the wrong part of the evidence;\nit may answer a nearby question instead of the user’s actual question;\nit may be too vague;\nit may omit the comparison or decision the user needed.\n\nThat is why answer relevance is its own category.\nThe key question is:\n\ndid the answer actually solve the user’s task?\n\nThis is important because good retrieval and good grounding are necessary, but not sufficient. The answer still has to be useful.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
     ]
@@ -704,7 +704,7 @@
     "href": "07-advanced-rag-architectures.html",
     "title": "7  Advanced RAG Architectures",
     "section": "",
-    "text": "7.1 Limitations of Traditional RAG\nTraditional RAG is often built around a straightforward assumption: retrieve the top few chunks from a vector index, then generate an answer. This works well for many tasks, but it struggles with multi-hop reasoning, structured relationships, long workflows, and questions that require precise backend execution.\nAs systems mature, these limitations become more visible than benchmark demos suggest.",
+    "text": "7.1 When Baseline RAG Stops Being Enough\nBy this point in the book, we have built up a baseline RAG pipeline:\nThat baseline is enough for many useful systems. In fact, a lot of teams would benefit more from building a clean baseline well than from jumping too quickly into advanced ideas.\nSo this chapter is not here to say “basic RAG is obsolete.” It is here to answer a more practical question:\nThat is the right starting point for advanced architecture.",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
     ]
@@ -754,9 +754,869 @@
     "href": "summary.html",
     "title": "8  Summary",
     "section": "",
-    "text": "RAG is best understood not as a single algorithm, but as a systems pattern for grounding language models in external knowledge at runtime. Across this book, we moved from first principles to implementation concerns, from retrieval quality to evaluation rigor, and from simple pipelines to more advanced architectures.\nSeveral themes repeat throughout every chapter.\nFirst, data quality determines system quality. No embedding model, vector database, or prompt can fully compensate for broken ingestion, poor chunk boundaries, stale documents, or inconsistent metadata.\nSecond, retrieval is a modeling problem, not just an infrastructure problem. The act of converting a user request into evidence selection requires choices about representation, indexing, query formulation, ranking, filtering, and context assembly.\nThird, generation must be treated as a constrained interface. Once documents are retrieved, the system still needs careful prompt design, output structure, and tool orchestration to produce answers that are useful and faithful.\nFourth, evaluation cannot be postponed. A RAG system that “looks good in demos” may still fail in coverage, grounding, latency, or operational robustness. Strong teams define quality criteria early and measure them continuously.\nFinally, the future of RAG is likely to be more heterogeneous rather than less. Vector retrieval will remain important, but graph reasoning, tool use, structured backends, workflow routing, and adaptive planning will continue to expand what retrieval-augmented systems can do.\nIf this book has one practical message, it is this: build RAG systems layer by layer, observe them carefully, and optimize them with evidence rather than intuition alone.",
+    "text": "RAG is easiest to understand when you stop thinking of it as one trick and start thinking of it as a pipeline. In this book, we walked through that pipeline step by step: prepare the data, build an index, retrieve evidence, generate an answer, and then evaluate what happened.\nSeveral themes repeat throughout every chapter.\nFirst, data quality determines system quality. No embedding model, vector database, or prompt can fully compensate for broken ingestion, poor chunk boundaries, stale documents, or inconsistent metadata.\nSecond, retrieval is a modeling problem, not just an infrastructure problem. The act of converting a user request into evidence selection requires choices about representation, indexing, query formulation, ranking, filtering, and context assembly.\nThird, generation must be treated as a constrained interface. Once evidence is retrieved, the system still needs careful prompt design, output structure, and tool orchestration to produce answers that are useful and grounded.\nFourth, evaluation cannot be postponed. A RAG system that looks good in demos may still fail in coverage, grounding, latency, or operational robustness. Strong teams define quality criteria early and measure them continuously.\nFinally, more advanced RAG systems do not win by being more complicated for its own sake. They win when the retrieval design actually matches the problem. Sometimes chunk retrieval is enough. Sometimes the task needs metadata filters, SQL, graph traversal, or tool use.\nIf this book has one practical message, it is this: build RAG systems layer by layer, inspect what they are doing, and improve them with evidence rather than guesswork.",
     "crumbs": [
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  },
+  {
+    "objectID": "02-data-preparation.html#what-data-preparation-is-trying-to-achieve",
+    "href": "02-data-preparation.html#what-data-preparation-is-trying-to-achieve",
+    "title": "2  Data Preparation",
+    "section": "2.2 What Data Preparation Is Trying to Achieve",
+    "text": "2.2 What Data Preparation Is Trying to Achieve\nBefore getting into methods, it helps to be clear about the goal.\nData preparation is trying to produce chunks that are:\n\ncomplete enough to make sense on their own;\nsmall enough to retrieve efficiently;\nclean enough to avoid obvious noise;\nrich enough in metadata to support filtering and citation;\nfaithful enough to the source that meaning is not lost.\n\nIf a chapter does not explain these goals, chunking and cleaning can sound like arbitrary tricks. They are not arbitrary. They are ways of helping the retriever find the right evidence and helping the generator answer from that evidence.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02-data-preparation.html#common-ways-data-preparation-fails",
+    "href": "02-data-preparation.html#common-ways-data-preparation-fails",
+    "title": "2  Data Preparation",
+    "section": "2.3 Common Ways Data Preparation Fails",
+    "text": "2.3 Common Ways Data Preparation Fails\nIt is also useful to know what can go wrong.\nCommon failures include:\n\nmissing content: useful documents were never ingested;\nbroken parsing: headings, lists, or tables lost their structure;\nnoisy text: formatting junk overwhelms the real content;\nbad chunk boundaries: one idea is split across chunks or unrelated ideas are merged;\nweak metadata: the system knows the text but not where it came from;\nduplicated content: retrieval keeps surfacing repeated evidence.\n\nThese failures matter because they show up later as user-facing problems. A weak answer is often not a model problem first. It is often a corpus problem first.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02-data-preparation.html#metadata-the-small-details-that-matter-later",
+    "href": "02-data-preparation.html#metadata-the-small-details-that-matter-later",
+    "title": "2  Data Preparation",
+    "section": "2.8 Metadata: The Small Details That Matter Later",
+    "text": "2.8 Metadata: The Small Details That Matter Later\nMetadata is the information attached to a chunk besides the main text.\nIn this project, useful metadata includes:\n\nthe source file path;\nthe section title;\nthe chunk id.\n\nIn larger systems, metadata may also include:\n\nauthor;\ntimestamp;\ndocument type;\nproduct name;\nteam or business unit;\naccess level.\n\nWhy does this matter? Because retrieval is not only about matching words or embeddings. Sometimes we also need to know where a chunk came from, whether it is recent, whether the user is allowed to see it, or which section should be shown as a citation. Metadata helps the system filter, rank, group, and explain results.\nWithout metadata, the system may still retrieve text, but it becomes harder to control and harder to trust.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02-data-preparation.html#different-content-types-often-need-different-handling",
+    "href": "02-data-preparation.html#different-content-types-often-need-different-handling",
+    "title": "2  Data Preparation",
+    "section": "2.14 Different Content Types Often Need Different Handling",
+    "text": "2.14 Different Content Types Often Need Different Handling\nOne reason data preparation feels hard is that there is no single perfect rule for every source.\nDifferent content types usually need different treatment:\n\nnarrative chapters: often split well by headings and paragraphs;\nFAQs: often work best with one question-answer pair per chunk;\npolicy documents: often need clause numbers and headings preserved;\ntables: often need headers kept with the values;\ncode-heavy documents: often need code and explanation kept close together.\n\nThis matters because the “best” chunk is not defined only by length. It is defined by whether the chunk still answers a real user question clearly.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02-data-preparation.html#how-to-tell-whether-chunking-is-working",
+    "href": "02-data-preparation.html#how-to-tell-whether-chunking-is-working",
+    "title": "2  Data Preparation",
+    "section": "2.16 How to Tell Whether Chunking Is Working",
+    "text": "2.16 How to Tell Whether Chunking Is Working\nAt this point, a reader may still ask: how do I know if my chunking is good enough?\nSome simple checks help:\n\nwhen you read a chunk alone, does it still make sense;\nwhen retrieval succeeds, does the chunk contain a full useful answer or only half of one;\nwhen retrieval fails, is the answer split across multiple chunks in an awkward way;\ndo top results contain too much repeated or overlapping text;\nare chunks so long that irrelevant details drown out the useful part.\n\nThese are not perfect metrics, but they are practical signals. In early-stage RAG work, manually inspecting retrieved chunks is often one of the fastest ways to improve system quality.\nIn this repository, the current chunking strategy is intentionally modest. It is a good teaching baseline because the logic is easy to inspect and the tradeoffs are visible. A stronger next version might add:\n\nexplicit overlap between neighboring chunks;\nspecial handling for code-heavy sections;\ntable-aware and list-aware chunking;\nmetadata tags beyond source path and section;\nchunking rules that differ by document type.\n\nThat progression matters because data preparation is not finished once the text is “usable.” It improves as the team learns what kinds of retrieval failures the corpus still produces.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
+    ]
+  },
+  {
+    "objectID": "02-data-preparation.html#what-this-chapter-produces-for-the-rest-of-the-system",
+    "href": "02-data-preparation.html#what-this-chapter-produces-for-the-rest-of-the-system",
+    "title": "2  Data Preparation",
+    "section": "2.17 What This Chapter Produces for the Rest of the System",
+    "text": "2.17 What This Chapter Produces for the Rest of the System\nThe output of data preparation is not just “clean text.” The real output is a set of retrieval-ready chunks.\nEach chunk should ideally have:\n\ntext that still makes sense;\na clear source;\na useful section label;\na size that works for retrieval and prompting.\n\nThat is the handoff to the next stage of the system. Chapter 3 will build on that handoff by turning these chunks into a searchable index through embeddings and indexing.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Preparation</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#from-chunks-to-searchable-units",
+    "href": "03-index-construction-and-optimization.html#from-chunks-to-searchable-units",
+    "title": "3  Index Construction and Optimization",
+    "section": "",
+    "text": "raw chapters\n-&gt; cleaned and chunked text\n-&gt; embeddings for each chunk\n-&gt; searchable index\n-&gt; retrieval at question time",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#what-this-chapter-is-trying-to-solve",
+    "href": "03-index-construction-and-optimization.html#what-this-chapter-is-trying-to-solve",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.2 What This Chapter Is Trying to Solve",
+    "text": "3.2 What This Chapter Is Trying to Solve\nThe main problem is simple: even if the corpus is well prepared, the system still needs a good way to find the right chunks for a new question.\nThat means this chapter is trying to answer questions like:\n\nhow do we represent chunk meaning in a searchable form;\nhow does the system compare a user question with stored chunks;\nwhat is the difference between an embedding model, an index, and a vector database;\nwhen is a simple local index enough, and when is a bigger system needed.\n\nIf Chapter 2 was about making good chunks, Chapter 3 is about making those chunks searchable.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#why-plain-text-search-is-not-enough",
+    "href": "03-index-construction-and-optimization.html#why-plain-text-search-is-not-enough",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.3 Why Plain Text Search Is Not Enough",
+    "text": "3.3 Why Plain Text Search Is Not Enough\nSuppose a chunk says:\nRAG is strongest when the problem is access to external knowledge.\nA user might ask:\nWhen should I use RAG instead of fine-tuning?\nThe wording is different, but the meaning is related. Simple keyword search may do fine in some cases, but it can also miss useful matches when the query and the chunk use different words.\nThat is why dense retrieval exists. Instead of matching only on surface words, it tries to match on semantic similarity.\nThis does not mean keyword methods stop mattering. It means we often need another tool in addition to exact term matching.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#embeddings-and-their-role-in-rag",
+    "href": "03-index-construction-and-optimization.html#embeddings-and-their-role-in-rag",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.4 Embeddings and Their Role in RAG",
+    "text": "3.4 Embeddings and Their Role in RAG\nAn embedding is a numeric representation of text. The practical idea is that chunks with similar meaning should end up closer together in that numeric space.\nIn a RAG system, embeddings are useful because they let us do this:\n\nturn each chunk into a vector;\nturn the user question into a vector;\ncompare those vectors;\nrank chunks by similarity.\n\nThat is the core of dense retrieval.\nThe benefit is easy to understand: the system may still retrieve a relevant chunk even when the user does not use the exact same wording as the document.\nThe limit is also important: embeddings do not “understand” truth. They only encode patterns of similarity learned during training. If the embedding model is weak for the domain, retrieval quality will suffer.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#what-an-embedding-model-actually-helps-with",
+    "href": "03-index-construction-and-optimization.html#what-an-embedding-model-actually-helps-with",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.5 What an Embedding Model Actually Helps With",
+    "text": "3.5 What an Embedding Model Actually Helps With\nIt helps to be concrete here.\nAn embedding model is good at things like:\n\nmatching related wording;\nhandling paraphrases;\nfinding semantically similar passages;\nsupporting multilingual or cross-domain matching, if the model is trained for that.\n\nAn embedding model is less reliable for things like:\n\nexact identifiers;\nstrict keyword matching;\nsmall but important wording differences;\nstructured constraints such as dates, IDs, or access rules.\n\nThat is why embeddings are powerful, but not sufficient by themselves.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#how-this-project-builds-an-index",
+    "href": "03-index-construction-and-optimization.html#how-this-project-builds-an-index",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.6 How This Project Builds an Index",
+    "text": "3.6 How This Project Builds an Index\nIn this repository, indexing is intentionally simple. After the book is chunked, the system sends each chunk to an embedding model and stores the result in a JSON file.\nThe key script is code/cli/build_book_index.py, and the core embedding call lives in code/core/book_rag.py:\ndef ollama_embed(texts: list[str], embed_model: str = EMBED_MODEL) -&gt; list[list[float]]:\n    model_name = normalize_cloud_model_name(embed_model) if is_cloud_model(embed_model) else embed_model\n    response = ollama_post(\"/api/embed\", {\"model\": model_name, \"input\": texts}, model_name=embed_model)\n    return response[\"embeddings\"]\nThat function takes text chunks, sends them to Ollama’s embedding endpoint, and gets back vectors.\nThe index-building script then stores each chunk together with:\n\nits chunk id;\nits source path;\nits section;\nits text;\nits embedding.\n\nSo the index is not only a list of vectors. It is a list of vectors tied back to the original chunk content and metadata.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#why-the-current-index-is-simple-but-useful",
+    "href": "03-index-construction-and-optimization.html#why-the-current-index-is-simple-but-useful",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.7 Why the Current Index Is Simple but Useful",
+    "text": "3.7 Why the Current Index Is Simple but Useful\nThe current design stores embeddings in a JSON file such as code/build/book_index_*.json.\nThat is not the most scalable design, but it is useful for learning because:\n\nthe whole process stays visible;\nthe stored data is easy to inspect;\nthere is little hidden infrastructure;\nthe connection between chunk text and embedding stays obvious.\n\nThis is a good baseline for a teaching project. You can see the data, understand the flow, and debug it without needing a separate vector database.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#dense-retrieval-in-plain-language",
+    "href": "03-index-construction-and-optimization.html#dense-retrieval-in-plain-language",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.8 Dense Retrieval in Plain Language",
+    "text": "3.8 Dense Retrieval in Plain Language\nOnce the chunks are embedded, the system can compare a question embedding with each stored chunk embedding.\nIn this project, that comparison is done with cosine similarity:\ndef cosine_similarity(vec_a: list[float], vec_b: list[float]) -&gt; float:\n    numerator = sum(a * b for a, b in zip(vec_a, vec_b))\n    norm_a = math.sqrt(sum(a * a for a in vec_a))\n    norm_b = math.sqrt(sum(b * b for b in vec_b))\n    if norm_a == 0 or norm_b == 0:\n        return 0.0\n    return numerator / (norm_a * norm_b)\nYou do not need to worry too much about the math here. The practical meaning is enough: the closer the vectors point in the same direction, the more similar the system considers the texts.\nThat gives the system a way to rank chunks by semantic closeness to the user’s question.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#why-embeddings-alone-are-not-the-whole-story",
+    "href": "03-index-construction-and-optimization.html#why-embeddings-alone-are-not-the-whole-story",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.9 Why Embeddings Alone Are Not the Whole Story",
+    "text": "3.9 Why Embeddings Alone Are Not the Whole Story\nIt is easy to overtrust embeddings once they start working.\nBut dense retrieval still has common failure cases:\n\nit may miss exact keywords that matter;\nit may rank vaguely related text too highly;\nit may struggle with codes, IDs, or product names;\nit may not respect business rules such as time, tenant, or permissions.\n\nThat is one reason hybrid retrieval is useful. Dense retrieval is good at semantic matching. Sparse retrieval is often better at exact term matching. Using both can produce more stable results.\nSo the right mental model is:\n\nembeddings help the system search by meaning;\nthey do not remove the need for other retrieval signals.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#how-to-choose-an-embedding-model",
+    "href": "03-index-construction-and-optimization.html#how-to-choose-an-embedding-model",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.10 How to Choose an Embedding Model",
+    "text": "3.10 How to Choose an Embedding Model\nModel choice matters, but it helps to keep the decision grounded.\nIn practice, you usually care about:\n\ndoes it retrieve the right chunks on your questions;\ndoes it handle your language mix well;\nis it fast enough for your workload;\nis the vector size reasonable for storage and latency;\ncan you run it where you need to run it.\n\nPublic benchmarks are useful, but your own corpus matters more. A model that looks strong on a leaderboard may still be awkward for your documents.\nFor this project, the default embedding model is bge-m3:latest. That is a practical baseline, not a claim that one model is always best.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#the-difference-between-an-embedding-an-index-and-a-vector-database",
+    "href": "03-index-construction-and-optimization.html#the-difference-between-an-embedding-an-index-and-a-vector-database",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.11 The Difference Between an Embedding, an Index, and a Vector Database",
+    "text": "3.11 The Difference Between an Embedding, an Index, and a Vector Database\nThese terms are easy to blur together, so it is worth separating them clearly.\nAn embedding model:\n\nturns text into vectors.\n\nAn index:\n\nis the searchable data structure built from those vectors.\n\nA vector database:\n\nis a storage and retrieval system built to manage vector indexes, metadata, updates, and search at larger scale.\n\nIn a small project, these can all feel like one thing because the same script may handle all of them. But they are different layers.\nThis repository has:\n\nan embedding model;\na simple local JSON index;\nno full vector database yet.\n\nThat distinction matters because it helps you see what problem each tool is solving.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#why-ann-search-exists",
+    "href": "03-index-construction-and-optimization.html#why-ann-search-exists",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.12 Why ANN Search Exists",
+    "text": "3.12 Why ANN Search Exists\nIf a project has only a small number of chunks, it is possible to compare a question embedding against every chunk directly. That is basically what this project does now.\nBut as the corpus grows, that gets slower and more expensive.\nApproximate nearest-neighbor search, usually shortened to ANN, is the family of methods used to make vector search faster at larger scale. The core tradeoff is simple:\n\nexact search tries harder to find the very best matches;\napproximate search is faster, but may miss some of them.\n\nThis tradeoff is normal. The point is not to be mathematically perfect. The point is to meet the application’s quality and latency needs.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#faiss-and-local-vector-search",
+    "href": "03-index-construction-and-optimization.html#faiss-and-local-vector-search",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.13 FAISS and Local Vector Search",
+    "text": "3.13 FAISS and Local Vector Search\nFAISS is a common tool for local vector search. It is often a good next step after a project outgrows a hand-rolled Python loop over JSON embeddings.\nWhy teams like it:\n\nit is fast;\nit supports common vector search workflows;\nit is good for experiments and local systems.\n\nWhy it does not solve everything:\n\nit is not a full application platform;\nmetadata handling is more limited than in some managed systems;\nproduction concerns still need extra engineering.\n\nFor this project, FAISS would be a natural upgrade because it would keep the learning setup local while making indexing and search more realistic.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#vector-databases-and-when-they-matter",
+    "href": "03-index-construction-and-optimization.html#vector-databases-and-when-they-matter",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.14 Vector Databases and When They Matter",
+    "text": "3.14 Vector Databases and When They Matter\nVector databases become more useful when the retrieval system needs more than just “store some vectors and search them.”\nThey matter more when you need things like:\n\nlarge corpora;\nfrequent updates;\nmetadata filtering;\nmultiple users or tenants;\noperational guarantees around persistence and scale.\n\nFor a small teaching project, a local index is often enough. For a production system, storage and serving concerns usually become much more important.\nThis is why it helps to separate two questions:\n\ndo I need better retrieval quality;\ndo I need stronger retrieval infrastructure.\n\nThose are related, but not the same decision.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#structured-indexing-still-matters",
+    "href": "03-index-construction-and-optimization.html#structured-indexing-still-matters",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.15 Structured Indexing Still Matters",
+    "text": "3.15 Structured Indexing Still Matters\nNot everything should be pushed into embeddings.\nSome kinds of information are better handled in structured form:\n\ntables;\nrecords with stable fields;\nentity lists;\ntimestamps;\naccess rules;\ngraph relationships.\n\nIf a user asks for “the latest policy after January 2025” or “all products in category X,” embeddings alone are not enough. Structured fields matter.\nThis is why strong RAG systems often combine vector search with metadata filters, keyword search, SQL, or other retrieval methods.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#context-expansion-after-retrieval",
+    "href": "03-index-construction-and-optimization.html#context-expansion-after-retrieval",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.16 Context Expansion After Retrieval",
+    "text": "3.16 Context Expansion After Retrieval\nSometimes the best-matching chunk is still too narrow to answer the question well.\nFor example, the chunk may contain a definition, but not the caveat that appears in the next paragraph. In that case, the system may benefit from adding neighboring chunks or the parent section.\nThis is usually called context expansion.\nIt can help because:\n\nanswers often need a little more surrounding context;\ndocuments often contain meaning spread across nearby chunks.\n\nIt can also hurt because:\n\nmore context means more tokens;\nextra context can add noise.\n\nSo this is another design choice that should be tested, not assumed.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#how-to-tell-whether-indexing-is-working",
+    "href": "03-index-construction-and-optimization.html#how-to-tell-whether-indexing-is-working",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.17 How to Tell Whether Indexing Is Working",
+    "text": "3.17 How to Tell Whether Indexing Is Working\nAs with chunking, a practical question is: how do we know this part is good enough?\nSome useful checks are:\n\ndo semantically similar questions retrieve the same useful chunks;\ndo obvious keyword questions still work well;\nare clearly relevant chunks missing from the top results;\ndoes changing the embedding model noticeably improve retrieval;\ndoes the system stay fast enough as the corpus grows.\n\nThese checks help keep Chapter 3 grounded in behavior rather than turning it into a list of tools.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#what-this-chapter-adds-to-the-pipeline",
+    "href": "03-index-construction-and-optimization.html#what-this-chapter-adds-to-the-pipeline",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.18 What This Chapter Adds to the Pipeline",
+    "text": "3.18 What This Chapter Adds to the Pipeline\nChapter 2 produced retrieval-ready chunks.\nChapter 3 turns those chunks into a searchable index.\nSo the handoff now becomes:\ndocuments\n-&gt; cleaned chunks with metadata\n-&gt; embeddings\n-&gt; index\n-&gt; retrieval\nThat sets up the next chapter naturally. Once the system has chunks and a way to search them, the next question is no longer “How do we store information?” It becomes “How do we retrieve the right information reliably?”",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "01-introduction-to-rag.html#what-is-retrieval-augmented-generation",
+    "href": "01-introduction-to-rag.html#what-is-retrieval-augmented-generation",
+    "title": "1  Introduction to RAG",
+    "section": "",
+    "text": "private;\nrecent;\ntoo specific to live reliably inside pretraining alone;\nbetter verified from source material at answer time.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to RAG</span>"
+    ]
+  },
+  {
+    "objectID": "01-introduction-to-rag.html#what-problem-rag-is-trying-to-solve",
+    "href": "01-introduction-to-rag.html#what-problem-rag-is-trying-to-solve",
+    "title": "1  Introduction to RAG",
+    "section": "1.2 What Problem RAG Is Trying to Solve",
+    "text": "1.2 What Problem RAG Is Trying to Solve\nThe basic problem is simple.\nLanguage models are very good at producing fluent text, but they are not a reliable place to store all the facts a real application may need. Product details change. Internal documents change. Policies change. Some information should never have been in public training data to begin with.\nSo the practical question becomes:\n\nhow do we give a model access to the right external information when a user asks?\n\nRAG is one answer to that question.\nIt does not replace the model. It gives the model evidence to work from.\nThat is why RAG is often a better fit than plain prompting when the answer needs to depend on real source material instead of only the model’s prior knowledge.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to RAG</span>"
+    ]
+  },
+  {
+    "objectID": "01-introduction-to-rag.html#a-minimal-mental-model",
+    "href": "01-introduction-to-rag.html#a-minimal-mental-model",
+    "title": "1  Introduction to RAG",
+    "section": "1.6 A Minimal Mental Model",
+    "text": "1.6 A Minimal Mental Model\nBefore getting deeper into the book, it helps to keep one very small mental model in mind:\nquestion\n-&gt; find useful evidence\n-&gt; give that evidence to the model\n-&gt; answer from that evidence\nThat is the heart of RAG.\nEverything else in the book is really about making one of those steps work better:\n\ndata preparation helps create better chunks;\nindexing helps make them searchable;\nretrieval helps find the right ones;\nprompting helps the model use them well;\nevaluation helps us tell where the process is failing.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to RAG</span>"
+    ]
+  },
+  {
+    "objectID": "01-introduction-to-rag.html#what-this-chapter-adds-to-the-pipeline",
+    "href": "01-introduction-to-rag.html#what-this-chapter-adds-to-the-pipeline",
+    "title": "1  Introduction to RAG",
+    "section": "1.9 What This Chapter Adds to the Pipeline",
+    "text": "1.9 What This Chapter Adds to the Pipeline\nThis chapter gives us the starting mental model for the rest of the book:\nquestion\n-&gt; retrieve evidence\n-&gt; answer from that evidence\nThe next chapter takes the first real build step in that pipeline:\n\nwhere does that evidence come from, and how do we prepare it well enough for retrieval?",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to RAG</span>"
+    ]
+  },
+  {
+    "objectID": "03-index-construction-and-optimization.html#how-to-tell-whether-the-index-is-working",
+    "href": "03-index-construction-and-optimization.html#how-to-tell-whether-the-index-is-working",
+    "title": "3  Index Construction and Optimization",
+    "section": "3.17 How to Tell Whether the Index Is Working",
+    "text": "3.17 How to Tell Whether the Index Is Working\nAs with chunking, a practical question is: how do we know this part is good enough?\nSome useful checks are:\n\ndo semantically similar questions retrieve the same useful chunks;\ndo obvious keyword questions still work well;\nare clearly relevant chunks missing from the top results;\ndoes changing the embedding model noticeably improve retrieval;\ndoes the system stay fast enough as the corpus grows.\n\nThese checks help keep Chapter 3 tied to system behavior rather than turning it into a list of tools.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Index Construction and Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#why-retrieval-still-fails-after-indexing",
+    "href": "04-retrieval-optimization.html#why-retrieval-still-fails-after-indexing",
+    "title": "4  Retrieval Optimization",
+    "section": "",
+    "text": "it finds text that is related, but not actually useful;\nit misses the chunk with the exact term the user cares about;\nit retrieves a broad explanation when the user needed a narrow fact;\nit brings back several almost-duplicate chunks instead of complementary evidence.\n\n\n\n\nhow do we make chunks searchable?\n\n\n\nhow do we retrieve the right chunks more reliably?",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#what-retrieval-is-really-trying-to-do",
+    "href": "04-retrieval-optimization.html#what-retrieval-is-really-trying-to-do",
+    "title": "4  Retrieval Optimization",
+    "section": "4.2 What Retrieval Is Really Trying to Do",
+    "text": "4.2 What Retrieval Is Really Trying to Do\nIn plain language, retrieval is trying to do two things at once:\n\nnot miss useful evidence;\nnot include too much irrelevant evidence.\n\nThose goals pull in opposite directions.\nIf retrieval is too broad, the generator gets noisy context and may answer vaguely. If retrieval is too narrow, the generator may miss the key evidence and answer from partial information.\nThat is why retrieval work is mostly about tradeoffs, not perfect rules.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#dense-retrieval",
+    "href": "04-retrieval-optimization.html#dense-retrieval",
+    "title": "4  Retrieval Optimization",
+    "section": "4.3 Dense Retrieval",
+    "text": "4.3 Dense Retrieval\nDense retrieval uses embeddings for both the question and the stored chunks. It is strong when the user’s wording and the document’s wording are different, but the meaning is similar.\nFor example, a user might ask:\nWhen is RAG a better choice than fine-tuning?\nThe relevant chunk might say:\nRAG is strongest when the challenge is access to external knowledge.\nThe exact words do not match perfectly, but the meaning is close. Dense retrieval is good at this kind of match.\nIn this project, dense retrieval works by embedding the question and comparing it with each chunk embedding using cosine similarity.\nThe practical strength of dense retrieval is semantic matching.\nThe practical weakness is that semantic matching is not always enough.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#dense-and-sparse-fail-in-different-ways",
+    "href": "04-retrieval-optimization.html#dense-and-sparse-fail-in-different-ways",
+    "title": "4  Retrieval Optimization",
+    "section": "4.5 Dense and Sparse Fail in Different Ways",
+    "text": "4.5 Dense and Sparse Fail in Different Ways\nThis is one of the most useful things to understand in retrieval.\nDense retrieval may fail like this:\n\nit finds chunks that feel semantically related, but miss the exact point;\nit overlooks exact terms that matter;\nit returns broad conceptual text instead of the most direct evidence.\n\nSparse retrieval may fail like this:\n\nit misses paraphrases;\nit struggles when the user asks in different words from the source text;\nit can overvalue repeated keywords even when the chunk is not the best answer.\n\nBecause they fail differently, combining them often works better than relying on one alone.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#hybrid-retrieval",
+    "href": "04-retrieval-optimization.html#hybrid-retrieval",
+    "title": "4  Retrieval Optimization",
+    "section": "4.6 Hybrid Retrieval",
+    "text": "4.6 Hybrid Retrieval\nHybrid retrieval combines dense and sparse signals.\nThe basic idea is simple:\n\ndense retrieval helps with meaning;\nsparse retrieval helps with exact wording;\ntogether they are often more stable.\n\nThis project already includes a simple hybrid retriever. It does not need a fancy platform to be useful. Even a basic score merge can make retrieval noticeably better.\nThe current implementation normalizes the dense and sparse scores, then combines them with a weight:\ndef hybrid_scores(question: str, corpus: list[dict[str, str]], index_data: dict, alpha: float = 0.65) -&gt; dict[str, float]:\n    dense = min_max_normalize(dense_scores(question, index_data))\n    sparse = min_max_normalize(sparse_scores(question, corpus))\n    all_ids = {item[\"chunk_id\"] for item in corpus}\n    return {\n        chunk_id: alpha * dense.get(chunk_id, 0.0) + (1 - alpha) * sparse.get(chunk_id, 0.0)\n        for chunk_id in all_ids\n    }\nYou do not need to focus on the syntax first. The important idea is that the system is giving part of the decision to semantic similarity and part of the decision to word-level matching.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#a-simple-example-why-hybrid-can-help",
+    "href": "04-retrieval-optimization.html#a-simple-example-why-hybrid-can-help",
+    "title": "4  Retrieval Optimization",
+    "section": "4.7 A Simple Example: Why Hybrid Can Help",
+    "text": "4.7 A Simple Example: Why Hybrid Can Help\nImagine a user asks:\nHow does the book compare RAG with fine-tuning?\nOne chunk may contain the exact phrase “RAG vs. Fine-Tuning.” Another may talk about “external knowledge” and “behavior” without repeating the full query wording.\nSparse retrieval may prefer the chunk with the exact phrase.\nDense retrieval may prefer the chunk with the strongest semantic explanation.\nHybrid retrieval has a chance to surface both kinds of evidence near the top.\nThat often makes the final answer better because the generator sees both the direct match and the more explanatory support.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#retrieval-as-a-pipeline-not-one-step",
+    "href": "04-retrieval-optimization.html#retrieval-as-a-pipeline-not-one-step",
+    "title": "4  Retrieval Optimization",
+    "section": "4.8 Retrieval as a Pipeline, Not One Step",
+    "text": "4.8 Retrieval as a Pipeline, Not One Step\nIt helps to stop thinking of retrieval as a single search action.\nIn many systems, retrieval is really a pipeline:\n\ngenerate candidates;\nfilter them;\nrank them;\nassemble the final context.\n\nThis mental model is useful because it shows where different tools belong.\nFor example:\n\ndense and sparse retrieval are often candidate-generation methods;\nmetadata filtering narrows the search space;\nreranking improves final ordering;\ncontext assembly decides what the generator actually sees.\n\nThis chapter will keep using that pipeline view.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#using-metadata-to-improve-retrieval",
+    "href": "04-retrieval-optimization.html#using-metadata-to-improve-retrieval",
+    "title": "4  Retrieval Optimization",
+    "section": "4.9 Using Metadata to Improve Retrieval",
+    "text": "4.9 Using Metadata to Improve Retrieval\nMetadata becomes especially important here.\nSuppose the corpus contains:\n\nseveral versions of a policy;\ndocuments from different teams;\ncontent from different dates;\nmaterial the user may or may not be allowed to access.\n\nIn those cases, vector similarity alone is not enough. The system may retrieve a chunk that is semantically relevant but wrong for the user’s situation.\nMetadata filtering helps prevent that.\nExamples include filtering by:\n\nsource type;\nsection;\ndate;\nteam;\nproduct;\naccess scope.\n\nThis is one reason Chapter 2 mattered so much. Good metadata gives retrieval more control.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#query-rewriting-and-query-construction",
+    "href": "04-retrieval-optimization.html#query-rewriting-and-query-construction",
+    "title": "4  Retrieval Optimization",
+    "section": "4.10 Query Rewriting and Query Construction",
+    "text": "4.10 Query Rewriting and Query Construction\nUsers do not always ask clean, retrieval-friendly questions.\nA user may be vague:\nWhat does the book say about when to use this?\nOr too broad:\nExplain retrieval.\nOr too conversational:\nI kind of forget, what's the part where dense and sparse are combined?\nQuery rewriting tries to turn that into a better retrieval query.\nThis can include:\n\nadding likely keywords;\nrewriting into a clearer form;\nsplitting one broad question into several narrower ones.\n\nThe benefit is obvious: better retrieval inputs can lead to better results.\nThe danger is also obvious: rewriting should not change what the user meant.\nSo query rewriting is helpful, but it should be treated carefully.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#re-ranking",
+    "href": "04-retrieval-optimization.html#re-ranking",
+    "title": "4  Retrieval Optimization",
+    "section": "4.11 Re-ranking",
+    "text": "4.11 Re-ranking\nA common pattern in retrieval is that the system finds a decent candidate set, but the order is not great.\nFor example, maybe the best chunk is in the top 10, but not in the top 3. If the generator only sees the top few chunks, that ordering problem becomes an answer-quality problem.\nRe-ranking is a second pass over a smaller candidate set. A stronger relevance model looks at those candidates and tries to sort them better.\nThis is useful when:\n\nfirst-stage retrieval has decent recall;\nbut the final ordering is noisy.\n\nIn a small project, it is often smart to understand dense, sparse, and hybrid retrieval first. Only after that should reranking be added. Otherwise it becomes hard to tell where the improvement came from.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#context-assembly",
+    "href": "04-retrieval-optimization.html#context-assembly",
+    "title": "4  Retrieval Optimization",
+    "section": "4.12 Context Assembly",
+    "text": "4.12 Context Assembly\nEven after ranking, the system still has one more important job: deciding what context to actually pass to the generator.\nThis is not trivial.\nIf the system passes only one narrow chunk, the answer may miss key detail.\nIf it passes too many chunks, the prompt may become noisy.\nSo context assembly asks questions like:\n\nhow many chunks should be included;\nshould neighboring chunks be added;\nshould duplicate or near-duplicate chunks be removed;\nshould very long chunks be trimmed.\n\nThis is where retrieval quality and generation quality meet.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#context-expansion-and-compression",
+    "href": "04-retrieval-optimization.html#context-expansion-and-compression",
+    "title": "4  Retrieval Optimization",
+    "section": "4.13 Context Expansion and Compression",
+    "text": "4.13 Context Expansion and Compression\nTwo opposite moves are common here.\nContext expansion means adding nearby or related text when one chunk is too narrow on its own.\nContext compression means trimming or summarizing when the retrieved material is too long or repetitive.\nBoth are trying to solve the same problem:\n\ngive the generator enough evidence, but not too much noise.\n\nNeither move is always correct. Both should be tested on real questions.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#retrieval-over-structured-sources",
+    "href": "04-retrieval-optimization.html#retrieval-over-structured-sources",
+    "title": "4  Retrieval Optimization",
+    "section": "4.14 Retrieval Over Structured Sources",
+    "text": "4.14 Retrieval Over Structured Sources\nNot every retrieval problem is “search chunks of text.”\nSometimes the right answer lives in:\n\na table;\na SQL database;\na graph;\na system of records.\n\nIn those cases, the retrieval step may need to do something different, such as:\n\ngenerate SQL;\ngenerate a graph query;\nfilter structured records by fields.\n\nThis still counts as retrieval in the broad sense. The system is still trying to fetch the evidence needed to answer the question. It is just not always using free-text chunk search.\nThis matters because many people first learn RAG as “embed chunks, retrieve chunks, prompt model.” That is a useful baseline, but not the whole retrieval design space.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#how-to-inspect-retrieval-failures",
+    "href": "04-retrieval-optimization.html#how-to-inspect-retrieval-failures",
+    "title": "4  Retrieval Optimization",
+    "section": "4.15 How to Inspect Retrieval Failures",
+    "text": "4.15 How to Inspect Retrieval Failures\nWhen retrieval feels weak, it helps to ask a few concrete questions.\nDid the right chunk never appear at all?\n\nThen the problem may be chunking, indexing, metadata, or query mismatch.\n\nDid the right chunk appear, but too low in the ranking?\n\nThen the problem may be scoring or the lack of reranking.\n\nDid several top chunks say almost the same thing?\n\nThen the problem may be duplication or weak context assembly.\n\nDid retrieval return something related but not specific enough?\n\nThen dense retrieval may be too broad on its own, or the query may need better construction.\n\nThis kind of debugging matters because “retrieval is bad” is too vague to fix.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#how-this-project-lets-you-compare-retrieval-methods",
+    "href": "04-retrieval-optimization.html#how-this-project-lets-you-compare-retrieval-methods",
+    "title": "4  Retrieval Optimization",
+    "section": "4.16 How This Project Lets You Compare Retrieval Methods",
+    "text": "4.16 How This Project Lets You Compare Retrieval Methods\nThis repository includes code/cli/retrieval_compare.py, which is helpful because it makes retrieval visible.\nYou can run:\npython3 code/cli/ingest_book.py\npython3 code/cli/build_book_index.py --embed-model bge-m3:latest\npython3 code/cli/retrieval_compare.py --question \"How does the book compare RAG with fine-tuning?\" --embed-model bge-m3:latest\nThat script compares:\n\ndense retrieval;\nsparse retrieval;\nhybrid retrieval.\n\nThis is useful because it trains the right habit: inspect the retrieved chunks directly. Do not judge the system only by the final answer. Often the fastest way to improve a RAG system is to look at what was retrieved and ask whether that evidence actually makes sense.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "04-retrieval-optimization.html#what-this-chapter-adds-to-the-pipeline",
+    "href": "04-retrieval-optimization.html#what-this-chapter-adds-to-the-pipeline",
+    "title": "4  Retrieval Optimization",
+    "section": "4.17 What This Chapter Adds to the Pipeline",
+    "text": "4.17 What This Chapter Adds to the Pipeline\nAt this point, the project flow looks like this:\ndocuments\n-&gt; cleaned chunks\n-&gt; embeddings and index\n-&gt; retrieval and ranking\n-&gt; prompt context\n-&gt; answer\nSo the next step is clear.\nOnce retrieval has selected evidence, the system still needs to turn that evidence into a good prompt and a good answer. That is the job of the next chapter.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Retrieval Optimization</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#retrieval-is-not-the-final-answer",
+    "href": "05-generation-integration.html#retrieval-is-not-the-final-answer",
+    "title": "5  Generation Integration",
+    "section": "",
+    "text": "read the retrieved evidence;\nunderstand what part of it matters;\nanswer the user’s question clearly;\navoid inventing unsupported details;\nmake it obvious where the answer came from.\n\n\n\nonce retrieval has found evidence, how do we turn that evidence into a grounded answer?",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#what-often-goes-wrong-at-this-stage",
+    "href": "05-generation-integration.html#what-often-goes-wrong-at-this-stage",
+    "title": "5  Generation Integration",
+    "section": "5.2 What Often Goes Wrong at This Stage",
+    "text": "5.2 What Often Goes Wrong at This Stage\nMany RAG systems fail here even when retrieval is decent.\nCommon problems include:\n\nthe model ignores part of the retrieved evidence;\nthe model answers too broadly instead of answering the actual question;\nthe model fills in gaps with confident guesses;\nthe answer sounds polished, but is not well grounded in the retrieved text;\ncitations are missing, vague, or misleading.\n\nThis matters because users do not see the retrieval scores first. They see the answer first. If generation is sloppy, the whole system feels unreliable.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#what-the-generation-layer-is-trying-to-do",
+    "href": "05-generation-integration.html#what-the-generation-layer-is-trying-to-do",
+    "title": "5  Generation Integration",
+    "section": "5.3 What the Generation Layer Is Trying to Do",
+    "text": "5.3 What the Generation Layer Is Trying to Do\nIn plain language, the generation layer is trying to do three things well:\n\nuse the retrieved evidence;\nstay inside what the evidence supports;\npresent the answer in a useful form.\n\nThat sounds straightforward, but each part has tradeoffs.\nIf the instructions are too weak, the model may ignore the evidence.\nIf the instructions are too rigid, the answer may become awkward or incomplete.\nIf too much evidence is passed, the model may lose focus.\nIf too little evidence is passed, the model may miss an important detail.\nSo generation is not just “ask the model nicely.” It is the stage where retrieval output becomes a usable response.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#why-prompting-matters-so-much",
+    "href": "05-generation-integration.html#why-prompting-matters-so-much",
+    "title": "5  Generation Integration",
+    "section": "5.5 Why Prompting Matters So Much",
+    "text": "5.5 Why Prompting Matters So Much\nWithout a clear prompt, the model may treat retrieved evidence as optional background instead of required evidence.\nFor example, if the prompt simply says:\nAnswer this question: What is hybrid retrieval?\nthe model may produce a generic answer from its own prior knowledge.\nIf the prompt instead makes the grounding rule explicit, the model is more likely to use the retrieved evidence instead of treating it as decoration.\nThis is why prompt design in RAG is not just about style. It is about control.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#grounded-answers-vs.-plausible-answers",
+    "href": "05-generation-integration.html#grounded-answers-vs.-plausible-answers",
+    "title": "5  Generation Integration",
+    "section": "5.6 Grounded Answers vs. Plausible Answers",
+    "text": "5.6 Grounded Answers vs. Plausible Answers\nThis is one of the most important ideas in the whole book.\nA plausible answer is an answer that sounds right.\nA grounded answer is an answer that is actually supported by the retrieved evidence.\nThose are not the same thing.\nA large language model is very good at producing plausible language. RAG is supposed to make that language more grounded. If the generation layer does not enforce grounding, the system can sound smart while still drifting away from the source.\nSo a good generation setup should make unsupported answering harder, not easier.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#what-to-do-when-the-evidence-is-weak",
+    "href": "05-generation-integration.html#what-to-do-when-the-evidence-is-weak",
+    "title": "5  Generation Integration",
+    "section": "5.7 What to Do When the Evidence Is Weak",
+    "text": "5.7 What to Do When the Evidence Is Weak\nNot every question will have enough support in the retrieved chunks.\nWhen that happens, the system should not confidently improvise.\nBetter behaviors include:\n\nclearly saying the retrieved evidence is insufficient;\nanswering only the supported part;\nasking for clarification in interactive systems;\nreturning citations that show what was actually found.\n\nThis is why the current prompt explicitly says:\n\nif the retrieved evidence is insufficient, say that clearly.\n\nThat single instruction matters more than it may seem. It gives the model permission to be incomplete instead of forcing it to fake completeness.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#citation-and-source-use",
+    "href": "05-generation-integration.html#citation-and-source-use",
+    "title": "5  Generation Integration",
+    "section": "5.8 Citation and Source Use",
+    "text": "5.8 Citation and Source Use\nCitations matter because they show the user where the answer came from.\nIn a RAG system, citations help with:\n\ntrust;\ndebugging;\nmanual verification;\nbetter user understanding.\n\nThis project includes source path and section data in the prompt, and asks the model to end with a Sources: line.\nThat is a simple pattern, but it already gives the user something concrete to inspect.\nGood citations do not only help the reader. They also help the builder. If the answer is weak, source display makes it easier to tell whether the problem came from retrieval or generation.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#the-shape-of-the-final-answer",
+    "href": "05-generation-integration.html#the-shape-of-the-final-answer",
+    "title": "5  Generation Integration",
+    "section": "5.9 The Shape of the Final Answer",
+    "text": "5.9 The Shape of the Final Answer\nNot every RAG answer should be free-form prose.\nSometimes prose is fine. Sometimes the system should return:\n\na short bullet list;\na table;\na JSON object;\nextracted fields;\na ranked set of records.\n\nThe right output shape depends on the task.\nIf the answer is meant for direct user reading, concise prose with citations may be best.\nIf the answer is meant for another system step, structured output may be safer.\nThis is an important design choice because the generation layer is part of the product, not just part of the model call.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#structured-output",
+    "href": "05-generation-integration.html#structured-output",
+    "title": "5  Generation Integration",
+    "section": "5.10 Structured Output",
+    "text": "5.10 Structured Output\nStructured output means telling the model to respond in a format with clear fields.\nThis is useful when the answer needs to be:\n\nchecked by code;\nshown in a predictable UI;\ncompared during evaluation;\npassed to another tool or workflow.\n\nFor example, a support workflow may want:\n\nanswer\nconfidence\nsources\nfollow_up_needed\n\ninstead of a single free-form paragraph.\nThe main benefit is control. The main risk is brittleness if the model does not follow the format well.\nThat is why structured output usually works best when the task is narrow and the expected shape is clear.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#validation-matters",
+    "href": "05-generation-integration.html#validation-matters",
+    "title": "5  Generation Integration",
+    "section": "5.11 Validation Matters",
+    "text": "5.11 Validation Matters\nOnce the system asks for a structured answer, it can also validate that answer.\nThis helps answer practical questions like:\n\ndid the model include the required fields;\ndid it include sources;\nis the response format valid;\nshould the system retry or fall back.\n\nValidation is useful because it treats generation as software behavior, not magic.\nEven in a simpler project like this one, the idea still matters. The more important the downstream task, the more generation should be checked.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#frameworks-can-help-but-they-do-not-replace-understanding",
+    "href": "05-generation-integration.html#frameworks-can-help-but-they-do-not-replace-understanding",
+    "title": "5  Generation Integration",
+    "section": "5.12 Frameworks Can Help, but They Do Not Replace Understanding",
+    "text": "5.12 Frameworks Can Help, but They Do Not Replace Understanding\nFrameworks can help with:\n\nprompt templates;\noutput parsing;\ndocument objects;\nchaining steps together.\n\nThat can save time.\nBut there is also a trap here. A framework can hide the most important part of the system:\n\nwhat evidence was passed;\nhow it was formatted;\nwhat instructions the model actually received.\n\nSo frameworks are useful, but only if the builder still understands the underlying flow.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#function-calling-and-tool-use",
+    "href": "05-generation-integration.html#function-calling-and-tool-use",
+    "title": "5  Generation Integration",
+    "section": "5.13 Function Calling and Tool Use",
+    "text": "5.13 Function Calling and Tool Use\nSometimes a RAG system should not stop after generating text. It may need to call a tool.\nExamples include:\n\nfetching a fresh record;\nopening a ticket;\nrunning a query;\nchecking a database;\nvalidating a source.\n\nThis extends generation into action.\nThat can be powerful, but it also raises the bar. Once the system can act, it needs stronger controls around:\n\nwhen tools are called;\nwhat arguments are allowed;\nwhat failures look like;\nwhat the user is allowed to do.\n\nFor that reason, it is usually better to first understand grounded answering well before layering in tool use.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#how-to-inspect-generation-failures",
+    "href": "05-generation-integration.html#how-to-inspect-generation-failures",
+    "title": "5  Generation Integration",
+    "section": "5.14 How to Inspect Generation Failures",
+    "text": "5.14 How to Inspect Generation Failures\nWhen the final answer feels wrong, it helps to ask a few concrete questions.\nDid retrieval return the right evidence?\n\nIf not, the problem is upstream.\n\nDid retrieval return good evidence, but the answer ignored it?\n\nThen the prompt or context assembly may be weak.\n\nDid the answer add claims that were not in the evidence?\n\nThen the grounding rule may be too weak.\n\nDid the answer include the right facts, but in a messy or unhelpful format?\n\nThen output design may need work.\n\nThis kind of debugging matters because “the model answered badly” is usually too vague to fix.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "05-generation-integration.html#what-this-chapter-adds-to-the-pipeline",
+    "href": "05-generation-integration.html#what-this-chapter-adds-to-the-pipeline",
+    "title": "5  Generation Integration",
+    "section": "5.15 What This Chapter Adds to the Pipeline",
+    "text": "5.15 What This Chapter Adds to the Pipeline\nAt this point, the project flow looks like this:\ndocuments\n-&gt; cleaned chunks\n-&gt; embeddings and index\n-&gt; retrieval and ranking\n-&gt; prompt assembly\n-&gt; grounded answer\nSo the next chapter can ask a new question:\n\nhow do we know whether this whole system is actually working well?\n\nThat is the job of evaluation.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generation Integration</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#why-evaluation-matters",
+    "href": "06-rag-system-evaluation.html#why-evaluation-matters",
+    "title": "6  RAG System Evaluation",
+    "section": "",
+    "text": "turn documents into chunks;\nturn chunks into a searchable index;\nretrieve candidate evidence;\ngenerate an answer from that evidence.\n\n\n\nhow do we know whether the pipeline is actually working well?\n\n\n\n\n\nthe right content never entered the corpus;\nthe chunking made the evidence hard to retrieve;\nretrieval found the wrong chunks;\nretrieval found good chunks, but generation used them badly;\nthe answer sounded polished, but did not actually answer the question.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#why-rag-evaluation-is-harder-than-plain-llm-evaluation",
+    "href": "06-rag-system-evaluation.html#why-rag-evaluation-is-harder-than-plain-llm-evaluation",
+    "title": "6  RAG System Evaluation",
+    "section": "6.2 Why RAG Evaluation Is Harder Than Plain LLM Evaluation",
+    "text": "6.2 Why RAG Evaluation Is Harder Than Plain LLM Evaluation\nA plain LLM task might only ask:\n\ndid the model answer well?\n\nA RAG task has to ask at least two more things:\n\ndid the system retrieve the right evidence;\ndid the answer stay supported by that evidence.\n\nSo RAG evaluation is harder because it is not judging one step. It is judging a chain of steps.\nThat is why a final answer can be bad even when the retriever did a good job. The opposite can also happen: the answer may sound fine even though retrieval was weak.\nThis is the core reason evaluation needs to be broken into parts.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#the-three-main-questions",
+    "href": "06-rag-system-evaluation.html#the-three-main-questions",
+    "title": "6  RAG System Evaluation",
+    "section": "6.3 The Three Main Questions",
+    "text": "6.3 The Three Main Questions\nA simple way to think about RAG evaluation is to ask three questions.\nFirst:\n\ndid the system retrieve useful evidence?\n\nSecond:\n\ndid the answer stay supported by that evidence?\n\nThird:\n\ndid the answer actually help with the user’s question?\n\nThese three questions are often described as:\n\ncontext relevance;\ngrounding, also called faithfulness;\nanswer relevance.\n\nThe names are less important than the idea behind them.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#grounding",
+    "href": "06-rag-system-evaluation.html#grounding",
+    "title": "6  RAG System Evaluation",
+    "section": "6.5 Grounding",
+    "text": "6.5 Grounding\nGrounding asks whether the final answer is supported by the retrieved evidence.\nIn plainer language:\n\ndid the answer stick to what the retrieved text actually supports?\n\nThis matters because a model can sound convincing while still adding claims that were not in the evidence.\nThat is a dangerous failure mode in RAG. The whole reason to retrieve evidence is to reduce unsupported answering. If the answer drifts away from the evidence, the system loses much of its value.\nSome practical signs of weak grounding are:\n\nthe answer includes details that never appeared in the retrieved chunks;\nthe answer overstates what the evidence actually said;\nthe answer merges evidence and guesswork without making the difference clear;\nthe citation line looks plausible, but the cited chunks do not really support the claim.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#a-simple-way-to-debug-with-these-three-questions",
+    "href": "06-rag-system-evaluation.html#a-simple-way-to-debug-with-these-three-questions",
+    "title": "6  RAG System Evaluation",
+    "section": "6.7 A Simple Way to Debug with These Three Questions",
+    "text": "6.7 A Simple Way to Debug with These Three Questions\nThese three checks are useful because they help locate the problem.\nIf context relevance is weak:\n\nthe problem is likely in data preparation, indexing, retrieval, or filtering.\n\nIf context relevance is good, but grounding is weak:\n\nthe problem is likely in prompt design, context assembly, or generation behavior.\n\nIf context relevance and grounding are both decent, but answer relevance is weak:\n\nthe problem may be task framing, output design, or the way the question is interpreted.\n\nThis is why evaluation is not just measurement. It is diagnosis.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#what-a-practical-evaluation-workflow-looks-like",
+    "href": "06-rag-system-evaluation.html#what-a-practical-evaluation-workflow-looks-like",
+    "title": "6  RAG System Evaluation",
+    "section": "6.8 What a Practical Evaluation Workflow Looks Like",
+    "text": "6.8 What a Practical Evaluation Workflow Looks Like\nA useful evaluation workflow does not need to be huge at first.\nEven a small setup can be valuable if it is repeatable.\nA practical workflow usually includes:\n\na set of representative questions;\nsome expectation for what good behavior looks like;\nvisibility into retrieved chunks;\na way to compare runs after changes;\nperiodic manual review.\n\nThis matters more than trying to build a perfect benchmark too early.\nThe first goal is not to impress anyone with evaluation sophistication. The first goal is to catch regressions and learn where the system is weak.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#the-small-evaluation-loop-in-this-project",
+    "href": "06-rag-system-evaluation.html#the-small-evaluation-loop-in-this-project",
+    "title": "6  RAG System Evaluation",
+    "section": "6.9 The Small Evaluation Loop in This Project",
+    "text": "6.9 The Small Evaluation Loop in This Project\nThis repository already includes a small evaluation script:\n\ncode/cli/evaluate_book.py\n\nIt uses a small question set from:\n\ncode/data/book_eval_questions.json\n\nThe script runs the question-answering pipeline and checks two basic things:\n\nwhether the expected chapter appears in the output;\nwhether the answer includes expected keywords.\n\nYou can run it like this:\npython3 code/cli/evaluate_book.py --chat-model qwen3.5:2b --embed-model bge-m3:latest\nThe core loop is simple:\nfor item in items:\n    output = run_question(item[\"question\"], chat_model=args.chat_model, embed_model=args.embed_model)\n    retrieved_ok = item[\"expected_source_path\"] in output\n    answer_ok = all(keyword.lower() in output.lower() for keyword in item[\"expected_keywords\"])\nThis is not a full evaluation framework, but it already teaches the right habit:\n\nask repeatable questions;\ncheck retrieval behavior;\ncheck answer behavior;\ncompare results after changes.\n\nFor a learning project, that is a good start.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#what-this-evaluation-does-well",
+    "href": "06-rag-system-evaluation.html#what-this-evaluation-does-well",
+    "title": "6  RAG System Evaluation",
+    "section": "6.10 What This Evaluation Does Well",
+    "text": "6.10 What This Evaluation Does Well\nThe current evaluator is useful because it is:\n\nsmall;\neasy to understand;\ntied to the real project corpus;\nrepeatable across different model choices and retrieval settings.\n\nThat means it can catch simple regressions after changes to:\n\nchunking;\nretrieval weights;\nprompt design;\nmodel selection.\n\nThis is already much better than relying only on casual manual testing.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#what-this-evaluation-does-not-yet-do",
+    "href": "06-rag-system-evaluation.html#what-this-evaluation-does-not-yet-do",
+    "title": "6  RAG System Evaluation",
+    "section": "6.11 What This Evaluation Does Not Yet Do",
+    "text": "6.11 What This Evaluation Does Not Yet Do\nThe current evaluator is also limited.\nIt does not yet measure things like:\n\nwhether the retrieved chunk was the best one, only whether an expected chapter appeared;\nwhether the answer was fully supported, only whether certain keywords appeared;\nwhether the answer was concise or well structured;\nwhether citations truly matched specific claims;\nwhether behavior stayed strong across many query styles.\n\nSo the right way to think about it is:\n\nthis is a useful regression check;\nit is not yet a complete RAG evaluation system.\n\nThat distinction matters because simple evaluation is still valuable, as long as we are honest about what it can and cannot tell us.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#human-review-still-matters",
+    "href": "06-rag-system-evaluation.html#human-review-still-matters",
+    "title": "6  RAG System Evaluation",
+    "section": "6.12 Human Review Still Matters",
+    "text": "6.12 Human Review Still Matters\nAutomated checks are helpful, but they do not replace reading real outputs.\nHuman review is still important because a person can notice things such as:\n\nthe retrieved chunks are technically related, but not the best evidence;\nthe answer sounds fine, but misses the user’s main need;\nthe wording suggests more certainty than the evidence supports;\nthe output format is awkward even though the facts are present.\n\nIn early-stage RAG work, a small amount of careful human review often gives more insight than a large pile of weak metrics.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#model-based-evaluation-and-framework-tools",
+    "href": "06-rag-system-evaluation.html#model-based-evaluation-and-framework-tools",
+    "title": "6  RAG System Evaluation",
+    "section": "6.13 Model-Based Evaluation and Framework Tools",
+    "text": "6.13 Model-Based Evaluation and Framework Tools\nAs systems grow, teams often add stronger evaluation tools.\nThese may include:\n\nmodel-based judges;\nframeworks such as RAGAS;\nobservability tools such as Phoenix;\nricher trace logging and comparison dashboards.\n\nThese tools can be useful, especially when the system becomes too large for only manual review.\nBut they should be treated as aids, not as magic truth machines.\nThe important question is always the same:\n\ndo these evaluation methods help us understand and improve real system behavior?\n\nIf the answer is yes, they are useful. If not, they can become another layer of noise.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#what-to-measure-as-the-project-grows",
+    "href": "06-rag-system-evaluation.html#what-to-measure-as-the-project-grows",
+    "title": "6  RAG System Evaluation",
+    "section": "6.14 What to Measure as the Project Grows",
+    "text": "6.14 What to Measure as the Project Grows\nAs the system becomes stronger, evaluation can grow in stages.\nA reasonable path is:\n\nstart with a small fixed question set;\ninspect retrieval outputs manually;\ncompare answer quality after changes;\nadd stronger labels or model-based judgments later;\ntrack failures by category, not only by pass or fail.\n\nThis progression matters because it keeps the evaluation system matched to the maturity of the project.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "06-rag-system-evaluation.html#what-this-chapter-adds-to-the-pipeline",
+    "href": "06-rag-system-evaluation.html#what-this-chapter-adds-to-the-pipeline",
+    "title": "6  RAG System Evaluation",
+    "section": "6.15 What This Chapter Adds to the Pipeline",
+    "text": "6.15 What This Chapter Adds to the Pipeline\nAt this point, the project flow looks like this:\ndocuments\n-&gt; cleaned chunks\n-&gt; embeddings and index\n-&gt; retrieval and ranking\n-&gt; prompt assembly\n-&gt; answer\n-&gt; evaluation\nThat gives the project a full loop.\nThe next chapter can now step back and ask a broader question:\n\nonce the baseline RAG pipeline is working, what does it look like to go beyond this basic design?\n\nThat is where advanced architectures come in.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>RAG System Evaluation</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#when-baseline-rag-stops-being-enough",
+    "href": "07-advanced-rag-architectures.html#when-baseline-rag-stops-being-enough",
+    "title": "7  Advanced RAG Architectures",
+    "section": "",
+    "text": "prepare documents;\nchunk them;\nindex them;\nretrieve evidence;\ngenerate an answer;\nevaluate the result.\n\n\n\n\nwhen does the baseline approach stop being enough?",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#the-limits-of-a-simple-retrieve-then-generate-loop",
+    "href": "07-advanced-rag-architectures.html#the-limits-of-a-simple-retrieve-then-generate-loop",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.2 The Limits of a Simple Retrieve-Then-Generate Loop",
+    "text": "7.2 The Limits of a Simple Retrieve-Then-Generate Loop\nA simple RAG loop usually looks like this:\nquestion\n-&gt; retrieve top chunks\n-&gt; put chunks into prompt\n-&gt; generate answer\nThis works well when:\n\nthe needed evidence is mostly contained in a few chunks;\nthe question is direct;\nthe corpus is mostly text;\nthe answer does not depend on many connected facts.\n\nIt starts to struggle when:\n\nthe answer depends on several separate pieces of evidence;\nthe system needs to reason across relationships, not just paragraphs;\nthe answer should come from tables, records, or APIs, not only text;\none retrieval method is no longer enough for the kinds of questions users ask.\n\nThat is usually the point where architecture needs to become more flexible.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#multi-hop-questions",
+    "href": "07-advanced-rag-architectures.html#multi-hop-questions",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.3 Multi-Hop Questions",
+    "text": "7.3 Multi-Hop Questions\nOne common limit of baseline RAG is the multi-hop question.\nA multi-hop question is one where the answer depends on combining more than one piece of evidence.\nFor example:\n\nwhich component depends on the service owned by team X;\nwhat changed between the earlier policy and the later version;\nwhich retrieval method does the book recommend, and why.\n\nA baseline retriever may find one useful chunk, but miss the second or third piece needed to complete the answer.\nThis does not mean baseline RAG is useless. It means retrieval and context assembly may need to become more deliberate.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#multiple-retrieval-backends",
+    "href": "07-advanced-rag-architectures.html#multiple-retrieval-backends",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.4 Multiple Retrieval Backends",
+    "text": "7.4 Multiple Retrieval Backends\nAs systems grow, it becomes more common that no single retrieval method is enough.\nSome questions are best answered by:\n\nvector search over chunks;\nkeyword search;\nmetadata filtering;\nSQL over tables;\ngraph traversal;\nAPI calls to live systems.\n\nThis leads to an important idea:\n\nadvanced RAG is often not one better retriever;\nit is often a system that can choose among several retrieval paths.\n\nThat is a big shift. The problem changes from “How do I rank chunks?” to “Which retrieval path fits this question?”",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#query-routing",
+    "href": "07-advanced-rag-architectures.html#query-routing",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.5 Query Routing",
+    "text": "7.5 Query Routing\nQuery routing is the step where the system decides where a question should go.\nFor example:\n\na conceptual question may go to vector retrieval;\na question with an exact product ID may go to keyword or structured lookup;\na reporting question may go to SQL;\na relationship question may go to a graph or dependency model.\n\nRouting becomes useful when sending every question to the same retriever starts producing clearly avoidable mistakes.\nThe benefit is better fit between question type and retrieval method.\nThe cost is more complexity. Routing logic can fail too, so it should be added when there is a real need, not just because it sounds advanced.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#knowledge-graphs-and-relationship-centered-retrieval",
+    "href": "07-advanced-rag-architectures.html#knowledge-graphs-and-relationship-centered-retrieval",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.6 Knowledge Graphs and Relationship-Centered Retrieval",
+    "text": "7.6 Knowledge Graphs and Relationship-Centered Retrieval\nText chunks are good at storing explanations, descriptions, and local context.\nThey are less natural when the main value lies in explicit relationships, such as:\n\nownership;\ndependency;\nchronology;\nhierarchy;\nmembership;\ncausality.\n\nThat is where graph-based approaches can help.\nA knowledge graph makes entities and relationships explicit. Instead of asking only “Which chunk is semantically similar?”, the system can also ask:\n\nwhich entities are connected;\nwhat path links these concepts;\nwhat upstream and downstream dependencies exist.\n\nThis can be useful when the answer depends more on structure than on prose.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#graph-augmented-rag",
+    "href": "07-advanced-rag-architectures.html#graph-augmented-rag",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.7 Graph-Augmented RAG",
+    "text": "7.7 Graph-Augmented RAG\nGraph-augmented RAG does not replace text retrieval entirely. More often, it adds another source of evidence.\nA typical pattern might be:\n\nidentify key entities in the question;\ntraverse graph relationships;\nretrieve supporting text around those entities;\ncombine both kinds of evidence for generation.\n\nThis can help with questions where text similarity alone is not enough.\nThe tradeoff is that graph systems require more modeling effort. Someone has to define or extract entities and relationships in a way that stays useful over time.\nSo graph-based retrieval is powerful, but it should be justified by the task.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#retrieval-over-live-systems",
+    "href": "07-advanced-rag-architectures.html#retrieval-over-live-systems",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.8 Retrieval Over Live Systems",
+    "text": "7.8 Retrieval Over Live Systems\nAnother limit of baseline RAG appears when the source of truth is not static text.\nSometimes the answer should come from:\n\na live database;\nan internal API;\na warehouse;\na ticketing system;\na knowledge service that changes often.\n\nIn those cases, a chunk-based text index may not be the best source of truth. The retrieval step may need to fetch live data or generate a structured query.\nThis is one reason modern RAG often overlaps with tool use. The system is not only retrieving passages. It is retrieving evidence from the right system of record.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#agentic-and-multi-step-retrieval",
+    "href": "07-advanced-rag-architectures.html#agentic-and-multi-step-retrieval",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.9 Agentic and Multi-Step Retrieval",
+    "text": "7.9 Agentic and Multi-Step Retrieval\nSome questions are not answered well in one pass.\nThe system may need to:\n\nretrieve something;\nrealize more information is needed;\nrun a second search;\ncompare results;\nthen answer.\n\nThis is a more agentic style of retrieval.\nIt can be useful for difficult tasks, but it also creates more room for failure. Each extra step adds latency, complexity, and debugging cost.\nThat is why multi-step retrieval should usually be a response to a clear problem, not a default habit.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#personalization-and-access-control",
+    "href": "07-advanced-rag-architectures.html#personalization-and-access-control",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.10 Personalization and Access Control",
+    "text": "7.10 Personalization and Access Control\nAs RAG systems move closer to real users, two additional needs often appear:\n\ndifferent users should see different context;\ndifferent users may need different answer styles or evidence scopes.\n\nThis means the system may need to personalize retrieval and also enforce access rules.\nExamples include:\n\nonly showing documents from the user’s team;\nprioritizing the user’s current project or product area;\nfiltering out content the user is not authorized to see.\n\nThis is another place where metadata and routing become central. Advanced architecture is often less about clever prompting and more about controlled retrieval behavior.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#observability-becomes-more-important-as-architecture-grows",
+    "href": "07-advanced-rag-architectures.html#observability-becomes-more-important-as-architecture-grows",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.11 Observability Becomes More Important as Architecture Grows",
+    "text": "7.11 Observability Becomes More Important as Architecture Grows\nThe more advanced the retrieval design becomes, the harder it is to debug by intuition alone.\nIf the system now includes:\n\nmultiple retrievers;\nrouting rules;\ntool calls;\ngraph traversal;\nreranking;\ncontext expansion;\n\nthen failure can happen in many places.\nThat is why advanced RAG systems need stronger observability. The team needs to see:\n\nwhat path the question took;\nwhat was retrieved at each step;\nwhat was filtered out;\nwhat evidence reached the generator;\nwhat the final answer used.\n\nWithout that visibility, complexity grows faster than understanding.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#do-not-upgrade-architecture-too-early",
+    "href": "07-advanced-rag-architectures.html#do-not-upgrade-architecture-too-early",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.12 Do Not Upgrade Architecture Too Early",
+    "text": "7.12 Do Not Upgrade Architecture Too Early\nThis may be the most important advice in the chapter.\nIt is easy to read about graph RAG, agentic retrieval, or multi-backend routing and assume that a stronger system must be more complex.\nThat is not always true.\nA weak baseline does not become strong by adding architectural layers. If chunking is poor, retrieval is weak, or evaluation is shallow, advanced architecture may only make the system harder to understand.\nSo the better rule is:\n\nmove to advanced architecture when the current design has a clear limit you can name.\n\nThat limit might be:\n\ntoo many multi-hop failures;\ntoo many structured queries;\ntoo much need for metadata filtering;\ntoo much dependence on live records;\ntoo many question types for one retriever to handle well.\n\nIf you cannot name the current limit, the system may not be ready for a bigger architecture.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#what-this-means-for-this-project",
+    "href": "07-advanced-rag-architectures.html#what-this-means-for-this-project",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.13 What This Means for This Project",
+    "text": "7.13 What This Means for This Project\nThis repository is still a baseline-first project.\nThat is a strength, not a weakness.\nRight now the project is good for learning because:\n\nthe pipeline is visible;\nthe data flow is understandable;\nthe retrieval logic is inspectable;\nthe evaluation loop is simple enough to follow.\n\nThe next upgrade for this project is probably not a graph system yet. A more natural next step would be things like:\n\nstronger indexing;\nbetter chunking rules;\nmetadata-aware retrieval;\nreranking;\nricher evaluation.\n\nThose improvements keep the project understandable while making it more realistic.\nOnly after the baseline becomes well understood does it make sense to consider larger architectural changes.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
+    ]
+  },
+  {
+    "objectID": "07-advanced-rag-architectures.html#closing-thought",
+    "href": "07-advanced-rag-architectures.html#closing-thought",
+    "title": "7  Advanced RAG Architectures",
+    "section": "7.14 Closing Thought",
+    "text": "7.14 Closing Thought\nThe main lesson of advanced RAG is not that every system should become more complicated.\nThe real lesson is that retrieval should match the shape of the problem.\nSometimes a clean chunk-and-retrieve pipeline is enough.\nSometimes the task requires multiple retrieval methods, live systems, or explicit relationships.\nThe important skill is not memorizing architecture names. It is learning to see what kind of evidence a question really needs, and then designing the retrieval system around that need.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Advanced RAG Architectures</span>"
     ]
   }
 ]

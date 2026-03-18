@@ -2,9 +2,34 @@
 
 ## What Is Retrieval-Augmented Generation
 
-Retrieval-Augmented Generation (RAG) is an application pattern in which a language model receives external information at inference time and uses that information to produce an answer. Rather than relying only on parameters learned during pretraining, the model is given a dynamically retrieved context window that is relevant to the current query.
+Retrieval-Augmented Generation (RAG) is an application pattern in which a language model receives external information at inference time and uses that information to produce an answer. Rather than relying only on parameters learned during pretraining, the model is given retrieved evidence that is relevant to the current query.
 
-At a high level, a RAG system has three stages: retrieve, augment, generate. A user question is transformed into one or more retrieval queries; relevant passages or records are fetched from a knowledge source; then the model is prompted to answer using those materials. The key benefit is that the knowledge source can be updated independently of the model itself.
+At a high level, a RAG system has three stages: retrieve, augment, generate. A user question triggers retrieval, useful passages or records are fetched from a knowledge source, and the model answers with that evidence in view. The key benefit is that the knowledge source can be updated independently of the model itself.
+
+In plainer language, RAG is a way of letting the model look things up before it answers.
+
+That matters because many useful questions depend on information that is:
+
+- private;
+- recent;
+- too specific to live reliably inside pretraining alone;
+- better verified from source material at answer time.
+
+## What Problem RAG Is Trying to Solve
+
+The basic problem is simple.
+
+Language models are very good at producing fluent text, but they are not a reliable place to store all the facts a real application may need. Product details change. Internal documents change. Policies change. Some information should never have been in public training data to begin with.
+
+So the practical question becomes:
+
+- how do we give a model access to the right external information when a user asks?
+
+RAG is one answer to that question.
+
+It does not replace the model. It gives the model evidence to work from.
+
+That is why RAG is often a better fit than plain prompting when the answer needs to depend on real source material instead of only the model's prior knowledge.
 
 ## Core Principles and System Architecture
 
@@ -18,13 +43,7 @@ A practical RAG system usually contains the following components:
 - a generation layer that produces the final answer;
 - an evaluation and observability layer that measures quality.
 
-The architecture matters because errors compound across layers. If chunking is poor, retrieval quality suffers. If retrieval is weak, prompting cannot rescue answer faithfulness. If evaluation is absent, teams often optimize for style instead of correctness.
-
-## Evolution of RAG Techniques
-
-Early RAG implementations were mostly "semantic search plus prompt stuffing." They embedded chunks, retrieved the top `k`, and placed them into a template. That pattern still works for many small systems, but the field has evolved rapidly.
-
-Modern systems often include hybrid retrieval, metadata filtering, multi-stage ranking, context compression, tool use, query routing, and domain-specific structured retrieval. The trend is clear: the retrieval stack is becoming more adaptive, and the generation stack is becoming more constrained and instrumented.
+You do not need to memorize this list on first read. The important point is simpler: errors compound across layers. If chunking is poor, retrieval quality suffers. If retrieval is weak, prompting cannot rescue grounding. If evaluation is absent, teams often optimize for style instead of correctness.
 
 ## RAG vs. Fine-Tuning
 
@@ -33,6 +52,11 @@ RAG and fine-tuning solve different problems.
 RAG is strongest when the challenge is access to external knowledge: product catalogs, internal documentation, support articles, contracts, policies, and rapidly changing facts. Fine-tuning is strongest when the challenge is behavior: tone, style, task formatting, response patterns, or domain-specific output conventions.
 
 In practice, many mature systems combine the two. A model may be tuned to follow a task reliably while RAG provides fresh or private facts. The common mistake is assuming one replaces the other in all cases.
+
+If you want a short version:
+
+- RAG is usually about giving the model better knowledge at answer time;
+- fine-tuning is usually about changing how the model behaves.
 
 ## When to Use RAG: Use Cases and Risk Levels
 
@@ -47,6 +71,27 @@ RAG is especially useful in:
 
 Risk level matters. In low-risk settings, approximate retrieval may be acceptable. In high-risk settings such as healthcare, legal review, or compliance, the system needs stricter grounding, stronger auditability, and explicit fallbacks when evidence is weak.
 
+## A Minimal Mental Model
+
+Before getting deeper into the book, it helps to keep one very small mental model in mind:
+
+```text
+question
+-> find useful evidence
+-> give that evidence to the model
+-> answer from that evidence
+```
+
+That is the heart of RAG.
+
+Everything else in the book is really about making one of those steps work better:
+
+- data preparation helps create better chunks;
+- indexing helps make them searchable;
+- retrieval helps find the right ones;
+- prompting helps the model use them well;
+- evaluation helps us tell where the process is failing.
+
 ## Getting Started with RAG Systems
 
 The best way to begin is not with the fanciest architecture. Start with a narrow use case, a clear corpus, and a measurable task. Build a baseline pipeline:
@@ -55,29 +100,10 @@ The best way to begin is not with the fanciest architecture. Start with a narrow
 2. Normalize and chunk them.
 3. Embed and index the chunks.
 4. Retrieve top results for a test query set.
-5. Prompt the model with retrieved context.
+5. Prompt the model with retrieved evidence.
 6. Evaluate answer quality and failure modes.
 
 This baseline reveals where the real bottleneck lives. For many teams, the first bottleneck is not model choice but document quality and query coverage.
-
-## Evaluation Challenges and Optimization Directions
-
-RAG systems are difficult to evaluate because the output quality depends on both retrieval quality and generation quality. A weak answer may come from poor evidence, poor prompt design, or both. That means metrics need to separate stages whenever possible.
-
-Optimization typically moves along these axes:
-
-- improve corpus coverage;
-- improve chunking and metadata;
-- improve embedding/index selection;
-- improve candidate ranking and filtering;
-- improve prompt structure and answer constraints;
-- reduce latency and token cost.
-
-## Is RAG Dead? Debates and Emerging Alternatives
-
-Claims that "RAG is dead" usually reflect a narrower point: long-context models, tool use, and stronger base models reduce the need for naive retrieval pipelines. They do not eliminate the need for retrieval itself.
-
-In reality, the question is shifting from "Should we use RAG?" to "What retrieval strategy matches this task?" Sometimes the answer is classic vector search. Sometimes it is SQL generation, graph traversal, API calls, or an orchestrated combination of them.
 
 ## A Minimal RAG Implementation
 
@@ -90,7 +116,7 @@ top_k chunks + instructions + question -> language model
 language model -> answer with citations or grounded summary
 ```
 
-Frameworks such as LangChain and LlamaIndex can accelerate assembly, while local model runners such as Ollama can help with experimentation. Still, the framework is not the system. Good results come from thoughtful data and evaluation choices, not only from wiring together abstractions.
+Frameworks such as LangChain and LlamaIndex can accelerate assembly, while local model runners such as Ollama can help with experimentation. Still, the framework is not the system. Good results come from good data, good retrieval, and clear evaluation, not only from wiring together abstractions.
 
 ### A Configurable Demo with Ollama
 
@@ -106,7 +132,7 @@ To make the architecture concrete, this book uses an Ollama-based setup and turn
 The workflow is intentionally practical:
 
 1. read the `.qmd` chapters listed in `_quarto.yml`;
-2. chunk them into retrieval units with source-path metadata;
+2. turn them into chunks with source-path metadata;
 3. embed those chunks with a selected embedding model, usually `bge-m3:latest`;
 4. store the result as a local JSON index;
 5. answer questions against the book with a selected Ollama chat model.
@@ -134,7 +160,7 @@ In the Streamlit interface, the same pipeline is exposed through model selectors
 
 ### Core Code Path
 
-The key ingestion step turns book chapters into reusable retrieval chunks:
+The key ingestion step turns book chapters into reusable chunks:
 
 ```python
 def build_corpus() -> list[dict[str, str]]:
@@ -144,10 +170,24 @@ def build_corpus() -> list[dict[str, str]]:
     return corpus
 ```
 
-The answering step then retrieves matching chunks from the built index and passes them to the selected generator. This keeps the example grounded in a real artifact: if the chapter text changes, the corpus and answers can change too.
+The answering step then retrieves matching chunks from the built index and passes them to the selected generator. This keeps the example tied to a real artifact: if the chapter text changes, the corpus and answers can change too.
 
 ### Why This Example Matters
 
 A project like this is useful for two reasons. First, it gives the reader a baseline that can run entirely on local models, while still allowing a faster or stronger cloud chat model when desired. Second, it answers a real question: how do we build a RAG system over a body of source material that we actually care about?
 
 In a real project, the next upgrades would usually be better chunking, metadata-aware filtering, a persistent vector store, and stronger evaluation. Those improvements make more sense once a baseline exists and can already answer questions over the full book.
+
+## What This Chapter Adds to the Pipeline
+
+This chapter gives us the starting mental model for the rest of the book:
+
+```text
+question
+-> retrieve evidence
+-> answer from that evidence
+```
+
+The next chapter takes the first real build step in that pipeline:
+
+- where does that evidence come from, and how do we prepare it well enough for retrieval?

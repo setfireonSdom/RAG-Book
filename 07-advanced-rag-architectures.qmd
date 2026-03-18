@@ -1,42 +1,277 @@
 # Advanced RAG Architectures
 
-## Limitations of Traditional RAG
+## When Baseline RAG Stops Being Enough
 
-Traditional RAG is often built around a straightforward assumption: retrieve the top few chunks from a vector index, then generate an answer. This works well for many tasks, but it struggles with multi-hop reasoning, structured relationships, long workflows, and questions that require precise backend execution.
+By this point in the book, we have built up a baseline RAG pipeline:
 
-As systems mature, these limitations become more visible than benchmark demos suggest.
+- prepare documents;
+- chunk them;
+- index them;
+- retrieve evidence;
+- generate an answer;
+- evaluate the result.
 
-## Knowledge-Graph-Augmented RAG
+That baseline is enough for many useful systems. In fact, a lot of teams would benefit more from building a clean baseline well than from jumping too quickly into advanced ideas.
 
-Knowledge graphs add explicit entities and relationships to the retrieval landscape. Instead of only searching over text similarity, the system can retrieve along graph edges such as ownership, dependency, causality, membership, or chronology.
+So this chapter is not here to say "basic RAG is obsolete." It is here to answer a more practical question:
 
-This is powerful when the meaning of a question lies in how facts connect rather than in whether a paragraph happens to mention them together.
+- when does the baseline approach stop being enough?
 
-## Graph-Based Retrieval Pipelines
+That is the right starting point for advanced architecture.
 
-Graph-based retrieval pipelines typically combine:
+## The Limits of a Simple Retrieve-Then-Generate Loop
 
-- entity recognition or linking;
-- graph traversal or neighborhood expansion;
-- optional text retrieval for supporting descriptions;
-- ranking over both nodes and passages.
+A simple RAG loop usually looks like this:
 
-The benefit is deeper reasoning over connected knowledge. The cost is higher modeling and maintenance complexity.
+```text
+question
+-> retrieve top chunks
+-> put chunks into prompt
+-> generate answer
+```
 
-## Integrating Graph Retrieval with LLMs
+This works well when:
 
-When an LLM consumes graph-derived evidence, the prompt or tool layer needs to preserve relationship semantics clearly. A raw dump of nodes and edges is rarely enough. The evidence should be translated into an interpretable form, with provenance and path information when possible.
+- the needed evidence is mostly contained in a few chunks;
+- the question is direct;
+- the corpus is mostly text;
+- the answer does not depend on many connected facts.
 
-This makes graph retrieval more understandable to both the model and the human reviewer.
+It starts to struggle when:
 
-## Toward Next-Generation RAG Systems
+- the answer depends on several separate pieces of evidence;
+- the system needs to reason across relationships, not just paragraphs;
+- the answer should come from tables, records, or APIs, not only text;
+- one retrieval method is no longer enough for the kinds of questions users ask.
 
-Next-generation RAG systems are likely to be adaptive rather than monolithic. They will:
+That is usually the point where architecture needs to become more flexible.
 
-- route requests across multiple backends;
-- combine vector, sparse, structured, and graph retrieval;
-- use tool calls to verify and enrich evidence;
-- personalize context assembly by task and user role;
-- evaluate themselves continuously in production.
+## Multi-Hop Questions
 
-The long-term lesson is simple: RAG is not disappearing. It is broadening into a family of grounding strategies for LLM systems. Teams that understand the underlying retrieval problems will be best positioned to build reliable applications as the tooling evolves.
+One common limit of baseline RAG is the multi-hop question.
+
+A multi-hop question is one where the answer depends on combining more than one piece of evidence.
+
+For example:
+
+- which component depends on the service owned by team X;
+- what changed between the earlier policy and the later version;
+- which retrieval method does the book recommend, and why.
+
+A baseline retriever may find one useful chunk, but miss the second or third piece needed to complete the answer.
+
+This does not mean baseline RAG is useless. It means retrieval and context assembly may need to become more deliberate.
+
+## Multiple Retrieval Backends
+
+As systems grow, it becomes more common that no single retrieval method is enough.
+
+Some questions are best answered by:
+
+- vector search over chunks;
+- keyword search;
+- metadata filtering;
+- SQL over tables;
+- graph traversal;
+- API calls to live systems.
+
+This leads to an important idea:
+
+- advanced RAG is often not one better retriever;
+- it is often a system that can choose among several retrieval paths.
+
+That is a big shift. The problem changes from "How do I rank chunks?" to "Which retrieval path fits this question?"
+
+## Query Routing
+
+Query routing is the step where the system decides where a question should go.
+
+For example:
+
+- a conceptual question may go to vector retrieval;
+- a question with an exact product ID may go to keyword or structured lookup;
+- a reporting question may go to SQL;
+- a relationship question may go to a graph or dependency model.
+
+Routing becomes useful when sending every question to the same retriever starts producing clearly avoidable mistakes.
+
+The benefit is better fit between question type and retrieval method.
+
+The cost is more complexity. Routing logic can fail too, so it should be added when there is a real need, not just because it sounds advanced.
+
+## Knowledge Graphs and Relationship-Centered Retrieval
+
+Text chunks are good at storing explanations, descriptions, and local context.
+
+They are less natural when the main value lies in explicit relationships, such as:
+
+- ownership;
+- dependency;
+- chronology;
+- hierarchy;
+- membership;
+- causality.
+
+That is where graph-based approaches can help.
+
+A knowledge graph makes entities and relationships explicit. Instead of asking only "Which chunk is semantically similar?", the system can also ask:
+
+- which entities are connected;
+- what path links these concepts;
+- what upstream and downstream dependencies exist.
+
+This can be useful when the answer depends more on structure than on prose.
+
+## Graph-Augmented RAG
+
+Graph-augmented RAG does not replace text retrieval entirely. More often, it adds another source of evidence.
+
+A typical pattern might be:
+
+1. identify key entities in the question;
+2. traverse graph relationships;
+3. retrieve supporting text around those entities;
+4. combine both kinds of evidence for generation.
+
+This can help with questions where text similarity alone is not enough.
+
+The tradeoff is that graph systems require more modeling effort. Someone has to define or extract entities and relationships in a way that stays useful over time.
+
+So graph-based retrieval is powerful, but it should be justified by the task.
+
+## Retrieval Over Live Systems
+
+Another limit of baseline RAG appears when the source of truth is not static text.
+
+Sometimes the answer should come from:
+
+- a live database;
+- an internal API;
+- a warehouse;
+- a ticketing system;
+- a knowledge service that changes often.
+
+In those cases, a chunk-based text index may not be the best source of truth. The retrieval step may need to fetch live data or generate a structured query.
+
+This is one reason modern RAG often overlaps with tool use. The system is not only retrieving passages. It is retrieving evidence from the right system of record.
+
+## Agentic and Multi-Step Retrieval
+
+Some questions are not answered well in one pass.
+
+The system may need to:
+
+1. retrieve something;
+2. realize more information is needed;
+3. run a second search;
+4. compare results;
+5. then answer.
+
+This is a more agentic style of retrieval.
+
+It can be useful for difficult tasks, but it also creates more room for failure. Each extra step adds latency, complexity, and debugging cost.
+
+That is why multi-step retrieval should usually be a response to a clear problem, not a default habit.
+
+## Personalization and Access Control
+
+As RAG systems move closer to real users, two additional needs often appear:
+
+- different users should see different context;
+- different users may need different answer styles or evidence scopes.
+
+This means the system may need to personalize retrieval and also enforce access rules.
+
+Examples include:
+
+- only showing documents from the user's team;
+- prioritizing the user's current project or product area;
+- filtering out content the user is not authorized to see.
+
+This is another place where metadata and routing become central. Advanced architecture is often less about clever prompting and more about controlled retrieval behavior.
+
+## Observability Becomes More Important as Architecture Grows
+
+The more advanced the retrieval design becomes, the harder it is to debug by intuition alone.
+
+If the system now includes:
+
+- multiple retrievers;
+- routing rules;
+- tool calls;
+- graph traversal;
+- reranking;
+- context expansion;
+
+then failure can happen in many places.
+
+That is why advanced RAG systems need stronger observability. The team needs to see:
+
+- what path the question took;
+- what was retrieved at each step;
+- what was filtered out;
+- what evidence reached the generator;
+- what the final answer used.
+
+Without that visibility, complexity grows faster than understanding.
+
+## Do Not Upgrade Architecture Too Early
+
+This may be the most important advice in the chapter.
+
+It is easy to read about graph RAG, agentic retrieval, or multi-backend routing and assume that a stronger system must be more complex.
+
+That is not always true.
+
+A weak baseline does not become strong by adding architectural layers. If chunking is poor, retrieval is weak, or evaluation is shallow, advanced architecture may only make the system harder to understand.
+
+So the better rule is:
+
+- move to advanced architecture when the current design has a clear limit you can name.
+
+That limit might be:
+
+- too many multi-hop failures;
+- too many structured queries;
+- too much need for metadata filtering;
+- too much dependence on live records;
+- too many question types for one retriever to handle well.
+
+If you cannot name the current limit, the system may not be ready for a bigger architecture.
+
+## What This Means for This Project
+
+This repository is still a baseline-first project.
+
+That is a strength, not a weakness.
+
+Right now the project is good for learning because:
+
+- the pipeline is visible;
+- the data flow is understandable;
+- the retrieval logic is inspectable;
+- the evaluation loop is simple enough to follow.
+
+The next upgrade for this project is probably not a graph system yet. A more natural next step would be things like:
+
+- stronger indexing;
+- better chunking rules;
+- metadata-aware retrieval;
+- reranking;
+- richer evaluation.
+
+Those improvements keep the project understandable while making it more realistic.
+
+Only after the baseline becomes well understood does it make sense to consider larger architectural changes.
+
+## Closing Thought
+
+The main lesson of advanced RAG is not that every system should become more complicated.
+
+The real lesson is that retrieval should match the shape of the problem.
+
+Sometimes a clean chunk-and-retrieve pipeline is enough.
+
+Sometimes the task requires multiple retrieval methods, live systems, or explicit relationships.
+
+The important skill is not memorizing architecture names. It is learning to see what kind of evidence a question really needs, and then designing the retrieval system around that need.

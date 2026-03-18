@@ -6,11 +6,93 @@ Data preparation is the foundation of the entire pipeline. Retrieval systems can
 
 In many failing RAG systems, retrieval is blamed first. Yet the underlying issue is often incomplete coverage, duplicated content, malformed parsing, or weak metadata. Strong data preparation reduces all of those risks.
 
+In this project, data preparation is not an abstract preprocessing phase. It is the part of the system that turns the book's `.qmd` chapters into a retrieval corpus that can later be embedded, searched, and used as evidence for grounded answers. If this step is weak, every downstream step inherits the weakness.
+
+Another way to say this is simple: data preparation decides what the system is able to know later. If important text never enters the corpus, retrieval cannot find it. If the text enters in a broken form, retrieval may find the wrong thing. If the chunk is messy, the model may answer from partial or confusing evidence.
+
+## What Data Preparation Is Trying to Achieve
+
+Before getting into methods, it helps to be clear about the goal.
+
+Data preparation is trying to produce chunks that are:
+
+- complete enough to make sense on their own;
+- small enough to retrieve efficiently;
+- clean enough to avoid obvious noise;
+- rich enough in metadata to support filtering and citation;
+- faithful enough to the source that meaning is not lost.
+
+If a chapter does not explain these goals, chunking and cleaning can sound like arbitrary tricks. They are not arbitrary. They are ways of helping the retriever find the right evidence and helping the generator answer from that evidence.
+
+## Common Ways Data Preparation Fails
+
+It is also useful to know what can go wrong.
+
+Common failures include:
+
+- missing content: useful documents were never ingested;
+- broken parsing: headings, lists, or tables lost their structure;
+- noisy text: formatting junk overwhelms the real content;
+- bad chunk boundaries: one idea is split across chunks or unrelated ideas are merged;
+- weak metadata: the system knows the text but not where it came from;
+- duplicated content: retrieval keeps surfacing repeated evidence.
+
+These failures matter because they show up later as user-facing problems. A weak answer is often not a model problem first. It is often a corpus problem first.
+
 ## Document Ingestion and Parsing
 
 Ingestion is the process of collecting raw material from source systems such as PDFs, HTML pages, markdown files, databases, wikis, tickets, and cloud storage. Parsing then converts those materials into a structured internal representation.
 
 The central requirement is fidelity. Titles, sections, tables, lists, code blocks, dates, and authorship metadata often carry critical meaning. If the parser collapses structure too aggressively, downstream retrieval quality declines.
+
+In the current repository, ingestion starts from the Quarto book configuration. The system reads `_quarto.yml`, finds the listed chapter files, and then loads their contents as documents:
+
+```python
+def parse_quarto_chapters() -> list[Path]:
+    config_path = PROJECT_DIR / "_quarto.yml"
+    lines = config_path.read_text(encoding="utf-8").splitlines()
+    chapters: list[Path] = []
+    in_chapters = False
+    for raw_line in lines:
+        line = raw_line.rstrip()
+        stripped = line.strip()
+        if stripped == "chapters:":
+            in_chapters = True
+            continue
+        if in_chapters:
+            if re.match(r"^[A-Za-z]", line):
+                break
+            match = re.match(r"^\s*-\s+(.+\.qmd)\s*$", line)
+            if match:
+                path = PROJECT_DIR / match.group(1)
+                if path.name != "references.qmd":
+                    chapters.append(path)
+    return chapters
+```
+
+This is a simple example, but it illustrates an important principle: ingestion should preserve document boundaries and document identity. The retriever later benefits from knowing not only the text itself, but also where that text came from.
+
+### Case Study: Technical Chapters as Retrieval Documents
+
+Suppose the source material is a chapter with headings, paragraphs, and code examples:
+
+```md
+## Hybrid Retrieval
+
+Hybrid retrieval combines dense and sparse methods.
+
+Dense retrieval helps capture semantic similarity.
+
+Sparse retrieval helps preserve exact keyword matching.
+```
+
+If this content is parsed poorly, several things can go wrong:
+
+- the heading may be dropped;
+- the paragraphs may be merged into one undifferentiated block;
+- the text may later be split in a place that separates the concept from its explanation.
+
+In retrieval terms, that means a user may retrieve only a partial definition, only a supporting detail, or a chunk with weak contextual labeling. The parser's job is therefore not merely to read bytes. It is to preserve enough structure for later retrieval to make sense.
 
 ## Document Loaders and Processing Tools
 
@@ -27,11 +109,15 @@ A robust processing stack usually includes:
 
 The goal is not to preserve raw bytes, but to preserve meaning.
 
+For a beginner, the key idea is this: different file types break in different ways. A PDF may scramble reading order. An HTML page may include menus and footers that should never become retrieval content. A spreadsheet may depend on row and column labels that plain text loses. That is why data preparation is not one generic "load document" step. It is a set of format-specific fixes.
+
 ## Structured and Unstructured Data Pipelines
 
 RAG often begins with unstructured text, but many valuable systems depend on structured data too. Product specs, transaction records, support metrics, and knowledge graphs may all contribute useful evidence.
 
 Unstructured pipelines usually optimize for semantic retrieval. Structured pipelines optimize for precise filtering, joins, and field-level semantics. Mature systems often combine both and route queries differently depending on the user intent.
+
+For example, a chapter in this book is mostly unstructured text. A product catalog is more structured. An FAQ page sits somewhere in between. That difference matters because not every source should be chunked in the same way. A free-form article often benefits from paragraph-aware chunking. An FAQ often works better if one question and one answer stay together as one chunk.
 
 ## Text Cleaning and Normalization
 
@@ -47,11 +133,131 @@ Normalization practices commonly include:
 
 The right question is always: what context will the retriever and model need later?
 
+That question sounds basic, but it prevents a common mistake. Many people clean text to make it look tidy. What matters is not whether the text looks tidy. What matters is whether the text still contains the clues needed to answer a future question.
+
+The current project uses a lightweight cleaning function before chunking:
+
+```python
+def strip_quarto_noise(text: str) -> str:
+    text = re.sub(r"^---\n.*?\n---\n", "", text, flags=re.DOTALL)
+    text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+    text = re.sub(r"\{\.unnumbered\}", "", text)
+    return text
+```
+
+This code removes front matter, fenced code blocks, and a Quarto-specific class marker. The example is useful because it shows both the value and the risk of cleaning. Removing noise can improve retrieval focus, but over-cleaning can also discard information that a user might reasonably ask about.
+
+### Case Study: Cleaning Too Little vs. Cleaning Too Much
+
+Consider a chapter that begins with front matter and formatting metadata:
+
+```md
+---
+title: "Data Preparation"
+---
+
+# Data Preparation {.unnumbered}
+
+Chunking is one of the highest-leverage decisions in RAG.
+```
+
+If the system leaves all of that text untouched, retrieval may surface chunks dominated by formatting artifacts rather than substantive content. A user asking about chunking does not need YAML headers or Quarto markers.
+
+But cleaning can also go too far. Imagine a policy document like this:
+
+```text
+Access levels:
+- Admin: full write access
+- Editor: content update only
+- Viewer: read only
+```
+
+If cleaning removes the heading or flattens the list into unclear prose, the retriever may lose exactly the distinctions the user cares about. The lesson is simple: cleaning should remove noise, not structure.
+
+## Metadata: The Small Details That Matter Later
+
+Metadata is the information attached to a chunk besides the main text.
+
+In this project, useful metadata includes:
+
+- the source file path;
+- the section title;
+- the chunk id.
+
+In larger systems, metadata may also include:
+
+- author;
+- timestamp;
+- document type;
+- product name;
+- team or business unit;
+- access level.
+
+Why does this matter? Because retrieval is not only about matching words or embeddings. Sometimes we also need to know where a chunk came from, whether it is recent, whether the user is allowed to see it, or which section should be shown as a citation. Metadata helps the system filter, rank, group, and explain results.
+
+Without metadata, the system may still retrieve text, but it becomes harder to control and harder to trust.
+
 ## Why Text Chunking Matters
 
-Chunking is the process of breaking documents into retrieval units. Chunks that are too small lose context. Chunks that are too large dilute relevance and waste tokens. Chunking is therefore one of the highest-leverage decisions in RAG.
+Chunking is the process of breaking documents into chunks for retrieval. Chunks that are too small lose context. Chunks that are too large dilute relevance and waste tokens. Chunking is therefore one of the highest-leverage decisions in RAG.
 
 The ideal chunk is not a fixed number of characters. It is a unit of meaning that is also small enough to rank, store, and inject efficiently.
+
+This repository uses a structure-aware chunking baseline instead of blind fixed-width slicing. The core logic tracks headings, groups paragraphs, and creates chunks close to a target length:
+
+```python
+def chunk_document(path: str, text: str, target_chars: int = 1100) -> list[dict[str, str]]:
+    cleaned = strip_quarto_noise(text)
+    lines = cleaned.splitlines()
+    chunks: list[dict[str, str]] = []
+    heading_stack: list[str] = []
+    buffer: list[str] = []
+
+    def flush() -> None:
+        nonlocal buffer
+        body = "\n".join(line.strip() for line in buffer if line.strip()).strip()
+        if not body:
+            buffer = []
+            return
+        title = " > ".join(heading_stack) if heading_stack else Path(path).stem
+        paragraphs = [part.strip() for part in re.split(r"\n\s*\n", body) if part.strip()]
+        current = ""
+        chunk_id = len(chunks) + 1
+        for paragraph in paragraphs:
+            candidate = paragraph if not current else f"{current}\n\n{paragraph}"
+            if current and len(candidate) > target_chars:
+                chunks.append(
+                    {
+                        "chunk_id": f"{Path(path).stem}-{chunk_id}",
+                        "source_path": path,
+                        "section": title,
+                        "text": current.strip(),
+                    }
+                )
+                chunk_id += 1
+                current = paragraph
+            else:
+                current = candidate
+        if current:
+            chunks.append(
+                {
+                    "chunk_id": f"{Path(path).stem}-{chunk_id}",
+                    "source_path": path,
+                    "section": title,
+                    "text": current.strip(),
+                }
+            )
+        buffer = []
+```
+
+Even if the code looks simple, it encodes several important design decisions:
+
+- headings are preserved as section metadata;
+- paragraphs are treated as semantic boundaries;
+- chunk size is controlled, but not by cutting text in arbitrary positions;
+- each chunk carries source provenance for later display and citation.
+
+This is the main idea of chunking in plain language: keep together what belongs together, and split apart what would otherwise become too long to retrieve well.
 
 ## Fixed-Size Chunking
 
@@ -65,11 +271,15 @@ Recursive chunking improves on fixed-size chunking by attempting larger structur
 
 This strategy tends to preserve coherence better while still keeping chunk lengths within target ranges. It is a strong general-purpose default for many text corpora.
 
+If fixed-size chunking asks "How many characters should I cut?", recursive chunking asks "Can I split this at a natural boundary first?" That is usually a better question.
+
 ## Semantic Chunking
 
 Semantic chunking tries to split text where the topic changes rather than where the character count ends. This can improve retrieval quality when documents contain long sections that drift across subtopics.
 
 The tradeoff is complexity. Semantic chunking can be slower, harder to debug, and sensitive to the segmentation model. It works best when the corpus is dense and concept-heavy enough to justify the extra effort.
+
+This sounds attractive, but it is not always the right first step. If the team still does not understand its documents, metadata, or evaluation set, semantic chunking can add complexity before the basics are under control.
 
 ## Structure-Aware Chunking
 
@@ -82,8 +292,113 @@ Examples include:
 - keeping code examples together with their explanations;
 - splitting policies by numbered clause.
 
+### Case Study: A Bad Chunk and a Better Chunk
+
+Suppose a chapter contains this short section:
+
+```md
+## RAG vs. Fine-Tuning
+
+RAG is strongest when the challenge is access to external knowledge.
+
+Fine-tuning is strongest when the challenge is behavior, style, or output format.
+```
+
+A poor fixed split might produce:
+
+```text
+Chunk A:
+RAG is strongest when the challenge is access to external knowledge. Fine-tuning
+
+Chunk B:
+is strongest when the challenge is behavior, style, or output format.
+```
+
+This split damages the comparison itself. A user asking about the difference between RAG and fine-tuning may retrieve only half the contrast.
+
+A better structure-aware chunk would keep the short section intact:
+
+```text
+source_path: 01-introduction-to-rag.qmd
+section: RAG vs. Fine-Tuning
+text:
+RAG is strongest when the challenge is access to external knowledge.
+
+Fine-tuning is strongest when the challenge is behavior, style, or output format.
+```
+
+This version is better for retrieval because:
+
+- the heading tells the retriever and the user what question the chunk answers;
+- the comparison stays together instead of being split across chunk boundaries;
+- the source path makes later attribution straightforward.
+
+### Case Study: FAQ-Style Content
+
+Some materials already contain natural chunk boundaries. FAQ documents are a good example:
+
+```text
+Q: When should RAG be preferred over fine-tuning?
+A: When the main challenge is accessing external or changing knowledge rather than changing model behavior.
+```
+
+If the question and answer are split into different chunks, retrieval may find the wording of the question but miss the answer itself. A better strategy is to keep one FAQ item as one chunk, because the semantic unit is the whole exchange, not the individual lines.
+
+This example shows a broader point: chunking should follow meaning when possible. Uniform chunk sizes are useful, but document semantics matter more.
+
+## Different Content Types Often Need Different Handling
+
+One reason data preparation feels hard is that there is no single perfect rule for every source.
+
+Different content types usually need different treatment:
+
+- narrative chapters: often split well by headings and paragraphs;
+- FAQs: often work best with one question-answer pair per chunk;
+- policy documents: often need clause numbers and headings preserved;
+- tables: often need headers kept with the values;
+- code-heavy documents: often need code and explanation kept close together.
+
+This matters because the "best" chunk is not defined only by length. It is defined by whether the chunk still answers a real user question clearly.
+
 ## Chunking Strategies Across Frameworks
 
 Most frameworks provide utilities for chunking, but the decision logic still belongs to the system designer. The same corpus can yield very different results under different chunk sizes, overlaps, and structure rules.
 
 A practical process is to test chunking on a representative query set, inspect retrieved passages manually, and iterate. Chunking is not a preprocessing footnote. It is a retrieval design choice that strongly shapes everything that follows.
+
+## How to Tell Whether Chunking Is Working
+
+At this point, a reader may still ask: how do I know if my chunking is good enough?
+
+Some simple checks help:
+
+- when you read a chunk alone, does it still make sense;
+- when retrieval succeeds, does the chunk contain a full useful answer or only half of one;
+- when retrieval fails, is the answer split across multiple chunks in an awkward way;
+- do top results contain too much repeated or overlapping text;
+- are chunks so long that irrelevant details drown out the useful part.
+
+These are not perfect metrics, but they are practical signals. In early-stage RAG work, manually inspecting retrieved chunks is often one of the fastest ways to improve system quality.
+
+In this repository, the current chunking strategy is intentionally modest. It is a good teaching baseline because the logic is easy to inspect and the tradeoffs are visible. A stronger next version might add:
+
+- explicit overlap between neighboring chunks;
+- special handling for code-heavy sections;
+- table-aware and list-aware chunking;
+- metadata tags beyond source path and section;
+- chunking rules that differ by document type.
+
+That progression matters because data preparation is not finished once the text is "usable." It improves as the team learns what kinds of retrieval failures the corpus still produces.
+
+## What This Chapter Produces for the Rest of the System
+
+The output of data preparation is not just "clean text." The real output is a set of retrieval-ready chunks.
+
+Each chunk should ideally have:
+
+- text that still makes sense;
+- a clear source;
+- a useful section label;
+- a size that works for retrieval and prompting.
+
+That is the handoff to the next stage of the system. Chapter 3 will build on that handoff by turning these chunks into a searchable index through embeddings and indexing.

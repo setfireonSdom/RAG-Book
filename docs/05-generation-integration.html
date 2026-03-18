@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -180,13 +215,21 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#from-retrieval-to-generation" id="toc-from-retrieval-to-generation" class="nav-link active" data-scroll-target="#from-retrieval-to-generation"><span class="header-section-number">5.1</span> From Retrieval to Generation</a></li>
-  <li><a href="#prompt-design-with-retrieved-context" id="toc-prompt-design-with-retrieved-context" class="nav-link" data-scroll-target="#prompt-design-with-retrieved-context"><span class="header-section-number">5.2</span> Prompt Design with Retrieved Context</a></li>
-  <li><a href="#structured-output-generation" id="toc-structured-output-generation" class="nav-link" data-scroll-target="#structured-output-generation"><span class="header-section-number">5.3</span> Structured Output Generation</a></li>
-  <li><a href="#json-and-schema-based-generation" id="toc-json-and-schema-based-generation" class="nav-link" data-scroll-target="#json-and-schema-based-generation"><span class="header-section-number">5.4</span> JSON and Schema-Based Generation</a></li>
-  <li><a href="#framework-based-implementations" id="toc-framework-based-implementations" class="nav-link" data-scroll-target="#framework-based-implementations"><span class="header-section-number">5.5</span> Framework-Based Implementations</a></li>
-  <li><a href="#framework-agnostic-structured-generation" id="toc-framework-agnostic-structured-generation" class="nav-link" data-scroll-target="#framework-agnostic-structured-generation"><span class="header-section-number">5.6</span> Framework-Agnostic Structured Generation</a></li>
-  <li><a href="#function-calling-for-tool-integration" id="toc-function-calling-for-tool-integration" class="nav-link" data-scroll-target="#function-calling-for-tool-integration"><span class="header-section-number">5.7</span> Function Calling for Tool Integration</a></li>
+  <li><a href="#retrieval-is-not-the-final-answer" id="toc-retrieval-is-not-the-final-answer" class="nav-link active" data-scroll-target="#retrieval-is-not-the-final-answer"><span class="header-section-number">5.1</span> Retrieval Is Not the Final Answer</a></li>
+  <li><a href="#what-often-goes-wrong-at-this-stage" id="toc-what-often-goes-wrong-at-this-stage" class="nav-link" data-scroll-target="#what-often-goes-wrong-at-this-stage"><span class="header-section-number">5.2</span> What Often Goes Wrong at This Stage</a></li>
+  <li><a href="#what-the-generation-layer-is-trying-to-do" id="toc-what-the-generation-layer-is-trying-to-do" class="nav-link" data-scroll-target="#what-the-generation-layer-is-trying-to-do"><span class="header-section-number">5.3</span> What the Generation Layer Is Trying to Do</a></li>
+  <li><a href="#prompt-design-with-retrieved-context" id="toc-prompt-design-with-retrieved-context" class="nav-link" data-scroll-target="#prompt-design-with-retrieved-context"><span class="header-section-number">5.4</span> Prompt Design with Retrieved Context</a></li>
+  <li><a href="#why-prompting-matters-so-much" id="toc-why-prompting-matters-so-much" class="nav-link" data-scroll-target="#why-prompting-matters-so-much"><span class="header-section-number">5.5</span> Why Prompting Matters So Much</a></li>
+  <li><a href="#grounded-answers-vs.-plausible-answers" id="toc-grounded-answers-vs.-plausible-answers" class="nav-link" data-scroll-target="#grounded-answers-vs.-plausible-answers"><span class="header-section-number">5.6</span> Grounded Answers vs.&nbsp;Plausible Answers</a></li>
+  <li><a href="#what-to-do-when-the-evidence-is-weak" id="toc-what-to-do-when-the-evidence-is-weak" class="nav-link" data-scroll-target="#what-to-do-when-the-evidence-is-weak"><span class="header-section-number">5.7</span> What to Do When the Evidence Is Weak</a></li>
+  <li><a href="#citation-and-source-use" id="toc-citation-and-source-use" class="nav-link" data-scroll-target="#citation-and-source-use"><span class="header-section-number">5.8</span> Citation and Source Use</a></li>
+  <li><a href="#the-shape-of-the-final-answer" id="toc-the-shape-of-the-final-answer" class="nav-link" data-scroll-target="#the-shape-of-the-final-answer"><span class="header-section-number">5.9</span> The Shape of the Final Answer</a></li>
+  <li><a href="#structured-output" id="toc-structured-output" class="nav-link" data-scroll-target="#structured-output"><span class="header-section-number">5.10</span> Structured Output</a></li>
+  <li><a href="#validation-matters" id="toc-validation-matters" class="nav-link" data-scroll-target="#validation-matters"><span class="header-section-number">5.11</span> Validation Matters</a></li>
+  <li><a href="#frameworks-can-help-but-they-do-not-replace-understanding" id="toc-frameworks-can-help-but-they-do-not-replace-understanding" class="nav-link" data-scroll-target="#frameworks-can-help-but-they-do-not-replace-understanding"><span class="header-section-number">5.12</span> Frameworks Can Help, but They Do Not Replace Understanding</a></li>
+  <li><a href="#function-calling-and-tool-use" id="toc-function-calling-and-tool-use" class="nav-link" data-scroll-target="#function-calling-and-tool-use"><span class="header-section-number">5.13</span> Function Calling and Tool Use</a></li>
+  <li><a href="#how-to-inspect-generation-failures" id="toc-how-to-inspect-generation-failures" class="nav-link" data-scroll-target="#how-to-inspect-generation-failures"><span class="header-section-number">5.14</span> How to Inspect Generation Failures</a></li>
+  <li><a href="#what-this-chapter-adds-to-the-pipeline" id="toc-what-this-chapter-adds-to-the-pipeline" class="nav-link" data-scroll-target="#what-this-chapter-adds-to-the-pipeline"><span class="header-section-number">5.15</span> What This Chapter Adds to the Pipeline</a></li>
   </ul>
 </nav>
     </div>
@@ -212,54 +255,266 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="from-retrieval-to-generation" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="from-retrieval-to-generation"><span class="header-section-number">5.1</span> From Retrieval to Generation</h2>
-<p>Retrieval only creates the possibility of a good answer. The generation layer decides whether that evidence is used clearly, faithfully, and in a form the user can trust.</p>
-<p>This transition is where many systems become fragile. If the prompt is underspecified, the model may ignore evidence. If too much context is injected, the model may become distracted. If the task is vague, the answer may sound plausible while failing the actual need.</p>
-</section>
-<section id="prompt-design-with-retrieved-context" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="prompt-design-with-retrieved-context"><span class="header-section-number">5.2</span> Prompt Design with Retrieved Context</h2>
-<p>Good prompt design tells the model what the retrieved context represents and how it should be used. Typical instructions include:</p>
+<section id="retrieval-is-not-the-final-answer" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="retrieval-is-not-the-final-answer"><span class="header-section-number">5.1</span> Retrieval Is Not the Final Answer</h2>
+<p>By the end of Chapter 4, the system has selected chunks that look useful. But retrieved evidence is not the same thing as a good answer.</p>
+<p>This is where generation begins.</p>
+<p>The generator has to do a harder job than it may first appear:</p>
 <ul>
-<li>answer using the provided sources;</li>
-<li>state uncertainty when evidence is insufficient;</li>
-<li>cite relevant passages or document IDs;</li>
-<li>separate grounded facts from assumptions;</li>
-<li>avoid inventing unsupported details.</li>
+<li>read the retrieved evidence;</li>
+<li>understand what part of it matters;</li>
+<li>answer the user’s question clearly;</li>
+<li>avoid inventing unsupported details;</li>
+<li>make it obvious where the answer came from.</li>
 </ul>
-<p>Prompt design is not only about wording elegance. It is interface design between retrieval output and model behavior.</p>
+<p>So the main question of this chapter is simple:</p>
+<ul>
+<li>once retrieval has found evidence, how do we turn that evidence into a grounded answer?</li>
+</ul>
 </section>
-<section id="structured-output-generation" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="structured-output-generation"><span class="header-section-number">5.3</span> Structured Output Generation</h2>
-<p>Many RAG systems should not return free-form prose alone. They may need JSON, tables, lists of citations, extracted fields, or machine-actionable results.</p>
-<p>Structured output reduces ambiguity, makes downstream integration easier, and can improve evaluation because outputs become easier to compare.</p>
+<section id="what-often-goes-wrong-at-this-stage" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="what-often-goes-wrong-at-this-stage"><span class="header-section-number">5.2</span> What Often Goes Wrong at This Stage</h2>
+<p>Many RAG systems fail here even when retrieval is decent.</p>
+<p>Common problems include:</p>
+<ul>
+<li>the model ignores part of the retrieved evidence;</li>
+<li>the model answers too broadly instead of answering the actual question;</li>
+<li>the model fills in gaps with confident guesses;</li>
+<li>the answer sounds polished, but is not well grounded in the retrieved text;</li>
+<li>citations are missing, vague, or misleading.</li>
+</ul>
+<p>This matters because users do not see the retrieval scores first. They see the answer first. If generation is sloppy, the whole system feels unreliable.</p>
 </section>
-<section id="json-and-schema-based-generation" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="json-and-schema-based-generation"><span class="header-section-number">5.4</span> JSON and Schema-Based Generation</h2>
-<p>Schema-based generation defines the fields the model must produce and the constraints each field must follow. This is especially useful for extraction, classification, workflow triggering, or UI-backed applications.</p>
-<p>When schema validation fails, the system can retry, repair, or fall back. This turns generation into a more dependable software component.</p>
-</section>
-<section id="framework-based-implementations" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="framework-based-implementations"><span class="header-section-number">5.5</span> Framework-Based Implementations</h2>
-<p>Frameworks can help with prompt templates, chains, document objects, and response parsing. They speed up prototyping and reduce boilerplate, especially in early development.</p>
-<p>The risk is abstraction leakage. Teams should still understand what documents are passed, how prompts are assembled, and where errors originate.</p>
-</section>
-<section id="framework-agnostic-structured-generation" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="framework-agnostic-structured-generation"><span class="header-section-number">5.6</span> Framework-Agnostic Structured Generation</h2>
-<p>The core principles work even without a framework:</p>
+<section id="what-the-generation-layer-is-trying-to-do" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="what-the-generation-layer-is-trying-to-do"><span class="header-section-number">5.3</span> What the Generation Layer Is Trying to Do</h2>
+<p>In plain language, the generation layer is trying to do three things well:</p>
 <ol type="1">
-<li>assemble relevant context;</li>
-<li>state the task clearly;</li>
-<li>define output expectations;</li>
-<li>validate the response;</li>
-<li>log evidence and outcome.</li>
+<li>use the retrieved evidence;</li>
+<li>stay inside what the evidence supports;</li>
+<li>present the answer in a useful form.</li>
 </ol>
-<p>This makes the system easier to reason about and port across runtimes or vendors.</p>
+<p>That sounds straightforward, but each part has tradeoffs.</p>
+<p>If the instructions are too weak, the model may ignore the evidence.</p>
+<p>If the instructions are too rigid, the answer may become awkward or incomplete.</p>
+<p>If too much evidence is passed, the model may lose focus.</p>
+<p>If too little evidence is passed, the model may miss an important detail.</p>
+<p>So generation is not just “ask the model nicely.” It is the stage where retrieval output becomes a usable response.</p>
 </section>
-<section id="function-calling-for-tool-integration" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="function-calling-for-tool-integration"><span class="header-section-number">5.7</span> Function Calling for Tool Integration</h2>
-<p>Function calling extends RAG beyond passive answering. After retrieval, the model may decide to invoke a tool: fetch a record, create a ticket, run a query, or verify a citation.</p>
-<p>This turns the system into an agentic workflow, which can be powerful but also more failure-prone. Tool selection, argument validation, and permission boundaries therefore become part of the RAG design space.</p>
+<section id="prompt-design-with-retrieved-context" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="prompt-design-with-retrieved-context"><span class="header-section-number">5.4</span> Prompt Design with Retrieved Context</h2>
+<p>The prompt is the interface between retrieval and generation.</p>
+<p>It tells the model:</p>
+<ul>
+<li>what the user asked;</li>
+<li>what evidence was retrieved;</li>
+<li>how the evidence should be used;</li>
+<li>what the model should do if the evidence is weak;</li>
+<li>what form the answer should take.</li>
+</ul>
+<p>In this project, the prompt builder in <code>code/core/book_rag.py</code> makes those choices explicit:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_prompt(question: <span class="bu">str</span>, retrieved: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]]) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    answer_language <span class="op">=</span> detect_answer_language(question)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"[</span><span class="sc">{</span>index<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>item[<span class="st">'source_path'</span>]<span class="sc">}</span><span class="ss"> | </span><span class="sc">{</span>item[<span class="st">'section'</span>]<span class="sc">}</span><span class="ss"> | score=</span><span class="sc">{</span>item[<span class="st">'score'</span>]<span class="sc">:.3f}</span><span class="ch">\n</span><span class="sc">{</span>item[<span class="st">'text'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> index, item <span class="kw">in</span> <span class="bu">enumerate</span>(retrieved, start<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> textwrap.dedent(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"""</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">        You are answering questions about the book project in the local workspace.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">        Use only the retrieved context below.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">        If the retrieved context is insufficient, say that clearly.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">        Give a concise answer in </span><span class="sc">{</span>answer_language<span class="sc">}</span><span class="ss">.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">        Keep the final citation line in the format "Sources: ...".</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">        Question:</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">        </span><span class="sc">{</span>question<span class="sc">}</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">        Retrieved context:</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">        </span><span class="sc">{</span>context<span class="sc">}</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">        """</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    ).strip()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is a simple prompt, but it already includes several important ideas:</p>
+<ul>
+<li>the model is told to answer from retrieved context;</li>
+<li>the model is told to admit when context is not enough;</li>
+<li>the model is told what language to answer in;</li>
+<li>the retrieved chunks are labeled with source information.</li>
+</ul>
+<p>That is a good baseline because the generation rules are visible and easy to reason about.</p>
+</section>
+<section id="why-prompting-matters-so-much" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="why-prompting-matters-so-much"><span class="header-section-number">5.5</span> Why Prompting Matters So Much</h2>
+<p>Without a clear prompt, the model may treat retrieved evidence as optional background instead of required evidence.</p>
+<p>For example, if the prompt simply says:</p>
+<pre class="text"><code>Answer this question: What is hybrid retrieval?</code></pre>
+<p>the model may produce a generic answer from its own prior knowledge.</p>
+<p>If the prompt instead makes the grounding rule explicit, the model is more likely to use the retrieved evidence instead of treating it as decoration.</p>
+<p>This is why prompt design in RAG is not just about style. It is about control.</p>
+</section>
+<section id="grounded-answers-vs.-plausible-answers" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="grounded-answers-vs.-plausible-answers"><span class="header-section-number">5.6</span> Grounded Answers vs.&nbsp;Plausible Answers</h2>
+<p>This is one of the most important ideas in the whole book.</p>
+<p>A plausible answer is an answer that sounds right.</p>
+<p>A grounded answer is an answer that is actually supported by the retrieved evidence.</p>
+<p>Those are not the same thing.</p>
+<p>A large language model is very good at producing plausible language. RAG is supposed to make that language more grounded. If the generation layer does not enforce grounding, the system can sound smart while still drifting away from the source.</p>
+<p>So a good generation setup should make unsupported answering harder, not easier.</p>
+</section>
+<section id="what-to-do-when-the-evidence-is-weak" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="what-to-do-when-the-evidence-is-weak"><span class="header-section-number">5.7</span> What to Do When the Evidence Is Weak</h2>
+<p>Not every question will have enough support in the retrieved chunks.</p>
+<p>When that happens, the system should not confidently improvise.</p>
+<p>Better behaviors include:</p>
+<ul>
+<li>clearly saying the retrieved evidence is insufficient;</li>
+<li>answering only the supported part;</li>
+<li>asking for clarification in interactive systems;</li>
+<li>returning citations that show what was actually found.</li>
+</ul>
+<p>This is why the current prompt explicitly says:</p>
+<ul>
+<li>if the retrieved evidence is insufficient, say that clearly.</li>
+</ul>
+<p>That single instruction matters more than it may seem. It gives the model permission to be incomplete instead of forcing it to fake completeness.</p>
+</section>
+<section id="citation-and-source-use" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="citation-and-source-use"><span class="header-section-number">5.8</span> Citation and Source Use</h2>
+<p>Citations matter because they show the user where the answer came from.</p>
+<p>In a RAG system, citations help with:</p>
+<ul>
+<li>trust;</li>
+<li>debugging;</li>
+<li>manual verification;</li>
+<li>better user understanding.</li>
+</ul>
+<p>This project includes source path and section data in the prompt, and asks the model to end with a <code>Sources:</code> line.</p>
+<p>That is a simple pattern, but it already gives the user something concrete to inspect.</p>
+<p>Good citations do not only help the reader. They also help the builder. If the answer is weak, source display makes it easier to tell whether the problem came from retrieval or generation.</p>
+</section>
+<section id="the-shape-of-the-final-answer" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="the-shape-of-the-final-answer"><span class="header-section-number">5.9</span> The Shape of the Final Answer</h2>
+<p>Not every RAG answer should be free-form prose.</p>
+<p>Sometimes prose is fine. Sometimes the system should return:</p>
+<ul>
+<li>a short bullet list;</li>
+<li>a table;</li>
+<li>a JSON object;</li>
+<li>extracted fields;</li>
+<li>a ranked set of records.</li>
+</ul>
+<p>The right output shape depends on the task.</p>
+<p>If the answer is meant for direct user reading, concise prose with citations may be best.</p>
+<p>If the answer is meant for another system step, structured output may be safer.</p>
+<p>This is an important design choice because the generation layer is part of the product, not just part of the model call.</p>
+</section>
+<section id="structured-output" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="structured-output"><span class="header-section-number">5.10</span> Structured Output</h2>
+<p>Structured output means telling the model to respond in a format with clear fields.</p>
+<p>This is useful when the answer needs to be:</p>
+<ul>
+<li>checked by code;</li>
+<li>shown in a predictable UI;</li>
+<li>compared during evaluation;</li>
+<li>passed to another tool or workflow.</li>
+</ul>
+<p>For example, a support workflow may want:</p>
+<ul>
+<li><code>answer</code></li>
+<li><code>confidence</code></li>
+<li><code>sources</code></li>
+<li><code>follow_up_needed</code></li>
+</ul>
+<p>instead of a single free-form paragraph.</p>
+<p>The main benefit is control. The main risk is brittleness if the model does not follow the format well.</p>
+<p>That is why structured output usually works best when the task is narrow and the expected shape is clear.</p>
+</section>
+<section id="validation-matters" class="level2" data-number="5.11">
+<h2 data-number="5.11" class="anchored" data-anchor-id="validation-matters"><span class="header-section-number">5.11</span> Validation Matters</h2>
+<p>Once the system asks for a structured answer, it can also validate that answer.</p>
+<p>This helps answer practical questions like:</p>
+<ul>
+<li>did the model include the required fields;</li>
+<li>did it include sources;</li>
+<li>is the response format valid;</li>
+<li>should the system retry or fall back.</li>
+</ul>
+<p>Validation is useful because it treats generation as software behavior, not magic.</p>
+<p>Even in a simpler project like this one, the idea still matters. The more important the downstream task, the more generation should be checked.</p>
+</section>
+<section id="frameworks-can-help-but-they-do-not-replace-understanding" class="level2" data-number="5.12">
+<h2 data-number="5.12" class="anchored" data-anchor-id="frameworks-can-help-but-they-do-not-replace-understanding"><span class="header-section-number">5.12</span> Frameworks Can Help, but They Do Not Replace Understanding</h2>
+<p>Frameworks can help with:</p>
+<ul>
+<li>prompt templates;</li>
+<li>output parsing;</li>
+<li>document objects;</li>
+<li>chaining steps together.</li>
+</ul>
+<p>That can save time.</p>
+<p>But there is also a trap here. A framework can hide the most important part of the system:</p>
+<ul>
+<li>what evidence was passed;</li>
+<li>how it was formatted;</li>
+<li>what instructions the model actually received.</li>
+</ul>
+<p>So frameworks are useful, but only if the builder still understands the underlying flow.</p>
+</section>
+<section id="function-calling-and-tool-use" class="level2" data-number="5.13">
+<h2 data-number="5.13" class="anchored" data-anchor-id="function-calling-and-tool-use"><span class="header-section-number">5.13</span> Function Calling and Tool Use</h2>
+<p>Sometimes a RAG system should not stop after generating text. It may need to call a tool.</p>
+<p>Examples include:</p>
+<ul>
+<li>fetching a fresh record;</li>
+<li>opening a ticket;</li>
+<li>running a query;</li>
+<li>checking a database;</li>
+<li>validating a source.</li>
+</ul>
+<p>This extends generation into action.</p>
+<p>That can be powerful, but it also raises the bar. Once the system can act, it needs stronger controls around:</p>
+<ul>
+<li>when tools are called;</li>
+<li>what arguments are allowed;</li>
+<li>what failures look like;</li>
+<li>what the user is allowed to do.</li>
+</ul>
+<p>For that reason, it is usually better to first understand grounded answering well before layering in tool use.</p>
+</section>
+<section id="how-to-inspect-generation-failures" class="level2" data-number="5.14">
+<h2 data-number="5.14" class="anchored" data-anchor-id="how-to-inspect-generation-failures"><span class="header-section-number">5.14</span> How to Inspect Generation Failures</h2>
+<p>When the final answer feels wrong, it helps to ask a few concrete questions.</p>
+<p>Did retrieval return the right evidence?</p>
+<ul>
+<li>If not, the problem is upstream.</li>
+</ul>
+<p>Did retrieval return good evidence, but the answer ignored it?</p>
+<ul>
+<li>Then the prompt or context assembly may be weak.</li>
+</ul>
+<p>Did the answer add claims that were not in the evidence?</p>
+<ul>
+<li>Then the grounding rule may be too weak.</li>
+</ul>
+<p>Did the answer include the right facts, but in a messy or unhelpful format?</p>
+<ul>
+<li>Then output design may need work.</li>
+</ul>
+<p>This kind of debugging matters because “the model answered badly” is usually too vague to fix.</p>
+</section>
+<section id="what-this-chapter-adds-to-the-pipeline" class="level2" data-number="5.15">
+<h2 data-number="5.15" class="anchored" data-anchor-id="what-this-chapter-adds-to-the-pipeline"><span class="header-section-number">5.15</span> What This Chapter Adds to the Pipeline</h2>
+<p>At this point, the project flow looks like this:</p>
+<pre class="text"><code>documents
+-&gt; cleaned chunks
+-&gt; embeddings and index
+-&gt; retrieval and ranking
+-&gt; prompt assembly
+-&gt; grounded answer</code></pre>
+<p>So the next chapter can ask a new question:</p>
+<ul>
+<li>how do we know whether this whole system is actually working well?</li>
+</ul>
+<p>That is the job of evaluation.</p>
 
 
 </section>

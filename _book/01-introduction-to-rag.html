@@ -216,20 +216,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#what-is-retrieval-augmented-generation" id="toc-what-is-retrieval-augmented-generation" class="nav-link active" data-scroll-target="#what-is-retrieval-augmented-generation"><span class="header-section-number">1.1</span> What Is Retrieval-Augmented Generation</a></li>
-  <li><a href="#core-principles-and-system-architecture" id="toc-core-principles-and-system-architecture" class="nav-link" data-scroll-target="#core-principles-and-system-architecture"><span class="header-section-number">1.2</span> Core Principles and System Architecture</a></li>
-  <li><a href="#evolution-of-rag-techniques" id="toc-evolution-of-rag-techniques" class="nav-link" data-scroll-target="#evolution-of-rag-techniques"><span class="header-section-number">1.3</span> Evolution of RAG Techniques</a></li>
+  <li><a href="#what-problem-rag-is-trying-to-solve" id="toc-what-problem-rag-is-trying-to-solve" class="nav-link" data-scroll-target="#what-problem-rag-is-trying-to-solve"><span class="header-section-number">1.2</span> What Problem RAG Is Trying to Solve</a></li>
+  <li><a href="#core-principles-and-system-architecture" id="toc-core-principles-and-system-architecture" class="nav-link" data-scroll-target="#core-principles-and-system-architecture"><span class="header-section-number">1.3</span> Core Principles and System Architecture</a></li>
   <li><a href="#rag-vs.-fine-tuning" id="toc-rag-vs.-fine-tuning" class="nav-link" data-scroll-target="#rag-vs.-fine-tuning"><span class="header-section-number">1.4</span> RAG vs.&nbsp;Fine-Tuning</a></li>
   <li><a href="#when-to-use-rag-use-cases-and-risk-levels" id="toc-when-to-use-rag-use-cases-and-risk-levels" class="nav-link" data-scroll-target="#when-to-use-rag-use-cases-and-risk-levels"><span class="header-section-number">1.5</span> When to Use RAG: Use Cases and Risk Levels</a></li>
-  <li><a href="#getting-started-with-rag-systems" id="toc-getting-started-with-rag-systems" class="nav-link" data-scroll-target="#getting-started-with-rag-systems"><span class="header-section-number">1.6</span> Getting Started with RAG Systems</a></li>
-  <li><a href="#evaluation-challenges-and-optimization-directions" id="toc-evaluation-challenges-and-optimization-directions" class="nav-link" data-scroll-target="#evaluation-challenges-and-optimization-directions"><span class="header-section-number">1.7</span> Evaluation Challenges and Optimization Directions</a></li>
-  <li><a href="#is-rag-dead-debates-and-emerging-alternatives" id="toc-is-rag-dead-debates-and-emerging-alternatives" class="nav-link" data-scroll-target="#is-rag-dead-debates-and-emerging-alternatives"><span class="header-section-number">1.8</span> Is RAG Dead? Debates and Emerging Alternatives</a></li>
-  <li><a href="#a-minimal-rag-implementation" id="toc-a-minimal-rag-implementation" class="nav-link" data-scroll-target="#a-minimal-rag-implementation"><span class="header-section-number">1.9</span> A Minimal RAG Implementation</a>
+  <li><a href="#a-minimal-mental-model" id="toc-a-minimal-mental-model" class="nav-link" data-scroll-target="#a-minimal-mental-model"><span class="header-section-number">1.6</span> A Minimal Mental Model</a></li>
+  <li><a href="#getting-started-with-rag-systems" id="toc-getting-started-with-rag-systems" class="nav-link" data-scroll-target="#getting-started-with-rag-systems"><span class="header-section-number">1.7</span> Getting Started with RAG Systems</a></li>
+  <li><a href="#a-minimal-rag-implementation" id="toc-a-minimal-rag-implementation" class="nav-link" data-scroll-target="#a-minimal-rag-implementation"><span class="header-section-number">1.8</span> A Minimal RAG Implementation</a>
   <ul class="collapse">
-  <li><a href="#a-configurable-demo-with-ollama" id="toc-a-configurable-demo-with-ollama" class="nav-link" data-scroll-target="#a-configurable-demo-with-ollama"><span class="header-section-number">1.9.1</span> A Configurable Demo with Ollama</a></li>
-  <li><a href="#running-the-example" id="toc-running-the-example" class="nav-link" data-scroll-target="#running-the-example"><span class="header-section-number">1.9.2</span> Running the Example</a></li>
-  <li><a href="#core-code-path" id="toc-core-code-path" class="nav-link" data-scroll-target="#core-code-path"><span class="header-section-number">1.9.3</span> Core Code Path</a></li>
-  <li><a href="#why-this-example-matters" id="toc-why-this-example-matters" class="nav-link" data-scroll-target="#why-this-example-matters"><span class="header-section-number">1.9.4</span> Why This Example Matters</a></li>
+  <li><a href="#a-configurable-demo-with-ollama" id="toc-a-configurable-demo-with-ollama" class="nav-link" data-scroll-target="#a-configurable-demo-with-ollama"><span class="header-section-number">1.8.1</span> A Configurable Demo with Ollama</a></li>
+  <li><a href="#running-the-example" id="toc-running-the-example" class="nav-link" data-scroll-target="#running-the-example"><span class="header-section-number">1.8.2</span> Running the Example</a></li>
+  <li><a href="#core-code-path" id="toc-core-code-path" class="nav-link" data-scroll-target="#core-code-path"><span class="header-section-number">1.8.3</span> Core Code Path</a></li>
+  <li><a href="#why-this-example-matters" id="toc-why-this-example-matters" class="nav-link" data-scroll-target="#why-this-example-matters"><span class="header-section-number">1.8.4</span> Why This Example Matters</a></li>
   </ul></li>
+  <li><a href="#what-this-chapter-adds-to-the-pipeline" id="toc-what-this-chapter-adds-to-the-pipeline" class="nav-link" data-scroll-target="#what-this-chapter-adds-to-the-pipeline"><span class="header-section-number">1.9</span> What This Chapter Adds to the Pipeline</a></li>
   </ul>
 </nav>
     </div>
@@ -257,11 +257,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="what-is-retrieval-augmented-generation" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="what-is-retrieval-augmented-generation"><span class="header-section-number">1.1</span> What Is Retrieval-Augmented Generation</h2>
-<p>Retrieval-Augmented Generation (RAG) is an application pattern in which a language model receives external information at inference time and uses that information to produce an answer. Rather than relying only on parameters learned during pretraining, the model is given a dynamically retrieved context window that is relevant to the current query.</p>
-<p>At a high level, a RAG system has three stages: retrieve, augment, generate. A user question is transformed into one or more retrieval queries; relevant passages or records are fetched from a knowledge source; then the model is prompted to answer using those materials. The key benefit is that the knowledge source can be updated independently of the model itself.</p>
+<p>Retrieval-Augmented Generation (RAG) is an application pattern in which a language model receives external information at inference time and uses that information to produce an answer. Rather than relying only on parameters learned during pretraining, the model is given retrieved evidence that is relevant to the current query.</p>
+<p>At a high level, a RAG system has three stages: retrieve, augment, generate. A user question triggers retrieval, useful passages or records are fetched from a knowledge source, and the model answers with that evidence in view. The key benefit is that the knowledge source can be updated independently of the model itself.</p>
+<p>In plainer language, RAG is a way of letting the model look things up before it answers.</p>
+<p>That matters because many useful questions depend on information that is:</p>
+<ul>
+<li>private;</li>
+<li>recent;</li>
+<li>too specific to live reliably inside pretraining alone;</li>
+<li>better verified from source material at answer time.</li>
+</ul>
 </section>
-<section id="core-principles-and-system-architecture" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="core-principles-and-system-architecture"><span class="header-section-number">1.2</span> Core Principles and System Architecture</h2>
+<section id="what-problem-rag-is-trying-to-solve" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="what-problem-rag-is-trying-to-solve"><span class="header-section-number">1.2</span> What Problem RAG Is Trying to Solve</h2>
+<p>The basic problem is simple.</p>
+<p>Language models are very good at producing fluent text, but they are not a reliable place to store all the facts a real application may need. Product details change. Internal documents change. Policies change. Some information should never have been in public training data to begin with.</p>
+<p>So the practical question becomes:</p>
+<ul>
+<li>how do we give a model access to the right external information when a user asks?</li>
+</ul>
+<p>RAG is one answer to that question.</p>
+<p>It does not replace the model. It gives the model evidence to work from.</p>
+<p>That is why RAG is often a better fit than plain prompting when the answer needs to depend on real source material instead of only the model’s prior knowledge.</p>
+</section>
+<section id="core-principles-and-system-architecture" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="core-principles-and-system-architecture"><span class="header-section-number">1.3</span> Core Principles and System Architecture</h2>
 <p>A practical RAG system usually contains the following components:</p>
 <ul>
 <li>a data pipeline that ingests documents, records, or events;</li>
@@ -272,18 +292,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>a generation layer that produces the final answer;</li>
 <li>an evaluation and observability layer that measures quality.</li>
 </ul>
-<p>The architecture matters because errors compound across layers. If chunking is poor, retrieval quality suffers. If retrieval is weak, prompting cannot rescue answer faithfulness. If evaluation is absent, teams often optimize for style instead of correctness.</p>
-</section>
-<section id="evolution-of-rag-techniques" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="evolution-of-rag-techniques"><span class="header-section-number">1.3</span> Evolution of RAG Techniques</h2>
-<p>Early RAG implementations were mostly “semantic search plus prompt stuffing.” They embedded chunks, retrieved the top <code>k</code>, and placed them into a template. That pattern still works for many small systems, but the field has evolved rapidly.</p>
-<p>Modern systems often include hybrid retrieval, metadata filtering, multi-stage ranking, context compression, tool use, query routing, and domain-specific structured retrieval. The trend is clear: the retrieval stack is becoming more adaptive, and the generation stack is becoming more constrained and instrumented.</p>
+<p>You do not need to memorize this list on first read. The important point is simpler: errors compound across layers. If chunking is poor, retrieval quality suffers. If retrieval is weak, prompting cannot rescue grounding. If evaluation is absent, teams often optimize for style instead of correctness.</p>
 </section>
 <section id="rag-vs.-fine-tuning" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="rag-vs.-fine-tuning"><span class="header-section-number">1.4</span> RAG vs.&nbsp;Fine-Tuning</h2>
 <p>RAG and fine-tuning solve different problems.</p>
 <p>RAG is strongest when the challenge is access to external knowledge: product catalogs, internal documentation, support articles, contracts, policies, and rapidly changing facts. Fine-tuning is strongest when the challenge is behavior: tone, style, task formatting, response patterns, or domain-specific output conventions.</p>
 <p>In practice, many mature systems combine the two. A model may be tuned to follow a task reliably while RAG provides fresh or private facts. The common mistake is assuming one replaces the other in all cases.</p>
+<p>If you want a short version:</p>
+<ul>
+<li>RAG is usually about giving the model better knowledge at answer time;</li>
+<li>fine-tuning is usually about changing how the model behaves.</li>
+</ul>
 </section>
 <section id="when-to-use-rag-use-cases-and-risk-levels" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="when-to-use-rag-use-cases-and-risk-levels"><span class="header-section-number">1.5</span> When to Use RAG: Use Cases and Risk Levels</h2>
@@ -298,47 +318,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Risk level matters. In low-risk settings, approximate retrieval may be acceptable. In high-risk settings such as healthcare, legal review, or compliance, the system needs stricter grounding, stronger auditability, and explicit fallbacks when evidence is weak.</p>
 </section>
-<section id="getting-started-with-rag-systems" class="level2" data-number="1.6">
-<h2 data-number="1.6" class="anchored" data-anchor-id="getting-started-with-rag-systems"><span class="header-section-number">1.6</span> Getting Started with RAG Systems</h2>
+<section id="a-minimal-mental-model" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="a-minimal-mental-model"><span class="header-section-number">1.6</span> A Minimal Mental Model</h2>
+<p>Before getting deeper into the book, it helps to keep one very small mental model in mind:</p>
+<pre class="text"><code>question
+-&gt; find useful evidence
+-&gt; give that evidence to the model
+-&gt; answer from that evidence</code></pre>
+<p>That is the heart of RAG.</p>
+<p>Everything else in the book is really about making one of those steps work better:</p>
+<ul>
+<li>data preparation helps create better chunks;</li>
+<li>indexing helps make them searchable;</li>
+<li>retrieval helps find the right ones;</li>
+<li>prompting helps the model use them well;</li>
+<li>evaluation helps us tell where the process is failing.</li>
+</ul>
+</section>
+<section id="getting-started-with-rag-systems" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="getting-started-with-rag-systems"><span class="header-section-number">1.7</span> Getting Started with RAG Systems</h2>
 <p>The best way to begin is not with the fanciest architecture. Start with a narrow use case, a clear corpus, and a measurable task. Build a baseline pipeline:</p>
 <ol type="1">
 <li>Ingest a bounded set of documents.</li>
 <li>Normalize and chunk them.</li>
 <li>Embed and index the chunks.</li>
 <li>Retrieve top results for a test query set.</li>
-<li>Prompt the model with retrieved context.</li>
+<li>Prompt the model with retrieved evidence.</li>
 <li>Evaluate answer quality and failure modes.</li>
 </ol>
 <p>This baseline reveals where the real bottleneck lives. For many teams, the first bottleneck is not model choice but document quality and query coverage.</p>
 </section>
-<section id="evaluation-challenges-and-optimization-directions" class="level2" data-number="1.7">
-<h2 data-number="1.7" class="anchored" data-anchor-id="evaluation-challenges-and-optimization-directions"><span class="header-section-number">1.7</span> Evaluation Challenges and Optimization Directions</h2>
-<p>RAG systems are difficult to evaluate because the output quality depends on both retrieval quality and generation quality. A weak answer may come from poor evidence, poor prompt design, or both. That means metrics need to separate stages whenever possible.</p>
-<p>Optimization typically moves along these axes:</p>
-<ul>
-<li>improve corpus coverage;</li>
-<li>improve chunking and metadata;</li>
-<li>improve embedding/index selection;</li>
-<li>improve candidate ranking and filtering;</li>
-<li>improve prompt structure and answer constraints;</li>
-<li>reduce latency and token cost.</li>
-</ul>
-</section>
-<section id="is-rag-dead-debates-and-emerging-alternatives" class="level2" data-number="1.8">
-<h2 data-number="1.8" class="anchored" data-anchor-id="is-rag-dead-debates-and-emerging-alternatives"><span class="header-section-number">1.8</span> Is RAG Dead? Debates and Emerging Alternatives</h2>
-<p>Claims that “RAG is dead” usually reflect a narrower point: long-context models, tool use, and stronger base models reduce the need for naive retrieval pipelines. They do not eliminate the need for retrieval itself.</p>
-<p>In reality, the question is shifting from “Should we use RAG?” to “What retrieval strategy matches this task?” Sometimes the answer is classic vector search. Sometimes it is SQL generation, graph traversal, API calls, or an orchestrated combination of them.</p>
-</section>
-<section id="a-minimal-rag-implementation" class="level2" data-number="1.9">
-<h2 data-number="1.9" class="anchored" data-anchor-id="a-minimal-rag-implementation"><span class="header-section-number">1.9</span> A Minimal RAG Implementation</h2>
+<section id="a-minimal-rag-implementation" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="a-minimal-rag-implementation"><span class="header-section-number">1.8</span> A Minimal RAG Implementation</h2>
 <p>The smallest useful RAG system can be expressed in pseudocode:</p>
 <pre class="text"><code>documents -&gt; clean -&gt; chunk -&gt; embed -&gt; index
 user query -&gt; embed -&gt; retrieve top_k chunks
 top_k chunks + instructions + question -&gt; language model
 language model -&gt; answer with citations or grounded summary</code></pre>
-<p>Frameworks such as LangChain and LlamaIndex can accelerate assembly, while local model runners such as Ollama can help with experimentation. Still, the framework is not the system. Good results come from thoughtful data and evaluation choices, not only from wiring together abstractions.</p>
-<section id="a-configurable-demo-with-ollama" class="level3" data-number="1.9.1">
-<h3 data-number="1.9.1" class="anchored" data-anchor-id="a-configurable-demo-with-ollama"><span class="header-section-number">1.9.1</span> A Configurable Demo with Ollama</h3>
+<p>Frameworks such as LangChain and LlamaIndex can accelerate assembly, while local model runners such as Ollama can help with experimentation. Still, the framework is not the system. Good results come from good data, good retrieval, and clear evaluation, not only from wiring together abstractions.</p>
+<section id="a-configurable-demo-with-ollama" class="level3" data-number="1.8.1">
+<h3 data-number="1.8.1" class="anchored" data-anchor-id="a-configurable-demo-with-ollama"><span class="header-section-number">1.8.1</span> A Configurable Demo with Ollama</h3>
 <p>To make the architecture concrete, this book uses an Ollama-based setup and turns the book itself into the knowledge base. The current project supports both local models and Ollama cloud models for generation, while the embedding side is typically built with a local embedding model such as <code>bge-m3:latest</code>.</p>
 <ul>
 <li>default local generator model: <code>qwen3.5:2b</code></li>
@@ -351,41 +370,52 @@ language model -&gt; answer with citations or grounded summary</code></pre>
 <p>The workflow is intentionally practical:</p>
 <ol type="1">
 <li>read the <code>.qmd</code> chapters listed in <code>_quarto.yml</code>;</li>
-<li>chunk them into retrieval units with source-path metadata;</li>
+<li>turn them into chunks with source-path metadata;</li>
 <li>embed those chunks with a selected embedding model, usually <code>bge-m3:latest</code>;</li>
 <li>store the result as a local JSON index;</li>
 <li>answer questions against the book with a selected Ollama chat model.</li>
 </ol>
 </section>
-<section id="running-the-example" class="level3" data-number="1.9.2">
-<h3 data-number="1.9.2" class="anchored" data-anchor-id="running-the-example"><span class="header-section-number">1.9.2</span> Running the Example</h3>
+<section id="running-the-example" class="level3" data-number="1.8.2">
+<h3 data-number="1.8.2" class="anchored" data-anchor-id="running-the-example"><span class="header-section-number">1.8.2</span> Running the Example</h3>
 <p>If you want to use local models, pull them first:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen3.5:2b</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull bge-m3:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen3.5:2b</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull bge-m3:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If you want to use Ollama cloud models, add <code>OLLAMA_API_KEY</code> to the project’s <code>.env</code> file.</p>
 <p>Then build and query the book index. A local default path looks like this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/ingest_book.py</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/build_book_index.py <span class="at">--embed-model</span> bge-m3:latest</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/ask_book.py <span class="at">--question</span> <span class="st">"What does the book say about hybrid retrieval?"</span> <span class="at">--chat-model</span> qwen3.5:2b <span class="at">--embed-model</span> bge-m3:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/ingest_book.py</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/build_book_index.py <span class="at">--embed-model</span> bge-m3:latest</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> code/cli/ask_book.py <span class="at">--question</span> <span class="st">"What does the book say about hybrid retrieval?"</span> <span class="at">--chat-model</span> qwen3.5:2b <span class="at">--embed-model</span> bge-m3:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In the Streamlit interface, the same pipeline is exposed through model selectors in the sidebar, so the reader can switch chat models without editing code.</p>
 </section>
-<section id="core-code-path" class="level3" data-number="1.9.3">
-<h3 data-number="1.9.3" class="anchored" data-anchor-id="core-code-path"><span class="header-section-number">1.9.3</span> Core Code Path</h3>
-<p>The key ingestion step turns book chapters into reusable retrieval chunks:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_corpus() <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]]:</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    corpus: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]] <span class="op">=</span> []</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> document <span class="kw">in</span> load_book_documents():</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        corpus.extend(chunk_document(document[<span class="st">"path"</span>], document[<span class="st">"text"</span>]))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> corpus</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The answering step then retrieves matching chunks from the built index and passes them to the selected generator. This keeps the example grounded in a real artifact: if the chapter text changes, the corpus and answers can change too.</p>
+<section id="core-code-path" class="level3" data-number="1.8.3">
+<h3 data-number="1.8.3" class="anchored" data-anchor-id="core-code-path"><span class="header-section-number">1.8.3</span> Core Code Path</h3>
+<p>The key ingestion step turns book chapters into reusable chunks:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_corpus() <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]]:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    corpus: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]] <span class="op">=</span> []</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> document <span class="kw">in</span> load_book_documents():</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        corpus.extend(chunk_document(document[<span class="st">"path"</span>], document[<span class="st">"text"</span>]))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> corpus</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The answering step then retrieves matching chunks from the built index and passes them to the selected generator. This keeps the example tied to a real artifact: if the chapter text changes, the corpus and answers can change too.</p>
 </section>
-<section id="why-this-example-matters" class="level3" data-number="1.9.4">
-<h3 data-number="1.9.4" class="anchored" data-anchor-id="why-this-example-matters"><span class="header-section-number">1.9.4</span> Why This Example Matters</h3>
+<section id="why-this-example-matters" class="level3" data-number="1.8.4">
+<h3 data-number="1.8.4" class="anchored" data-anchor-id="why-this-example-matters"><span class="header-section-number">1.8.4</span> Why This Example Matters</h3>
 <p>A project like this is useful for two reasons. First, it gives the reader a baseline that can run entirely on local models, while still allowing a faster or stronger cloud chat model when desired. Second, it answers a real question: how do we build a RAG system over a body of source material that we actually care about?</p>
 <p>In a real project, the next upgrades would usually be better chunking, metadata-aware filtering, a persistent vector store, and stronger evaluation. Those improvements make more sense once a baseline exists and can already answer questions over the full book.</p>
-
-
 </section>
+</section>
+<section id="what-this-chapter-adds-to-the-pipeline" class="level2" data-number="1.9">
+<h2 data-number="1.9" class="anchored" data-anchor-id="what-this-chapter-adds-to-the-pipeline"><span class="header-section-number">1.9</span> What This Chapter Adds to the Pipeline</h2>
+<p>This chapter gives us the starting mental model for the rest of the book:</p>
+<pre class="text"><code>question
+-&gt; retrieve evidence
+-&gt; answer from that evidence</code></pre>
+<p>The next chapter takes the first real build step in that pipeline:</p>
+<ul>
+<li>where does that evidence come from, and how do we prepare it well enough for retrieval?</li>
+</ul>
+
+
 </section>
 
 </main> <!-- /main -->

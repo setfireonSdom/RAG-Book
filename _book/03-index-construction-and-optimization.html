@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -180,20 +215,24 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#embeddings-and-their-role-in-rag" id="toc-embeddings-and-their-role-in-rag" class="nav-link active" data-scroll-target="#embeddings-and-their-role-in-rag"><span class="header-section-number">3.1</span> Embeddings and Their Role in RAG</a></li>
-  <li><a href="#evolution-of-embedding-models" id="toc-evolution-of-embedding-models" class="nav-link" data-scroll-target="#evolution-of-embedding-models"><span class="header-section-number">3.2</span> Evolution of Embedding Models</a></li>
-  <li><a href="#training-principles-of-embedding-models" id="toc-training-principles-of-embedding-models" class="nav-link" data-scroll-target="#training-principles-of-embedding-models"><span class="header-section-number">3.3</span> Training Principles of Embedding Models</a></li>
-  <li><a href="#embedding-model-selection" id="toc-embedding-model-selection" class="nav-link" data-scroll-target="#embedding-model-selection"><span class="header-section-number">3.4</span> Embedding Model Selection</a></li>
-  <li><a href="#multimodal-embeddings" id="toc-multimodal-embeddings" class="nav-link" data-scroll-target="#multimodal-embeddings"><span class="header-section-number">3.5</span> Multimodal Embeddings</a></li>
-  <li><a href="#clip-and-vision-language-representations" id="toc-clip-and-vision-language-representations" class="nav-link" data-scroll-target="#clip-and-vision-language-representations"><span class="header-section-number">3.6</span> CLIP and Vision-Language Representations</a></li>
-  <li><a href="#multimodal-embedding-models-in-practice" id="toc-multimodal-embedding-models-in-practice" class="nav-link" data-scroll-target="#multimodal-embedding-models-in-practice"><span class="header-section-number">3.7</span> Multimodal Embedding Models in Practice</a></li>
-  <li><a href="#vector-databases-and-similarity-search" id="toc-vector-databases-and-similarity-search" class="nav-link" data-scroll-target="#vector-databases-and-similarity-search"><span class="header-section-number">3.8</span> Vector Databases and Similarity Search</a></li>
-  <li><a href="#vector-indexing-and-ann-search" id="toc-vector-indexing-and-ann-search" class="nav-link" data-scroll-target="#vector-indexing-and-ann-search"><span class="header-section-number">3.9</span> Vector Indexing and ANN Search</a></li>
-  <li><a href="#local-vector-stores-faiss" id="toc-local-vector-stores-faiss" class="nav-link" data-scroll-target="#local-vector-stores-faiss"><span class="header-section-number">3.10</span> Local Vector Stores (FAISS)</a></li>
-  <li><a href="#distributed-vector-databases-milvus" id="toc-distributed-vector-databases-milvus" class="nav-link" data-scroll-target="#distributed-vector-databases-milvus"><span class="header-section-number">3.11</span> Distributed Vector Databases (Milvus)</a></li>
-  <li><a href="#index-optimization-techniques" id="toc-index-optimization-techniques" class="nav-link" data-scroll-target="#index-optimization-techniques"><span class="header-section-number">3.12</span> Index Optimization Techniques</a></li>
-  <li><a href="#context-expansion-strategies" id="toc-context-expansion-strategies" class="nav-link" data-scroll-target="#context-expansion-strategies"><span class="header-section-number">3.13</span> Context Expansion Strategies</a></li>
-  <li><a href="#structured-indexing" id="toc-structured-indexing" class="nav-link" data-scroll-target="#structured-indexing"><span class="header-section-number">3.14</span> Structured Indexing</a></li>
+  <li><a href="#from-chunks-to-searchable-units" id="toc-from-chunks-to-searchable-units" class="nav-link active" data-scroll-target="#from-chunks-to-searchable-units"><span class="header-section-number">3.1</span> From Chunks to Searchable Units</a></li>
+  <li><a href="#what-this-chapter-is-trying-to-solve" id="toc-what-this-chapter-is-trying-to-solve" class="nav-link" data-scroll-target="#what-this-chapter-is-trying-to-solve"><span class="header-section-number">3.2</span> What This Chapter Is Trying to Solve</a></li>
+  <li><a href="#why-plain-text-search-is-not-enough" id="toc-why-plain-text-search-is-not-enough" class="nav-link" data-scroll-target="#why-plain-text-search-is-not-enough"><span class="header-section-number">3.3</span> Why Plain Text Search Is Not Enough</a></li>
+  <li><a href="#embeddings-and-their-role-in-rag" id="toc-embeddings-and-their-role-in-rag" class="nav-link" data-scroll-target="#embeddings-and-their-role-in-rag"><span class="header-section-number">3.4</span> Embeddings and Their Role in RAG</a></li>
+  <li><a href="#what-an-embedding-model-actually-helps-with" id="toc-what-an-embedding-model-actually-helps-with" class="nav-link" data-scroll-target="#what-an-embedding-model-actually-helps-with"><span class="header-section-number">3.5</span> What an Embedding Model Actually Helps With</a></li>
+  <li><a href="#how-this-project-builds-an-index" id="toc-how-this-project-builds-an-index" class="nav-link" data-scroll-target="#how-this-project-builds-an-index"><span class="header-section-number">3.6</span> How This Project Builds an Index</a></li>
+  <li><a href="#why-the-current-index-is-simple-but-useful" id="toc-why-the-current-index-is-simple-but-useful" class="nav-link" data-scroll-target="#why-the-current-index-is-simple-but-useful"><span class="header-section-number">3.7</span> Why the Current Index Is Simple but Useful</a></li>
+  <li><a href="#dense-retrieval-in-plain-language" id="toc-dense-retrieval-in-plain-language" class="nav-link" data-scroll-target="#dense-retrieval-in-plain-language"><span class="header-section-number">3.8</span> Dense Retrieval in Plain Language</a></li>
+  <li><a href="#why-embeddings-alone-are-not-the-whole-story" id="toc-why-embeddings-alone-are-not-the-whole-story" class="nav-link" data-scroll-target="#why-embeddings-alone-are-not-the-whole-story"><span class="header-section-number">3.9</span> Why Embeddings Alone Are Not the Whole Story</a></li>
+  <li><a href="#how-to-choose-an-embedding-model" id="toc-how-to-choose-an-embedding-model" class="nav-link" data-scroll-target="#how-to-choose-an-embedding-model"><span class="header-section-number">3.10</span> How to Choose an Embedding Model</a></li>
+  <li><a href="#the-difference-between-an-embedding-an-index-and-a-vector-database" id="toc-the-difference-between-an-embedding-an-index-and-a-vector-database" class="nav-link" data-scroll-target="#the-difference-between-an-embedding-an-index-and-a-vector-database"><span class="header-section-number">3.11</span> The Difference Between an Embedding, an Index, and a Vector Database</a></li>
+  <li><a href="#why-ann-search-exists" id="toc-why-ann-search-exists" class="nav-link" data-scroll-target="#why-ann-search-exists"><span class="header-section-number">3.12</span> Why ANN Search Exists</a></li>
+  <li><a href="#faiss-and-local-vector-search" id="toc-faiss-and-local-vector-search" class="nav-link" data-scroll-target="#faiss-and-local-vector-search"><span class="header-section-number">3.13</span> FAISS and Local Vector Search</a></li>
+  <li><a href="#vector-databases-and-when-they-matter" id="toc-vector-databases-and-when-they-matter" class="nav-link" data-scroll-target="#vector-databases-and-when-they-matter"><span class="header-section-number">3.14</span> Vector Databases and When They Matter</a></li>
+  <li><a href="#structured-indexing-still-matters" id="toc-structured-indexing-still-matters" class="nav-link" data-scroll-target="#structured-indexing-still-matters"><span class="header-section-number">3.15</span> Structured Indexing Still Matters</a></li>
+  <li><a href="#context-expansion-after-retrieval" id="toc-context-expansion-after-retrieval" class="nav-link" data-scroll-target="#context-expansion-after-retrieval"><span class="header-section-number">3.16</span> Context Expansion After Retrieval</a></li>
+  <li><a href="#how-to-tell-whether-the-index-is-working" id="toc-how-to-tell-whether-the-index-is-working" class="nav-link" data-scroll-target="#how-to-tell-whether-the-index-is-working"><span class="header-section-number">3.17</span> How to Tell Whether the Index Is Working</a></li>
+  <li><a href="#what-this-chapter-adds-to-the-pipeline" id="toc-what-this-chapter-adds-to-the-pipeline" class="nav-link" data-scroll-target="#what-this-chapter-adds-to-the-pipeline"><span class="header-section-number">3.18</span> What This Chapter Adds to the Pipeline</a></li>
   </ul>
 </nav>
     </div>
@@ -219,89 +258,277 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="embeddings-and-their-role-in-rag" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="embeddings-and-their-role-in-rag"><span class="header-section-number">3.1</span> Embeddings and Their Role in RAG</h2>
-<p>Embeddings map content into vector spaces where semantically similar items are located near one another. In dense retrieval systems, embeddings are the main bridge between a user query and the candidate passages that might answer it.</p>
-<p>Their role is powerful but bounded. An embedding model captures similarity according to its training data and objective. If that notion of similarity does not match the task, retrieval quality will suffer.</p>
+<section id="from-chunks-to-searchable-units" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="from-chunks-to-searchable-units"><span class="header-section-number">3.1</span> From Chunks to Searchable Units</h2>
+<p>At the end of Chapter 2, we had a set of chunks that were clean enough and small enough to retrieve. But those chunks are still just text. The system still needs a way to search them well.</p>
+<p>That is the job of indexing.</p>
+<p>In plain language, indexing means turning chunks into a form that the retrieval step can search quickly and usefully. In this project, that mostly means creating embeddings for each chunk and saving them in an index file.</p>
+<p>So the flow now looks like this:</p>
+<pre class="text"><code>raw chapters
+-&gt; cleaned and chunked text
+-&gt; embeddings for each chunk
+-&gt; searchable index
+-&gt; retrieval at question time</code></pre>
+<p>This chapter is about that middle step.</p>
 </section>
-<section id="evolution-of-embedding-models" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="evolution-of-embedding-models"><span class="header-section-number">3.2</span> Evolution of Embedding Models</h2>
-<p>Embedding models have evolved from relatively narrow sentence encoders into stronger multilingual and domain-aware models. Better training data, contrastive objectives, and larger model capacities have all improved retrieval quality.</p>
-<p>At the same time, the problem remains use-case dependent. A model that performs well on public benchmarks may still struggle on internal jargon, code snippets, legal clauses, or highly structured records.</p>
-</section>
-<section id="training-principles-of-embedding-models" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="training-principles-of-embedding-models"><span class="header-section-number">3.3</span> Training Principles of Embedding Models</h2>
-<p>Many modern embedding models are trained with contrastive learning. Positive pairs are pulled together in vector space, while negatives are pushed apart. This teaches the model a geometry of similarity.</p>
-<p>The important practical insight is that “similarity” depends on the training objective. Semantic equivalence, topical relatedness, paraphrase behavior, and relevance for retrieval are related but not identical concepts.</p>
-</section>
-<section id="embedding-model-selection" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="embedding-model-selection"><span class="header-section-number">3.4</span> Embedding Model Selection</h2>
-<p>Model selection should consider:</p>
+<section id="what-this-chapter-is-trying-to-solve" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="what-this-chapter-is-trying-to-solve"><span class="header-section-number">3.2</span> What This Chapter Is Trying to Solve</h2>
+<p>The main problem is simple: even if the corpus is well prepared, the system still needs a good way to find the right chunks for a new question.</p>
+<p>That means this chapter is trying to answer questions like:</p>
 <ul>
-<li>retrieval quality on representative tasks;</li>
-<li>dimensionality and storage cost;</li>
-<li>latency and throughput;</li>
-<li>multilingual performance;</li>
-<li>licensing and deployment constraints.</li>
+<li>how do we represent chunk meaning in a searchable form;</li>
+<li>how does the system compare a user question with stored chunks;</li>
+<li>what is the difference between an embedding model, an index, and a vector database;</li>
+<li>when is a simple local index enough, and when is a bigger system needed.</li>
 </ul>
-<p>Benchmarks such as MTEB are useful starting points, but internal evaluation remains essential. The best model is the one that performs reliably on your corpus and query distribution.</p>
+<p>If Chapter 2 was about making good chunks, Chapter 3 is about making those chunks searchable.</p>
 </section>
-<section id="multimodal-embeddings" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="multimodal-embeddings"><span class="header-section-number">3.5</span> Multimodal Embeddings</h2>
-<p>Not all knowledge is textual. Many real systems need to search over images, slides, screenshots, diagrams, and mixed media. Multimodal embeddings aim to place text and non-text inputs in compatible representational spaces.</p>
-<p>This enables cross-modal retrieval, such as finding figures from a textual query or retrieving image-caption pairs that explain a concept.</p>
+<section id="why-plain-text-search-is-not-enough" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="why-plain-text-search-is-not-enough"><span class="header-section-number">3.3</span> Why Plain Text Search Is Not Enough</h2>
+<p>Suppose a chunk says:</p>
+<pre class="text"><code>RAG is strongest when the problem is access to external knowledge.</code></pre>
+<p>A user might ask:</p>
+<pre class="text"><code>When should I use RAG instead of fine-tuning?</code></pre>
+<p>The wording is different, but the meaning is related. Simple keyword search may do fine in some cases, but it can also miss useful matches when the query and the chunk use different words.</p>
+<p>That is why dense retrieval exists. Instead of matching only on surface words, it tries to match on semantic similarity.</p>
+<p>This does not mean keyword methods stop mattering. It means we often need another tool in addition to exact term matching.</p>
 </section>
-<section id="clip-and-vision-language-representations" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="clip-and-vision-language-representations"><span class="header-section-number">3.6</span> CLIP and Vision-Language Representations</h2>
-<p>CLIP is a landmark example of joint text-image representation learning. By aligning images and their textual descriptions, it demonstrated how a shared embedding space can support flexible retrieval across modalities.</p>
-<p>The broader lesson is that RAG can operate over any evidence type that can be indexed and retrieved, not just prose paragraphs.</p>
+<section id="embeddings-and-their-role-in-rag" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="embeddings-and-their-role-in-rag"><span class="header-section-number">3.4</span> Embeddings and Their Role in RAG</h2>
+<p>An embedding is a numeric representation of text. The practical idea is that chunks with similar meaning should end up closer together in that numeric space.</p>
+<p>In a RAG system, embeddings are useful because they let us do this:</p>
+<ol type="1">
+<li>turn each chunk into a vector;</li>
+<li>turn the user question into a vector;</li>
+<li>compare those vectors;</li>
+<li>rank chunks by similarity.</li>
+</ol>
+<p>That is the core of dense retrieval.</p>
+<p>The benefit is easy to understand: the system may still retrieve a relevant chunk even when the user does not use the exact same wording as the document.</p>
+<p>The limit is also important: embeddings do not “understand” truth. They only encode patterns of similarity learned during training. If the embedding model is weak for the domain, retrieval quality will suffer.</p>
 </section>
-<section id="multimodal-embedding-models-in-practice" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="multimodal-embedding-models-in-practice"><span class="header-section-number">3.7</span> Multimodal Embedding Models in Practice</h2>
-<p>In practice, multimodal systems need careful document modeling. An image alone may be insufficient; the surrounding caption, section title, page number, and document identity may be equally important retrieval signals.</p>
-<p>Good multimodal indexing often combines vector similarity with structural metadata rather than treating the embedding as the only source of truth.</p>
-</section>
-<section id="vector-databases-and-similarity-search" class="level2" data-number="3.8">
-<h2 data-number="3.8" class="anchored" data-anchor-id="vector-databases-and-similarity-search"><span class="header-section-number">3.8</span> Vector Databases and Similarity Search</h2>
-<p>Vector databases store embeddings and support nearest-neighbor search. They usually also support metadata filtering, persistence, and operational features such as replication or sharding.</p>
-<p>For small experiments, a local index may be enough. For production systems with large corpora, frequent updates, or multi-tenant workloads, operational concerns become central.</p>
-</section>
-<section id="vector-indexing-and-ann-search" class="level2" data-number="3.9">
-<h2 data-number="3.9" class="anchored" data-anchor-id="vector-indexing-and-ann-search"><span class="header-section-number">3.9</span> Vector Indexing and ANN Search</h2>
-<p>Approximate nearest-neighbor (ANN) indexing makes vector retrieval tractable at scale. Structures such as HNSW, IVF, and PQ trade exactness for speed and memory efficiency.</p>
-<p>These choices directly affect recall, latency, and cost. Index tuning is therefore a product decision as much as an engineering one.</p>
-</section>
-<section id="local-vector-stores-faiss" class="level2" data-number="3.10">
-<h2 data-number="3.10" class="anchored" data-anchor-id="local-vector-stores-faiss"><span class="header-section-number">3.10</span> Local Vector Stores (FAISS)</h2>
-<p>FAISS is widely used for local experimentation and efficient similarity search. It is flexible, fast, and ideal for prototyping retrieval behavior before committing to a larger serving stack.</p>
-<p>Its limitations are mostly operational. Production deployments often need higher-level concerns such as multi-user isolation, managed persistence, or distributed scaling.</p>
-</section>
-<section id="distributed-vector-databases-milvus" class="level2" data-number="3.11">
-<h2 data-number="3.11" class="anchored" data-anchor-id="distributed-vector-databases-milvus"><span class="header-section-number">3.11</span> Distributed Vector Databases (Milvus)</h2>
-<p>Distributed systems such as Milvus are designed for larger-scale workloads, where indexing, serving, and storage need to be managed across nodes. They are useful when datasets are large, update frequency is significant, or operational guarantees matter.</p>
-<p>Choosing such a system should be justified by workload needs, not by trend-following alone.</p>
-</section>
-<section id="index-optimization-techniques" class="level2" data-number="3.12">
-<h2 data-number="3.12" class="anchored" data-anchor-id="index-optimization-techniques"><span class="header-section-number">3.12</span> Index Optimization Techniques</h2>
-<p>Index optimization includes:</p>
+<section id="what-an-embedding-model-actually-helps-with" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="what-an-embedding-model-actually-helps-with"><span class="header-section-number">3.5</span> What an Embedding Model Actually Helps With</h2>
+<p>It helps to be concrete here.</p>
+<p>An embedding model is good at things like:</p>
 <ul>
-<li>selecting the right ANN structure;</li>
-<li>tuning recall-latency parameters;</li>
-<li>managing vector compression;</li>
-<li>partitioning by metadata or tenant;</li>
-<li>refreshing stale indexes safely.</li>
+<li>matching related wording;</li>
+<li>handling paraphrases;</li>
+<li>finding semantically similar passages;</li>
+<li>supporting multilingual or cross-domain matching, if the model is trained for that.</li>
 </ul>
-<p>The best index is not necessarily the fastest one. It is the one that helps the whole application meet quality and latency targets simultaneously.</p>
+<p>An embedding model is less reliable for things like:</p>
+<ul>
+<li>exact identifiers;</li>
+<li>strict keyword matching;</li>
+<li>small but important wording differences;</li>
+<li>structured constraints such as dates, IDs, or access rules.</li>
+</ul>
+<p>That is why embeddings are powerful, but not sufficient by themselves.</p>
 </section>
-<section id="context-expansion-strategies" class="level2" data-number="3.13">
-<h2 data-number="3.13" class="anchored" data-anchor-id="context-expansion-strategies"><span class="header-section-number">3.13</span> Context Expansion Strategies</h2>
-<p>Sometimes the top retrieved chunk is too narrow to be useful in isolation. Context expansion methods add neighboring chunks, parent sections, or linked records to reconstruct the local information neighborhood.</p>
-<p>This can improve answer quality, especially in documents with strong sequential structure. The cost is extra tokens and possible noise, so it should be evaluated carefully.</p>
+<section id="how-this-project-builds-an-index" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="how-this-project-builds-an-index"><span class="header-section-number">3.6</span> How This Project Builds an Index</h2>
+<p>In this repository, indexing is intentionally simple. After the book is chunked, the system sends each chunk to an embedding model and stores the result in a JSON file.</p>
+<p>The key script is <code>code/cli/build_book_index.py</code>, and the core embedding call lives in <code>code/core/book_rag.py</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ollama_embed(texts: <span class="bu">list</span>[<span class="bu">str</span>], embed_model: <span class="bu">str</span> <span class="op">=</span> EMBED_MODEL) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">list</span>[<span class="bu">float</span>]]:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    model_name <span class="op">=</span> normalize_cloud_model_name(embed_model) <span class="cf">if</span> is_cloud_model(embed_model) <span class="cf">else</span> embed_model</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> ollama_post(<span class="st">"/api/embed"</span>, {<span class="st">"model"</span>: model_name, <span class="st">"input"</span>: texts}, model_name<span class="op">=</span>embed_model)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response[<span class="st">"embeddings"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That function takes text chunks, sends them to Ollama’s embedding endpoint, and gets back vectors.</p>
+<p>The index-building script then stores each chunk together with:</p>
+<ul>
+<li>its chunk id;</li>
+<li>its source path;</li>
+<li>its section;</li>
+<li>its text;</li>
+<li>its embedding.</li>
+</ul>
+<p>So the index is not only a list of vectors. It is a list of vectors tied back to the original chunk content and metadata.</p>
 </section>
-<section id="structured-indexing" class="level2" data-number="3.14">
-<h2 data-number="3.14" class="anchored" data-anchor-id="structured-indexing"><span class="header-section-number">3.14</span> Structured Indexing</h2>
-<p>Not all retrieval targets belong in a vector store alone. Tables, entities, graphs, and canonical records may be better indexed in structured systems alongside vector search.</p>
-<p>Structured indexing is often what separates a demo from a robust product. The strongest systems use each storage and retrieval mechanism for the type of knowledge it represents best.</p>
+<section id="why-the-current-index-is-simple-but-useful" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="why-the-current-index-is-simple-but-useful"><span class="header-section-number">3.7</span> Why the Current Index Is Simple but Useful</h2>
+<p>The current design stores embeddings in a JSON file such as <code>code/build/book_index_*.json</code>.</p>
+<p>That is not the most scalable design, but it is useful for learning because:</p>
+<ul>
+<li>the whole process stays visible;</li>
+<li>the stored data is easy to inspect;</li>
+<li>there is little hidden infrastructure;</li>
+<li>the connection between chunk text and embedding stays obvious.</li>
+</ul>
+<p>This is a good baseline for a teaching project. You can see the data, understand the flow, and debug it without needing a separate vector database.</p>
+</section>
+<section id="dense-retrieval-in-plain-language" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="dense-retrieval-in-plain-language"><span class="header-section-number">3.8</span> Dense Retrieval in Plain Language</h2>
+<p>Once the chunks are embedded, the system can compare a question embedding with each stored chunk embedding.</p>
+<p>In this project, that comparison is done with cosine similarity:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cosine_similarity(vec_a: <span class="bu">list</span>[<span class="bu">float</span>], vec_b: <span class="bu">list</span>[<span class="bu">float</span>]) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    numerator <span class="op">=</span> <span class="bu">sum</span>(a <span class="op">*</span> b <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(vec_a, vec_b))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    norm_a <span class="op">=</span> math.sqrt(<span class="bu">sum</span>(a <span class="op">*</span> a <span class="cf">for</span> a <span class="kw">in</span> vec_a))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    norm_b <span class="op">=</span> math.sqrt(<span class="bu">sum</span>(b <span class="op">*</span> b <span class="cf">for</span> b <span class="kw">in</span> vec_b))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> norm_a <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> norm_b <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> numerator <span class="op">/</span> (norm_a <span class="op">*</span> norm_b)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You do not need to worry too much about the math here. The practical meaning is enough: the closer the vectors point in the same direction, the more similar the system considers the texts.</p>
+<p>That gives the system a way to rank chunks by semantic closeness to the user’s question.</p>
+</section>
+<section id="why-embeddings-alone-are-not-the-whole-story" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="why-embeddings-alone-are-not-the-whole-story"><span class="header-section-number">3.9</span> Why Embeddings Alone Are Not the Whole Story</h2>
+<p>It is easy to overtrust embeddings once they start working.</p>
+<p>But dense retrieval still has common failure cases:</p>
+<ul>
+<li>it may miss exact keywords that matter;</li>
+<li>it may rank vaguely related text too highly;</li>
+<li>it may struggle with codes, IDs, or product names;</li>
+<li>it may not respect business rules such as time, tenant, or permissions.</li>
+</ul>
+<p>That is one reason hybrid retrieval is useful. Dense retrieval is good at semantic matching. Sparse retrieval is often better at exact term matching. Using both can produce more stable results.</p>
+<p>So the right mental model is:</p>
+<ul>
+<li>embeddings help the system search by meaning;</li>
+<li>they do not remove the need for other retrieval signals.</li>
+</ul>
+</section>
+<section id="how-to-choose-an-embedding-model" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="how-to-choose-an-embedding-model"><span class="header-section-number">3.10</span> How to Choose an Embedding Model</h2>
+<p>Model choice matters, but it helps to keep the decision grounded.</p>
+<p>In practice, you usually care about:</p>
+<ul>
+<li>does it retrieve the right chunks on your questions;</li>
+<li>does it handle your language mix well;</li>
+<li>is it fast enough for your workload;</li>
+<li>is the vector size reasonable for storage and latency;</li>
+<li>can you run it where you need to run it.</li>
+</ul>
+<p>Public benchmarks are useful, but your own corpus matters more. A model that looks strong on a leaderboard may still be awkward for your documents.</p>
+<p>For this project, the default embedding model is <code>bge-m3:latest</code>. That is a practical baseline, not a claim that one model is always best.</p>
+</section>
+<section id="the-difference-between-an-embedding-an-index-and-a-vector-database" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="the-difference-between-an-embedding-an-index-and-a-vector-database"><span class="header-section-number">3.11</span> The Difference Between an Embedding, an Index, and a Vector Database</h2>
+<p>These terms are easy to blur together, so it is worth separating them clearly.</p>
+<p>An embedding model:</p>
+<ul>
+<li>turns text into vectors.</li>
+</ul>
+<p>An index:</p>
+<ul>
+<li>is the searchable data structure built from those vectors.</li>
+</ul>
+<p>A vector database:</p>
+<ul>
+<li>is a storage and retrieval system built to manage vector indexes, metadata, updates, and search at larger scale.</li>
+</ul>
+<p>In a small project, these can all feel like one thing because the same script may handle all of them. But they are different layers.</p>
+<p>This repository has:</p>
+<ul>
+<li>an embedding model;</li>
+<li>a simple local JSON index;</li>
+<li>no full vector database yet.</li>
+</ul>
+<p>That distinction matters because it helps you see what problem each tool is solving.</p>
+</section>
+<section id="why-ann-search-exists" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="why-ann-search-exists"><span class="header-section-number">3.12</span> Why ANN Search Exists</h2>
+<p>If a project has only a small number of chunks, it is possible to compare a question embedding against every chunk directly. That is basically what this project does now.</p>
+<p>But as the corpus grows, that gets slower and more expensive.</p>
+<p>Approximate nearest-neighbor search, usually shortened to ANN, is the family of methods used to make vector search faster at larger scale. The core tradeoff is simple:</p>
+<ul>
+<li>exact search tries harder to find the very best matches;</li>
+<li>approximate search is faster, but may miss some of them.</li>
+</ul>
+<p>This tradeoff is normal. The point is not to be mathematically perfect. The point is to meet the application’s quality and latency needs.</p>
+</section>
+<section id="faiss-and-local-vector-search" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="faiss-and-local-vector-search"><span class="header-section-number">3.13</span> FAISS and Local Vector Search</h2>
+<p>FAISS is a common tool for local vector search. It is often a good next step after a project outgrows a hand-rolled Python loop over JSON embeddings.</p>
+<p>Why teams like it:</p>
+<ul>
+<li>it is fast;</li>
+<li>it supports common vector search workflows;</li>
+<li>it is good for experiments and local systems.</li>
+</ul>
+<p>Why it does not solve everything:</p>
+<ul>
+<li>it is not a full application platform;</li>
+<li>metadata handling is more limited than in some managed systems;</li>
+<li>production concerns still need extra engineering.</li>
+</ul>
+<p>For this project, FAISS would be a natural upgrade because it would keep the learning setup local while making indexing and search more realistic.</p>
+</section>
+<section id="vector-databases-and-when-they-matter" class="level2" data-number="3.14">
+<h2 data-number="3.14" class="anchored" data-anchor-id="vector-databases-and-when-they-matter"><span class="header-section-number">3.14</span> Vector Databases and When They Matter</h2>
+<p>Vector databases become more useful when the retrieval system needs more than just “store some vectors and search them.”</p>
+<p>They matter more when you need things like:</p>
+<ul>
+<li>large corpora;</li>
+<li>frequent updates;</li>
+<li>metadata filtering;</li>
+<li>multiple users or tenants;</li>
+<li>operational guarantees around persistence and scale.</li>
+</ul>
+<p>For a small teaching project, a local index is often enough. For a production system, storage and serving concerns usually become much more important.</p>
+<p>This is why it helps to separate two questions:</p>
+<ul>
+<li>do I need better retrieval quality;</li>
+<li>do I need stronger retrieval infrastructure.</li>
+</ul>
+<p>Those are related, but not the same decision.</p>
+</section>
+<section id="structured-indexing-still-matters" class="level2" data-number="3.15">
+<h2 data-number="3.15" class="anchored" data-anchor-id="structured-indexing-still-matters"><span class="header-section-number">3.15</span> Structured Indexing Still Matters</h2>
+<p>Not everything should be pushed into embeddings.</p>
+<p>Some kinds of information are better handled in structured form:</p>
+<ul>
+<li>tables;</li>
+<li>records with stable fields;</li>
+<li>entity lists;</li>
+<li>timestamps;</li>
+<li>access rules;</li>
+<li>graph relationships.</li>
+</ul>
+<p>If a user asks for “the latest policy after January 2025” or “all products in category X,” embeddings alone are not enough. Structured fields matter.</p>
+<p>This is why strong RAG systems often combine vector search with metadata filters, keyword search, SQL, or other retrieval methods.</p>
+</section>
+<section id="context-expansion-after-retrieval" class="level2" data-number="3.16">
+<h2 data-number="3.16" class="anchored" data-anchor-id="context-expansion-after-retrieval"><span class="header-section-number">3.16</span> Context Expansion After Retrieval</h2>
+<p>Sometimes the best-matching chunk is still too narrow to answer the question well.</p>
+<p>For example, the chunk may contain a definition, but not the caveat that appears in the next paragraph. In that case, the system may benefit from adding neighboring chunks or the parent section.</p>
+<p>This is usually called context expansion.</p>
+<p>It can help because:</p>
+<ul>
+<li>answers often need a little more surrounding context;</li>
+<li>documents often contain meaning spread across nearby chunks.</li>
+</ul>
+<p>It can also hurt because:</p>
+<ul>
+<li>more context means more tokens;</li>
+<li>extra context can add noise.</li>
+</ul>
+<p>So this is another design choice that should be tested, not assumed.</p>
+</section>
+<section id="how-to-tell-whether-the-index-is-working" class="level2" data-number="3.17">
+<h2 data-number="3.17" class="anchored" data-anchor-id="how-to-tell-whether-the-index-is-working"><span class="header-section-number">3.17</span> How to Tell Whether the Index Is Working</h2>
+<p>As with chunking, a practical question is: how do we know this part is good enough?</p>
+<p>Some useful checks are:</p>
+<ul>
+<li>do semantically similar questions retrieve the same useful chunks;</li>
+<li>do obvious keyword questions still work well;</li>
+<li>are clearly relevant chunks missing from the top results;</li>
+<li>does changing the embedding model noticeably improve retrieval;</li>
+<li>does the system stay fast enough as the corpus grows.</li>
+</ul>
+<p>These checks help keep Chapter 3 tied to system behavior rather than turning it into a list of tools.</p>
+</section>
+<section id="what-this-chapter-adds-to-the-pipeline" class="level2" data-number="3.18">
+<h2 data-number="3.18" class="anchored" data-anchor-id="what-this-chapter-adds-to-the-pipeline"><span class="header-section-number">3.18</span> What This Chapter Adds to the Pipeline</h2>
+<p>Chapter 2 produced retrieval-ready chunks.</p>
+<p>Chapter 3 turns those chunks into a searchable index.</p>
+<p>So the handoff now becomes:</p>
+<pre class="text"><code>documents
+-&gt; cleaned chunks with metadata
+-&gt; embeddings
+-&gt; index
+-&gt; retrieval</code></pre>
+<p>That sets up the next chapter naturally. Once the system has chunks and a way to search them, the next question is no longer “How do we store information?” It becomes “How do we retrieve the right information reliably?”</p>
 
 
 </section>

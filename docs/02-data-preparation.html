@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -181,16 +216,32 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#the-role-of-data-in-rag-systems" id="toc-the-role-of-data-in-rag-systems" class="nav-link active" data-scroll-target="#the-role-of-data-in-rag-systems"><span class="header-section-number">2.1</span> The Role of Data in RAG Systems</a></li>
-  <li><a href="#document-ingestion-and-parsing" id="toc-document-ingestion-and-parsing" class="nav-link" data-scroll-target="#document-ingestion-and-parsing"><span class="header-section-number">2.2</span> Document Ingestion and Parsing</a></li>
-  <li><a href="#document-loaders-and-processing-tools" id="toc-document-loaders-and-processing-tools" class="nav-link" data-scroll-target="#document-loaders-and-processing-tools"><span class="header-section-number">2.3</span> Document Loaders and Processing Tools</a></li>
-  <li><a href="#structured-and-unstructured-data-pipelines" id="toc-structured-and-unstructured-data-pipelines" class="nav-link" data-scroll-target="#structured-and-unstructured-data-pipelines"><span class="header-section-number">2.4</span> Structured and Unstructured Data Pipelines</a></li>
-  <li><a href="#text-cleaning-and-normalization" id="toc-text-cleaning-and-normalization" class="nav-link" data-scroll-target="#text-cleaning-and-normalization"><span class="header-section-number">2.5</span> Text Cleaning and Normalization</a></li>
-  <li><a href="#why-text-chunking-matters" id="toc-why-text-chunking-matters" class="nav-link" data-scroll-target="#why-text-chunking-matters"><span class="header-section-number">2.6</span> Why Text Chunking Matters</a></li>
-  <li><a href="#fixed-size-chunking" id="toc-fixed-size-chunking" class="nav-link" data-scroll-target="#fixed-size-chunking"><span class="header-section-number">2.7</span> Fixed-Size Chunking</a></li>
-  <li><a href="#recursive-chunking-strategies" id="toc-recursive-chunking-strategies" class="nav-link" data-scroll-target="#recursive-chunking-strategies"><span class="header-section-number">2.8</span> Recursive Chunking Strategies</a></li>
-  <li><a href="#semantic-chunking" id="toc-semantic-chunking" class="nav-link" data-scroll-target="#semantic-chunking"><span class="header-section-number">2.9</span> Semantic Chunking</a></li>
-  <li><a href="#structure-aware-chunking" id="toc-structure-aware-chunking" class="nav-link" data-scroll-target="#structure-aware-chunking"><span class="header-section-number">2.10</span> Structure-Aware Chunking</a></li>
-  <li><a href="#chunking-strategies-across-frameworks" id="toc-chunking-strategies-across-frameworks" class="nav-link" data-scroll-target="#chunking-strategies-across-frameworks"><span class="header-section-number">2.11</span> Chunking Strategies Across Frameworks</a></li>
+  <li><a href="#what-data-preparation-is-trying-to-achieve" id="toc-what-data-preparation-is-trying-to-achieve" class="nav-link" data-scroll-target="#what-data-preparation-is-trying-to-achieve"><span class="header-section-number">2.2</span> What Data Preparation Is Trying to Achieve</a></li>
+  <li><a href="#common-ways-data-preparation-fails" id="toc-common-ways-data-preparation-fails" class="nav-link" data-scroll-target="#common-ways-data-preparation-fails"><span class="header-section-number">2.3</span> Common Ways Data Preparation Fails</a></li>
+  <li><a href="#document-ingestion-and-parsing" id="toc-document-ingestion-and-parsing" class="nav-link" data-scroll-target="#document-ingestion-and-parsing"><span class="header-section-number">2.4</span> Document Ingestion and Parsing</a>
+  <ul class="collapse">
+  <li><a href="#case-study-technical-chapters-as-retrieval-documents" id="toc-case-study-technical-chapters-as-retrieval-documents" class="nav-link" data-scroll-target="#case-study-technical-chapters-as-retrieval-documents"><span class="header-section-number">2.4.1</span> Case Study: Technical Chapters as Retrieval Documents</a></li>
+  </ul></li>
+  <li><a href="#document-loaders-and-processing-tools" id="toc-document-loaders-and-processing-tools" class="nav-link" data-scroll-target="#document-loaders-and-processing-tools"><span class="header-section-number">2.5</span> Document Loaders and Processing Tools</a></li>
+  <li><a href="#structured-and-unstructured-data-pipelines" id="toc-structured-and-unstructured-data-pipelines" class="nav-link" data-scroll-target="#structured-and-unstructured-data-pipelines"><span class="header-section-number">2.6</span> Structured and Unstructured Data Pipelines</a></li>
+  <li><a href="#text-cleaning-and-normalization" id="toc-text-cleaning-and-normalization" class="nav-link" data-scroll-target="#text-cleaning-and-normalization"><span class="header-section-number">2.7</span> Text Cleaning and Normalization</a>
+  <ul class="collapse">
+  <li><a href="#case-study-cleaning-too-little-vs.-cleaning-too-much" id="toc-case-study-cleaning-too-little-vs.-cleaning-too-much" class="nav-link" data-scroll-target="#case-study-cleaning-too-little-vs.-cleaning-too-much"><span class="header-section-number">2.7.1</span> Case Study: Cleaning Too Little vs.&nbsp;Cleaning Too Much</a></li>
+  </ul></li>
+  <li><a href="#metadata-the-small-details-that-matter-later" id="toc-metadata-the-small-details-that-matter-later" class="nav-link" data-scroll-target="#metadata-the-small-details-that-matter-later"><span class="header-section-number">2.8</span> Metadata: The Small Details That Matter Later</a></li>
+  <li><a href="#why-text-chunking-matters" id="toc-why-text-chunking-matters" class="nav-link" data-scroll-target="#why-text-chunking-matters"><span class="header-section-number">2.9</span> Why Text Chunking Matters</a></li>
+  <li><a href="#fixed-size-chunking" id="toc-fixed-size-chunking" class="nav-link" data-scroll-target="#fixed-size-chunking"><span class="header-section-number">2.10</span> Fixed-Size Chunking</a></li>
+  <li><a href="#recursive-chunking-strategies" id="toc-recursive-chunking-strategies" class="nav-link" data-scroll-target="#recursive-chunking-strategies"><span class="header-section-number">2.11</span> Recursive Chunking Strategies</a></li>
+  <li><a href="#semantic-chunking" id="toc-semantic-chunking" class="nav-link" data-scroll-target="#semantic-chunking"><span class="header-section-number">2.12</span> Semantic Chunking</a></li>
+  <li><a href="#structure-aware-chunking" id="toc-structure-aware-chunking" class="nav-link" data-scroll-target="#structure-aware-chunking"><span class="header-section-number">2.13</span> Structure-Aware Chunking</a>
+  <ul class="collapse">
+  <li><a href="#case-study-a-bad-chunk-and-a-better-chunk" id="toc-case-study-a-bad-chunk-and-a-better-chunk" class="nav-link" data-scroll-target="#case-study-a-bad-chunk-and-a-better-chunk"><span class="header-section-number">2.13.1</span> Case Study: A Bad Chunk and a Better Chunk</a></li>
+  <li><a href="#case-study-faq-style-content" id="toc-case-study-faq-style-content" class="nav-link" data-scroll-target="#case-study-faq-style-content"><span class="header-section-number">2.13.2</span> Case Study: FAQ-Style Content</a></li>
+  </ul></li>
+  <li><a href="#different-content-types-often-need-different-handling" id="toc-different-content-types-often-need-different-handling" class="nav-link" data-scroll-target="#different-content-types-often-need-different-handling"><span class="header-section-number">2.14</span> Different Content Types Often Need Different Handling</a></li>
+  <li><a href="#chunking-strategies-across-frameworks" id="toc-chunking-strategies-across-frameworks" class="nav-link" data-scroll-target="#chunking-strategies-across-frameworks"><span class="header-section-number">2.15</span> Chunking Strategies Across Frameworks</a></li>
+  <li><a href="#how-to-tell-whether-chunking-is-working" id="toc-how-to-tell-whether-chunking-is-working" class="nav-link" data-scroll-target="#how-to-tell-whether-chunking-is-working"><span class="header-section-number">2.16</span> How to Tell Whether Chunking Is Working</a></li>
+  <li><a href="#what-this-chapter-produces-for-the-rest-of-the-system" id="toc-what-this-chapter-produces-for-the-rest-of-the-system" class="nav-link" data-scroll-target="#what-this-chapter-produces-for-the-rest-of-the-system"><span class="header-section-number">2.17</span> What This Chapter Produces for the Rest of the System</a></li>
   </ul>
 </nav>
     </div>
@@ -220,14 +271,83 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="2.1" class="anchored" data-anchor-id="the-role-of-data-in-rag-systems"><span class="header-section-number">2.1</span> The Role of Data in RAG Systems</h2>
 <p>Data preparation is the foundation of the entire pipeline. Retrieval systems cannot surface information that was never ingested, cannot recover semantics lost during parsing, and cannot rank chunks well if the text boundaries are broken.</p>
 <p>In many failing RAG systems, retrieval is blamed first. Yet the underlying issue is often incomplete coverage, duplicated content, malformed parsing, or weak metadata. Strong data preparation reduces all of those risks.</p>
+<p>In this project, data preparation is not an abstract preprocessing phase. It is the part of the system that turns the book’s <code>.qmd</code> chapters into a retrieval corpus that can later be embedded, searched, and used as evidence for grounded answers. If this step is weak, every downstream step inherits the weakness.</p>
+<p>Another way to say this is simple: data preparation decides what the system is able to know later. If important text never enters the corpus, retrieval cannot find it. If the text enters in a broken form, retrieval may find the wrong thing. If the chunk is messy, the model may answer from partial or confusing evidence.</p>
 </section>
-<section id="document-ingestion-and-parsing" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="document-ingestion-and-parsing"><span class="header-section-number">2.2</span> Document Ingestion and Parsing</h2>
+<section id="what-data-preparation-is-trying-to-achieve" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="what-data-preparation-is-trying-to-achieve"><span class="header-section-number">2.2</span> What Data Preparation Is Trying to Achieve</h2>
+<p>Before getting into methods, it helps to be clear about the goal.</p>
+<p>Data preparation is trying to produce chunks that are:</p>
+<ul>
+<li>complete enough to make sense on their own;</li>
+<li>small enough to retrieve efficiently;</li>
+<li>clean enough to avoid obvious noise;</li>
+<li>rich enough in metadata to support filtering and citation;</li>
+<li>faithful enough to the source that meaning is not lost.</li>
+</ul>
+<p>If a chapter does not explain these goals, chunking and cleaning can sound like arbitrary tricks. They are not arbitrary. They are ways of helping the retriever find the right evidence and helping the generator answer from that evidence.</p>
+</section>
+<section id="common-ways-data-preparation-fails" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="common-ways-data-preparation-fails"><span class="header-section-number">2.3</span> Common Ways Data Preparation Fails</h2>
+<p>It is also useful to know what can go wrong.</p>
+<p>Common failures include:</p>
+<ul>
+<li>missing content: useful documents were never ingested;</li>
+<li>broken parsing: headings, lists, or tables lost their structure;</li>
+<li>noisy text: formatting junk overwhelms the real content;</li>
+<li>bad chunk boundaries: one idea is split across chunks or unrelated ideas are merged;</li>
+<li>weak metadata: the system knows the text but not where it came from;</li>
+<li>duplicated content: retrieval keeps surfacing repeated evidence.</li>
+</ul>
+<p>These failures matter because they show up later as user-facing problems. A weak answer is often not a model problem first. It is often a corpus problem first.</p>
+</section>
+<section id="document-ingestion-and-parsing" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="document-ingestion-and-parsing"><span class="header-section-number">2.4</span> Document Ingestion and Parsing</h2>
 <p>Ingestion is the process of collecting raw material from source systems such as PDFs, HTML pages, markdown files, databases, wikis, tickets, and cloud storage. Parsing then converts those materials into a structured internal representation.</p>
 <p>The central requirement is fidelity. Titles, sections, tables, lists, code blocks, dates, and authorship metadata often carry critical meaning. If the parser collapses structure too aggressively, downstream retrieval quality declines.</p>
+<p>In the current repository, ingestion starts from the Quarto book configuration. The system reads <code>_quarto.yml</code>, finds the listed chapter files, and then loads their contents as documents:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_quarto_chapters() <span class="op">-&gt;</span> <span class="bu">list</span>[Path]:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    config_path <span class="op">=</span> PROJECT_DIR <span class="op">/</span> <span class="st">"_quarto.yml"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    lines <span class="op">=</span> config_path.read_text(encoding<span class="op">=</span><span class="st">"utf-8"</span>).splitlines()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    chapters: <span class="bu">list</span>[Path] <span class="op">=</span> []</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    in_chapters <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> raw_line <span class="kw">in</span> lines:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        line <span class="op">=</span> raw_line.rstrip()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        stripped <span class="op">=</span> line.strip()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> stripped <span class="op">==</span> <span class="st">"chapters:"</span>:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            in_chapters <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> in_chapters:</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> re.match(<span class="vs">r"</span><span class="dv">^</span><span class="pp">[A-Za-z]</span><span class="vs">"</span>, line):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            match <span class="op">=</span> re.match(<span class="vs">r"</span><span class="dv">^\s</span><span class="op">*</span><span class="vs">-</span><span class="dv">\s</span><span class="op">+</span><span class="kw">(</span><span class="dv">.</span><span class="op">+</span><span class="ch">\.</span><span class="vs">qmd</span><span class="kw">)</span><span class="dv">\s</span><span class="op">*</span><span class="dv">$</span><span class="vs">"</span>, line)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> match:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                path <span class="op">=</span> PROJECT_DIR <span class="op">/</span> match.group(<span class="dv">1</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> path.name <span class="op">!=</span> <span class="st">"references.qmd"</span>:</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                    chapters.append(path)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> chapters</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is a simple example, but it illustrates an important principle: ingestion should preserve document boundaries and document identity. The retriever later benefits from knowing not only the text itself, but also where that text came from.</p>
+<section id="case-study-technical-chapters-as-retrieval-documents" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="case-study-technical-chapters-as-retrieval-documents"><span class="header-section-number">2.4.1</span> Case Study: Technical Chapters as Retrieval Documents</h3>
+<p>Suppose the source material is a chapter with headings, paragraphs, and code examples:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Hybrid Retrieval</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Hybrid retrieval combines dense and sparse methods.</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Dense retrieval helps capture semantic similarity.</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Sparse retrieval helps preserve exact keyword matching.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If this content is parsed poorly, several things can go wrong:</p>
+<ul>
+<li>the heading may be dropped;</li>
+<li>the paragraphs may be merged into one undifferentiated block;</li>
+<li>the text may later be split in a place that separates the concept from its explanation.</li>
+</ul>
+<p>In retrieval terms, that means a user may retrieve only a partial definition, only a supporting detail, or a chunk with weak contextual labeling. The parser’s job is therefore not merely to read bytes. It is to preserve enough structure for later retrieval to make sense.</p>
 </section>
-<section id="document-loaders-and-processing-tools" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="document-loaders-and-processing-tools"><span class="header-section-number">2.3</span> Document Loaders and Processing Tools</h2>
+</section>
+<section id="document-loaders-and-processing-tools" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="document-loaders-and-processing-tools"><span class="header-section-number">2.5</span> Document Loaders and Processing Tools</h2>
 <p>Document loaders are useful because each source format fails in different ways. PDFs may have broken reading order. HTML may include navigation chrome. Spreadsheets may hide semantics in headers. OCR pipelines may introduce noise.</p>
 <p>A robust processing stack usually includes:</p>
 <ul>
@@ -239,14 +359,16 @@ ul.task-list li input[type="checkbox"] {
 <li>optional OCR and table extraction.</li>
 </ul>
 <p>The goal is not to preserve raw bytes, but to preserve meaning.</p>
+<p>For a beginner, the key idea is this: different file types break in different ways. A PDF may scramble reading order. An HTML page may include menus and footers that should never become retrieval content. A spreadsheet may depend on row and column labels that plain text loses. That is why data preparation is not one generic “load document” step. It is a set of format-specific fixes.</p>
 </section>
-<section id="structured-and-unstructured-data-pipelines" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="structured-and-unstructured-data-pipelines"><span class="header-section-number">2.4</span> Structured and Unstructured Data Pipelines</h2>
+<section id="structured-and-unstructured-data-pipelines" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="structured-and-unstructured-data-pipelines"><span class="header-section-number">2.6</span> Structured and Unstructured Data Pipelines</h2>
 <p>RAG often begins with unstructured text, but many valuable systems depend on structured data too. Product specs, transaction records, support metrics, and knowledge graphs may all contribute useful evidence.</p>
 <p>Unstructured pipelines usually optimize for semantic retrieval. Structured pipelines optimize for precise filtering, joins, and field-level semantics. Mature systems often combine both and route queries differently depending on the user intent.</p>
+<p>For example, a chapter in this book is mostly unstructured text. A product catalog is more structured. An FAQ page sits somewhere in between. That difference matters because not every source should be chunked in the same way. A free-form article often benefits from paragraph-aware chunking. An FAQ often works better if one question and one answer stay together as one chunk.</p>
 </section>
-<section id="text-cleaning-and-normalization" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="text-cleaning-and-normalization"><span class="header-section-number">2.5</span> Text Cleaning and Normalization</h2>
+<section id="text-cleaning-and-normalization" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="text-cleaning-and-normalization"><span class="header-section-number">2.7</span> Text Cleaning and Normalization</h2>
 <p>Cleaning should be conservative. Remove obvious noise such as duplicated headers, invisible characters, broken whitespace, or irrelevant boilerplate. Keep information that affects meaning, such as section labels, table headings, bullet relationships, and legal disclaimers.</p>
 <p>Normalization practices commonly include:</p>
 <ul>
@@ -257,29 +379,129 @@ ul.task-list li input[type="checkbox"] {
 <li>attaching provenance metadata to each chunk.</li>
 </ul>
 <p>The right question is always: what context will the retriever and model need later?</p>
+<p>That question sounds basic, but it prevents a common mistake. Many people clean text to make it look tidy. What matters is not whether the text looks tidy. What matters is whether the text still contains the clues needed to answer a future question.</p>
+<p>The current project uses a lightweight cleaning function before chunking:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> strip_quarto_noise(text: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="dv">^</span><span class="vs">---</span><span class="ch">\n</span><span class="dv">.</span><span class="op">*?</span><span class="ch">\n</span><span class="vs">---</span><span class="ch">\n</span><span class="vs">"</span>, <span class="st">""</span>, text, flags<span class="op">=</span>re.DOTALL)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"```</span><span class="dv">.</span><span class="op">*?</span><span class="vs">```"</span>, <span class="st">""</span>, text, flags<span class="op">=</span>re.DOTALL)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="ch">\{\.</span><span class="vs">unnumbered</span><span class="ch">\}</span><span class="vs">"</span>, <span class="st">""</span>, text)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This code removes front matter, fenced code blocks, and a Quarto-specific class marker. The example is useful because it shows both the value and the risk of cleaning. Removing noise can improve retrieval focus, but over-cleaning can also discard information that a user might reasonably ask about.</p>
+<section id="case-study-cleaning-too-little-vs.-cleaning-too-much" class="level3" data-number="2.7.1">
+<h3 data-number="2.7.1" class="anchored" data-anchor-id="case-study-cleaning-too-little-vs.-cleaning-too-much"><span class="header-section-number">2.7.1</span> Case Study: Cleaning Too Little vs.&nbsp;Cleaning Too Much</h3>
+<p>Consider a chapter that begins with front matter and formatting metadata:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Data Preparation"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data Preparation {.unnumbered}</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>Chunking is one of the highest-leverage decisions in RAG.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If the system leaves all of that text untouched, retrieval may surface chunks dominated by formatting artifacts rather than substantive content. A user asking about chunking does not need YAML headers or Quarto markers.</p>
+<p>But cleaning can also go too far. Imagine a policy document like this:</p>
+<pre class="text"><code>Access levels:
+- Admin: full write access
+- Editor: content update only
+- Viewer: read only</code></pre>
+<p>If cleaning removes the heading or flattens the list into unclear prose, the retriever may lose exactly the distinctions the user cares about. The lesson is simple: cleaning should remove noise, not structure.</p>
 </section>
-<section id="why-text-chunking-matters" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="why-text-chunking-matters"><span class="header-section-number">2.6</span> Why Text Chunking Matters</h2>
-<p>Chunking is the process of breaking documents into retrieval units. Chunks that are too small lose context. Chunks that are too large dilute relevance and waste tokens. Chunking is therefore one of the highest-leverage decisions in RAG.</p>
+</section>
+<section id="metadata-the-small-details-that-matter-later" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="metadata-the-small-details-that-matter-later"><span class="header-section-number">2.8</span> Metadata: The Small Details That Matter Later</h2>
+<p>Metadata is the information attached to a chunk besides the main text.</p>
+<p>In this project, useful metadata includes:</p>
+<ul>
+<li>the source file path;</li>
+<li>the section title;</li>
+<li>the chunk id.</li>
+</ul>
+<p>In larger systems, metadata may also include:</p>
+<ul>
+<li>author;</li>
+<li>timestamp;</li>
+<li>document type;</li>
+<li>product name;</li>
+<li>team or business unit;</li>
+<li>access level.</li>
+</ul>
+<p>Why does this matter? Because retrieval is not only about matching words or embeddings. Sometimes we also need to know where a chunk came from, whether it is recent, whether the user is allowed to see it, or which section should be shown as a citation. Metadata helps the system filter, rank, group, and explain results.</p>
+<p>Without metadata, the system may still retrieve text, but it becomes harder to control and harder to trust.</p>
+</section>
+<section id="why-text-chunking-matters" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="why-text-chunking-matters"><span class="header-section-number">2.9</span> Why Text Chunking Matters</h2>
+<p>Chunking is the process of breaking documents into chunks for retrieval. Chunks that are too small lose context. Chunks that are too large dilute relevance and waste tokens. Chunking is therefore one of the highest-leverage decisions in RAG.</p>
 <p>The ideal chunk is not a fixed number of characters. It is a unit of meaning that is also small enough to rank, store, and inject efficiently.</p>
+<p>This repository uses a structure-aware chunking baseline instead of blind fixed-width slicing. The core logic tracks headings, groups paragraphs, and creates chunks close to a target length:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chunk_document(path: <span class="bu">str</span>, text: <span class="bu">str</span>, target_chars: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1100</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]]:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    cleaned <span class="op">=</span> strip_quarto_noise(text)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    lines <span class="op">=</span> cleaned.splitlines()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    chunks: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]] <span class="op">=</span> []</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    heading_stack: <span class="bu">list</span>[<span class="bu">str</span>] <span class="op">=</span> []</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">buffer</span>: <span class="bu">list</span>[<span class="bu">str</span>] <span class="op">=</span> []</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> flush() <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">nonlocal</span> <span class="bu">buffer</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        body <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(line.strip() <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">buffer</span> <span class="cf">if</span> line.strip()).strip()</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> body:</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            <span class="bu">buffer</span> <span class="op">=</span> []</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        title <span class="op">=</span> <span class="st">" &gt; "</span>.join(heading_stack) <span class="cf">if</span> heading_stack <span class="cf">else</span> Path(path).stem</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        paragraphs <span class="op">=</span> [part.strip() <span class="cf">for</span> part <span class="kw">in</span> re.split(<span class="vs">r"</span><span class="ch">\n</span><span class="dv">\s</span><span class="op">*</span><span class="ch">\n</span><span class="vs">"</span>, body) <span class="cf">if</span> part.strip()]</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        chunk_id <span class="op">=</span> <span class="bu">len</span>(chunks) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> paragraph <span class="kw">in</span> paragraphs:</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>            candidate <span class="op">=</span> paragraph <span class="cf">if</span> <span class="kw">not</span> current <span class="cf">else</span> <span class="ss">f"</span><span class="sc">{</span>current<span class="sc">}</span><span class="ch">\n\n</span><span class="sc">{</span>paragraph<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> current <span class="kw">and</span> <span class="bu">len</span>(candidate) <span class="op">&gt;</span> target_chars:</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                chunks.append(</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>                    {</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"chunk_id"</span>: <span class="ss">f"</span><span class="sc">{</span>Path(path)<span class="sc">.</span>stem<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>chunk_id<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"source_path"</span>: path,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"section"</span>: title,</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"text"</span>: current.strip(),</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>                    }</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>                chunk_id <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>                current <span class="op">=</span> paragraph</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>                current <span class="op">=</span> candidate</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current:</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>            chunks.append(</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>                {</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"chunk_id"</span>: <span class="ss">f"</span><span class="sc">{</span>Path(path)<span class="sc">.</span>stem<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>chunk_id<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"source_path"</span>: path,</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"section"</span>: title,</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"text"</span>: current.strip(),</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>                }</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        <span class="bu">buffer</span> <span class="op">=</span> []</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Even if the code looks simple, it encodes several important design decisions:</p>
+<ul>
+<li>headings are preserved as section metadata;</li>
+<li>paragraphs are treated as semantic boundaries;</li>
+<li>chunk size is controlled, but not by cutting text in arbitrary positions;</li>
+<li>each chunk carries source provenance for later display and citation.</li>
+</ul>
+<p>This is the main idea of chunking in plain language: keep together what belongs together, and split apart what would otherwise become too long to retrieve well.</p>
 </section>
-<section id="fixed-size-chunking" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="fixed-size-chunking"><span class="header-section-number">2.7</span> Fixed-Size Chunking</h2>
+<section id="fixed-size-chunking" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="fixed-size-chunking"><span class="header-section-number">2.10</span> Fixed-Size Chunking</h2>
 <p>Fixed-size chunking is the simplest baseline: split text into windows of <code>n</code> tokens or characters, optionally with overlap. It is easy to implement and often surprisingly effective for homogeneous documents.</p>
 <p>Its weakness is semantic blindness. Paragraph boundaries, headings, and tables are ignored unless preserved separately. Fixed-size chunking is best treated as a baseline, not a universal answer.</p>
 </section>
-<section id="recursive-chunking-strategies" class="level2" data-number="2.8">
-<h2 data-number="2.8" class="anchored" data-anchor-id="recursive-chunking-strategies"><span class="header-section-number">2.8</span> Recursive Chunking Strategies</h2>
+<section id="recursive-chunking-strategies" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="recursive-chunking-strategies"><span class="header-section-number">2.11</span> Recursive Chunking Strategies</h2>
 <p>Recursive chunking improves on fixed-size chunking by attempting larger structural boundaries first, then falling back to smaller ones. For example, a pipeline may split by heading, then paragraph, then sentence if necessary.</p>
 <p>This strategy tends to preserve coherence better while still keeping chunk lengths within target ranges. It is a strong general-purpose default for many text corpora.</p>
+<p>If fixed-size chunking asks “How many characters should I cut?”, recursive chunking asks “Can I split this at a natural boundary first?” That is usually a better question.</p>
 </section>
-<section id="semantic-chunking" class="level2" data-number="2.9">
-<h2 data-number="2.9" class="anchored" data-anchor-id="semantic-chunking"><span class="header-section-number">2.9</span> Semantic Chunking</h2>
+<section id="semantic-chunking" class="level2" data-number="2.12">
+<h2 data-number="2.12" class="anchored" data-anchor-id="semantic-chunking"><span class="header-section-number">2.12</span> Semantic Chunking</h2>
 <p>Semantic chunking tries to split text where the topic changes rather than where the character count ends. This can improve retrieval quality when documents contain long sections that drift across subtopics.</p>
 <p>The tradeoff is complexity. Semantic chunking can be slower, harder to debug, and sensitive to the segmentation model. It works best when the corpus is dense and concept-heavy enough to justify the extra effort.</p>
+<p>This sounds attractive, but it is not always the right first step. If the team still does not understand its documents, metadata, or evaluation set, semantic chunking can add complexity before the basics are under control.</p>
 </section>
-<section id="structure-aware-chunking" class="level2" data-number="2.10">
-<h2 data-number="2.10" class="anchored" data-anchor-id="structure-aware-chunking"><span class="header-section-number">2.10</span> Structure-Aware Chunking</h2>
+<section id="structure-aware-chunking" class="level2" data-number="2.13">
+<h2 data-number="2.13" class="anchored" data-anchor-id="structure-aware-chunking"><span class="header-section-number">2.13</span> Structure-Aware Chunking</h2>
 <p>Structure-aware chunking uses document features such as headings, captions, table boundaries, slide sections, or code blocks. This is often the best choice for technical documentation, legal texts, and academic materials where structure conveys meaning.</p>
 <p>Examples include:</p>
 <ul>
@@ -288,11 +510,95 @@ ul.task-list li input[type="checkbox"] {
 <li>keeping code examples together with their explanations;</li>
 <li>splitting policies by numbered clause.</li>
 </ul>
+<section id="case-study-a-bad-chunk-and-a-better-chunk" class="level3" data-number="2.13.1">
+<h3 data-number="2.13.1" class="anchored" data-anchor-id="case-study-a-bad-chunk-and-a-better-chunk"><span class="header-section-number">2.13.1</span> Case Study: A Bad Chunk and a Better Chunk</h3>
+<p>Suppose a chapter contains this short section:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## RAG vs. Fine-Tuning</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>RAG is strongest when the challenge is access to external knowledge.</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>Fine-tuning is strongest when the challenge is behavior, style, or output format.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A poor fixed split might produce:</p>
+<pre class="text"><code>Chunk A:
+RAG is strongest when the challenge is access to external knowledge. Fine-tuning
+
+Chunk B:
+is strongest when the challenge is behavior, style, or output format.</code></pre>
+<p>This split damages the comparison itself. A user asking about the difference between RAG and fine-tuning may retrieve only half the contrast.</p>
+<p>A better structure-aware chunk would keep the short section intact:</p>
+<pre class="text"><code>source_path: 01-introduction-to-rag.qmd
+section: RAG vs. Fine-Tuning
+text:
+RAG is strongest when the challenge is access to external knowledge.
+
+Fine-tuning is strongest when the challenge is behavior, style, or output format.</code></pre>
+<p>This version is better for retrieval because:</p>
+<ul>
+<li>the heading tells the retriever and the user what question the chunk answers;</li>
+<li>the comparison stays together instead of being split across chunk boundaries;</li>
+<li>the source path makes later attribution straightforward.</li>
+</ul>
 </section>
-<section id="chunking-strategies-across-frameworks" class="level2" data-number="2.11">
-<h2 data-number="2.11" class="anchored" data-anchor-id="chunking-strategies-across-frameworks"><span class="header-section-number">2.11</span> Chunking Strategies Across Frameworks</h2>
+<section id="case-study-faq-style-content" class="level3" data-number="2.13.2">
+<h3 data-number="2.13.2" class="anchored" data-anchor-id="case-study-faq-style-content"><span class="header-section-number">2.13.2</span> Case Study: FAQ-Style Content</h3>
+<p>Some materials already contain natural chunk boundaries. FAQ documents are a good example:</p>
+<pre class="text"><code>Q: When should RAG be preferred over fine-tuning?
+A: When the main challenge is accessing external or changing knowledge rather than changing model behavior.</code></pre>
+<p>If the question and answer are split into different chunks, retrieval may find the wording of the question but miss the answer itself. A better strategy is to keep one FAQ item as one chunk, because the semantic unit is the whole exchange, not the individual lines.</p>
+<p>This example shows a broader point: chunking should follow meaning when possible. Uniform chunk sizes are useful, but document semantics matter more.</p>
+</section>
+</section>
+<section id="different-content-types-often-need-different-handling" class="level2" data-number="2.14">
+<h2 data-number="2.14" class="anchored" data-anchor-id="different-content-types-often-need-different-handling"><span class="header-section-number">2.14</span> Different Content Types Often Need Different Handling</h2>
+<p>One reason data preparation feels hard is that there is no single perfect rule for every source.</p>
+<p>Different content types usually need different treatment:</p>
+<ul>
+<li>narrative chapters: often split well by headings and paragraphs;</li>
+<li>FAQs: often work best with one question-answer pair per chunk;</li>
+<li>policy documents: often need clause numbers and headings preserved;</li>
+<li>tables: often need headers kept with the values;</li>
+<li>code-heavy documents: often need code and explanation kept close together.</li>
+</ul>
+<p>This matters because the “best” chunk is not defined only by length. It is defined by whether the chunk still answers a real user question clearly.</p>
+</section>
+<section id="chunking-strategies-across-frameworks" class="level2" data-number="2.15">
+<h2 data-number="2.15" class="anchored" data-anchor-id="chunking-strategies-across-frameworks"><span class="header-section-number">2.15</span> Chunking Strategies Across Frameworks</h2>
 <p>Most frameworks provide utilities for chunking, but the decision logic still belongs to the system designer. The same corpus can yield very different results under different chunk sizes, overlaps, and structure rules.</p>
 <p>A practical process is to test chunking on a representative query set, inspect retrieved passages manually, and iterate. Chunking is not a preprocessing footnote. It is a retrieval design choice that strongly shapes everything that follows.</p>
+</section>
+<section id="how-to-tell-whether-chunking-is-working" class="level2" data-number="2.16">
+<h2 data-number="2.16" class="anchored" data-anchor-id="how-to-tell-whether-chunking-is-working"><span class="header-section-number">2.16</span> How to Tell Whether Chunking Is Working</h2>
+<p>At this point, a reader may still ask: how do I know if my chunking is good enough?</p>
+<p>Some simple checks help:</p>
+<ul>
+<li>when you read a chunk alone, does it still make sense;</li>
+<li>when retrieval succeeds, does the chunk contain a full useful answer or only half of one;</li>
+<li>when retrieval fails, is the answer split across multiple chunks in an awkward way;</li>
+<li>do top results contain too much repeated or overlapping text;</li>
+<li>are chunks so long that irrelevant details drown out the useful part.</li>
+</ul>
+<p>These are not perfect metrics, but they are practical signals. In early-stage RAG work, manually inspecting retrieved chunks is often one of the fastest ways to improve system quality.</p>
+<p>In this repository, the current chunking strategy is intentionally modest. It is a good teaching baseline because the logic is easy to inspect and the tradeoffs are visible. A stronger next version might add:</p>
+<ul>
+<li>explicit overlap between neighboring chunks;</li>
+<li>special handling for code-heavy sections;</li>
+<li>table-aware and list-aware chunking;</li>
+<li>metadata tags beyond source path and section;</li>
+<li>chunking rules that differ by document type.</li>
+</ul>
+<p>That progression matters because data preparation is not finished once the text is “usable.” It improves as the team learns what kinds of retrieval failures the corpus still produces.</p>
+</section>
+<section id="what-this-chapter-produces-for-the-rest-of-the-system" class="level2" data-number="2.17">
+<h2 data-number="2.17" class="anchored" data-anchor-id="what-this-chapter-produces-for-the-rest-of-the-system"><span class="header-section-number">2.17</span> What This Chapter Produces for the Rest of the System</h2>
+<p>The output of data preparation is not just “clean text.” The real output is a set of retrieval-ready chunks.</p>
+<p>Each chunk should ideally have:</p>
+<ul>
+<li>text that still makes sense;</li>
+<li>a clear source;</li>
+<li>a useful section label;</li>
+<li>a size that works for retrieval and prompting.</li>
+</ul>
+<p>That is the handoff to the next stage of the system. Chapter 3 will build on that handoff by turning these chunks into a searchable index through embeddings and indexing.</p>
 
 
 </section>

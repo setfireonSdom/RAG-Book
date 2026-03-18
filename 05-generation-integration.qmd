@@ -1,55 +1,308 @@
 # Generation Integration
 
-## From Retrieval to Generation
+## Retrieval Is Not the Final Answer
 
-Retrieval only creates the possibility of a good answer. The generation layer decides whether that evidence is used clearly, faithfully, and in a form the user can trust.
+By the end of Chapter 4, the system has selected chunks that look useful. But retrieved evidence is not the same thing as a good answer.
 
-This transition is where many systems become fragile. If the prompt is underspecified, the model may ignore evidence. If too much context is injected, the model may become distracted. If the task is vague, the answer may sound plausible while failing the actual need.
+This is where generation begins.
+
+The generator has to do a harder job than it may first appear:
+
+- read the retrieved evidence;
+- understand what part of it matters;
+- answer the user's question clearly;
+- avoid inventing unsupported details;
+- make it obvious where the answer came from.
+
+So the main question of this chapter is simple:
+
+- once retrieval has found evidence, how do we turn that evidence into a grounded answer?
+
+## What Often Goes Wrong at This Stage
+
+Many RAG systems fail here even when retrieval is decent.
+
+Common problems include:
+
+- the model ignores part of the retrieved evidence;
+- the model answers too broadly instead of answering the actual question;
+- the model fills in gaps with confident guesses;
+- the answer sounds polished, but is not well grounded in the retrieved text;
+- citations are missing, vague, or misleading.
+
+This matters because users do not see the retrieval scores first. They see the answer first. If generation is sloppy, the whole system feels unreliable.
+
+## What the Generation Layer Is Trying to Do
+
+In plain language, the generation layer is trying to do three things well:
+
+1. use the retrieved evidence;
+2. stay inside what the evidence supports;
+3. present the answer in a useful form.
+
+That sounds straightforward, but each part has tradeoffs.
+
+If the instructions are too weak, the model may ignore the evidence.
+
+If the instructions are too rigid, the answer may become awkward or incomplete.
+
+If too much evidence is passed, the model may lose focus.
+
+If too little evidence is passed, the model may miss an important detail.
+
+So generation is not just "ask the model nicely." It is the stage where retrieval output becomes a usable response.
 
 ## Prompt Design with Retrieved Context
 
-Good prompt design tells the model what the retrieved context represents and how it should be used. Typical instructions include:
+The prompt is the interface between retrieval and generation.
 
-- answer using the provided sources;
-- state uncertainty when evidence is insufficient;
-- cite relevant passages or document IDs;
-- separate grounded facts from assumptions;
-- avoid inventing unsupported details.
+It tells the model:
 
-Prompt design is not only about wording elegance. It is interface design between retrieval output and model behavior.
+- what the user asked;
+- what evidence was retrieved;
+- how the evidence should be used;
+- what the model should do if the evidence is weak;
+- what form the answer should take.
 
-## Structured Output Generation
+In this project, the prompt builder in `code/core/book_rag.py` makes those choices explicit:
 
-Many RAG systems should not return free-form prose alone. They may need JSON, tables, lists of citations, extracted fields, or machine-actionable results.
+```python
+def build_prompt(question: str, retrieved: list[dict[str, str]]) -> str:
+    answer_language = detect_answer_language(question)
+    context = "\n\n".join(
+        f"[{index}] {item['source_path']} | {item['section']} | score={item['score']:.3f}\n{item['text']}"
+        for index, item in enumerate(retrieved, start=1)
+    )
+    return textwrap.dedent(
+        f"""
+        You are answering questions about the book project in the local workspace.
+        Use only the retrieved context below.
+        If the retrieved context is insufficient, say that clearly.
+        Give a concise answer in {answer_language}.
+        Keep the final citation line in the format "Sources: ...".
 
-Structured output reduces ambiguity, makes downstream integration easier, and can improve evaluation because outputs become easier to compare.
+        Question:
+        {question}
 
-## JSON and Schema-Based Generation
+        Retrieved context:
+        {context}
+        """
+    ).strip()
+```
 
-Schema-based generation defines the fields the model must produce and the constraints each field must follow. This is especially useful for extraction, classification, workflow triggering, or UI-backed applications.
+This is a simple prompt, but it already includes several important ideas:
 
-When schema validation fails, the system can retry, repair, or fall back. This turns generation into a more dependable software component.
+- the model is told to answer from retrieved context;
+- the model is told to admit when context is not enough;
+- the model is told what language to answer in;
+- the retrieved chunks are labeled with source information.
 
-## Framework-Based Implementations
+That is a good baseline because the generation rules are visible and easy to reason about.
 
-Frameworks can help with prompt templates, chains, document objects, and response parsing. They speed up prototyping and reduce boilerplate, especially in early development.
+## Why Prompting Matters So Much
 
-The risk is abstraction leakage. Teams should still understand what documents are passed, how prompts are assembled, and where errors originate.
+Without a clear prompt, the model may treat retrieved evidence as optional background instead of required evidence.
 
-## Framework-Agnostic Structured Generation
+For example, if the prompt simply says:
 
-The core principles work even without a framework:
+```text
+Answer this question: What is hybrid retrieval?
+```
 
-1. assemble relevant context;
-2. state the task clearly;
-3. define output expectations;
-4. validate the response;
-5. log evidence and outcome.
+the model may produce a generic answer from its own prior knowledge.
 
-This makes the system easier to reason about and port across runtimes or vendors.
+If the prompt instead makes the grounding rule explicit, the model is more likely to use the retrieved evidence instead of treating it as decoration.
 
-## Function Calling for Tool Integration
+This is why prompt design in RAG is not just about style. It is about control.
 
-Function calling extends RAG beyond passive answering. After retrieval, the model may decide to invoke a tool: fetch a record, create a ticket, run a query, or verify a citation.
+## Grounded Answers vs. Plausible Answers
 
-This turns the system into an agentic workflow, which can be powerful but also more failure-prone. Tool selection, argument validation, and permission boundaries therefore become part of the RAG design space.
+This is one of the most important ideas in the whole book.
+
+A plausible answer is an answer that sounds right.
+
+A grounded answer is an answer that is actually supported by the retrieved evidence.
+
+Those are not the same thing.
+
+A large language model is very good at producing plausible language. RAG is supposed to make that language more grounded. If the generation layer does not enforce grounding, the system can sound smart while still drifting away from the source.
+
+So a good generation setup should make unsupported answering harder, not easier.
+
+## What to Do When the Evidence Is Weak
+
+Not every question will have enough support in the retrieved chunks.
+
+When that happens, the system should not confidently improvise.
+
+Better behaviors include:
+
+- clearly saying the retrieved evidence is insufficient;
+- answering only the supported part;
+- asking for clarification in interactive systems;
+- returning citations that show what was actually found.
+
+This is why the current prompt explicitly says:
+
+- if the retrieved evidence is insufficient, say that clearly.
+
+That single instruction matters more than it may seem. It gives the model permission to be incomplete instead of forcing it to fake completeness.
+
+## Citation and Source Use
+
+Citations matter because they show the user where the answer came from.
+
+In a RAG system, citations help with:
+
+- trust;
+- debugging;
+- manual verification;
+- better user understanding.
+
+This project includes source path and section data in the prompt, and asks the model to end with a `Sources:` line.
+
+That is a simple pattern, but it already gives the user something concrete to inspect.
+
+Good citations do not only help the reader. They also help the builder. If the answer is weak, source display makes it easier to tell whether the problem came from retrieval or generation.
+
+## The Shape of the Final Answer
+
+Not every RAG answer should be free-form prose.
+
+Sometimes prose is fine. Sometimes the system should return:
+
+- a short bullet list;
+- a table;
+- a JSON object;
+- extracted fields;
+- a ranked set of records.
+
+The right output shape depends on the task.
+
+If the answer is meant for direct user reading, concise prose with citations may be best.
+
+If the answer is meant for another system step, structured output may be safer.
+
+This is an important design choice because the generation layer is part of the product, not just part of the model call.
+
+## Structured Output
+
+Structured output means telling the model to respond in a format with clear fields.
+
+This is useful when the answer needs to be:
+
+- checked by code;
+- shown in a predictable UI;
+- compared during evaluation;
+- passed to another tool or workflow.
+
+For example, a support workflow may want:
+
+- `answer`
+- `confidence`
+- `sources`
+- `follow_up_needed`
+
+instead of a single free-form paragraph.
+
+The main benefit is control. The main risk is brittleness if the model does not follow the format well.
+
+That is why structured output usually works best when the task is narrow and the expected shape is clear.
+
+## Validation Matters
+
+Once the system asks for a structured answer, it can also validate that answer.
+
+This helps answer practical questions like:
+
+- did the model include the required fields;
+- did it include sources;
+- is the response format valid;
+- should the system retry or fall back.
+
+Validation is useful because it treats generation as software behavior, not magic.
+
+Even in a simpler project like this one, the idea still matters. The more important the downstream task, the more generation should be checked.
+
+## Frameworks Can Help, but They Do Not Replace Understanding
+
+Frameworks can help with:
+
+- prompt templates;
+- output parsing;
+- document objects;
+- chaining steps together.
+
+That can save time.
+
+But there is also a trap here. A framework can hide the most important part of the system:
+
+- what evidence was passed;
+- how it was formatted;
+- what instructions the model actually received.
+
+So frameworks are useful, but only if the builder still understands the underlying flow.
+
+## Function Calling and Tool Use
+
+Sometimes a RAG system should not stop after generating text. It may need to call a tool.
+
+Examples include:
+
+- fetching a fresh record;
+- opening a ticket;
+- running a query;
+- checking a database;
+- validating a source.
+
+This extends generation into action.
+
+That can be powerful, but it also raises the bar. Once the system can act, it needs stronger controls around:
+
+- when tools are called;
+- what arguments are allowed;
+- what failures look like;
+- what the user is allowed to do.
+
+For that reason, it is usually better to first understand grounded answering well before layering in tool use.
+
+## How to Inspect Generation Failures
+
+When the final answer feels wrong, it helps to ask a few concrete questions.
+
+Did retrieval return the right evidence?
+
+- If not, the problem is upstream.
+
+Did retrieval return good evidence, but the answer ignored it?
+
+- Then the prompt or context assembly may be weak.
+
+Did the answer add claims that were not in the evidence?
+
+- Then the grounding rule may be too weak.
+
+Did the answer include the right facts, but in a messy or unhelpful format?
+
+- Then output design may need work.
+
+This kind of debugging matters because "the model answered badly" is usually too vague to fix.
+
+## What This Chapter Adds to the Pipeline
+
+At this point, the project flow looks like this:
+
+```text
+documents
+-> cleaned chunks
+-> embeddings and index
+-> retrieval and ranking
+-> prompt assembly
+-> grounded answer
+```
+
+So the next chapter can ask a new question:
+
+- how do we know whether this whole system is actually working well?
+
+That is the job of evaluation.
